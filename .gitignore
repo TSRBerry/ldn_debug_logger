@@ -1,13 +1,3 @@
 .vscode/
-.devcontainer/
 
 *.log
-
-build/
-*.elf
-*.kip
-*.npdm
-*.nso
-*.nsp
-
-out/
