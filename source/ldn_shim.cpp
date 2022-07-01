@@ -118,6 +118,16 @@ static Result _ldnUserCommunicationSetWirelessControllerRestriction(Service *s, 
     return serviceMitmDispatchIn(s, 104, in);
 }
 
+static Result _ldnUserCommunicationOpenAccessPoint(Service *s)
+{
+    return serviceMitmDispatch(s, 200);
+}
+
+static Result _ldnUserCommunicationCloseAccessPoint(Service *s)
+{
+    return serviceMitmDispatch(s, 201);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -182,6 +192,16 @@ Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc,
 Result ldnUserCommunicationSetWirelessControllerRestriction(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::WirelessControllerRestriction in)
 {
     return _ldnUserCommunicationSetWirelessControllerRestriction(&doc->s, in);
+}
+
+Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *doc)
+{
+    return _ldnUserCommunicationOpenAccessPoint(&doc->s);
+}
+
+Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc)
+{
+    return _ldnUserCommunicationCloseAccessPoint(&doc->s);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)
