@@ -173,6 +173,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::SetAdvertiseData(sf::InAutoSelectBuffer data)
+    {
+        LogFormat("IUserLocalCommunicationService::SetAdvertiseData ptr: %p size: %d", data.GetPointer(), data.GetSize());
+        Result rc = ldnUserCommunicationSetAdvertiseData(m_srv.get(), data.GetPointer(), data.GetSize());
+        LogFormat("IUserLocalCommunicationService::SetAdvertiseData rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -215,12 +223,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::Disconnect()
     {
         LogFormat("IUserLocalCommunicationService::Disconnect");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::SetAdvertiseData(sf::InAutoSelectBuffer data)
-    {
-        LogFormat("IUserLocalCommunicationService::SetAdvertiseData ptr: %p size: %d", data.GetPointer(), data.GetSize());
         return sm::mitm::ResultShouldForwardToSession();
     }
 

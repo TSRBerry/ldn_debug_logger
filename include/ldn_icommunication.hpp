@@ -68,12 +68,12 @@ namespace ams::mitm::ldn
         Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries);
         Result DestroyNetwork();
         Result Reject(LdnIpv4Address addr);
+        Result SetAdvertiseData(sf::InAutoSelectBuffer data);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result OpenStation();
         Result CloseStation();
         Result Disconnect();
-        Result SetAdvertiseData(sf::InAutoSelectBuffer data);
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
         /*nyi----------------------------------------------------------------------------*/

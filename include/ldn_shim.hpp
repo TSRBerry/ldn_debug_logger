@@ -10,7 +10,6 @@ typedef struct
 /* Command forwarders. */
 Result ldnGetIUserLocalCommunicationInterfaceFwd(Service *s, LdnIUserLocalCommunicationInterface *out);
 
-Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationGetState(LdnIUserLocalCommunicationInterface *doc, u32 *state);
 Result ldnUserCommunicationGetNetworkInfo(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out);
 Result ldnUserCommunicationGetIpv4Address(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr, LdnSubnetMask *netmask);
@@ -29,6 +28,8 @@ Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *do
 Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entires_size);
 Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr);
+Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size);
+Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc);
