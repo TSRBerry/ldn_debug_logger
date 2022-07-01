@@ -64,10 +64,10 @@ namespace ams::mitm::ldn
         Result SetBluetoothAudioDeviceConnectableMode(u32 in);
         Result OpenAccessPoint();
         Result CloseAccessPoint();
+        Result CreateNetwork(CreateNetworkConfig data);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result DestroyNetwork();
-        Result CreateNetwork(CreateNetworkConfig data);
         Result OpenStation();
         Result CloseStation();
         Result Disconnect();

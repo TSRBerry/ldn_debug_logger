@@ -25,6 +25,7 @@ Result ldnUserCommunicationSetWirelessControllerRestriction(LdnIUserLocalCommuni
 Result ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(LdnIUserLocalCommunicationInterface *doc, u32 in);
 Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc);
