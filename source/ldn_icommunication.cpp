@@ -260,17 +260,19 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id)
-    {
-        LogFormat("IUserLocalCommunicationService::InitializeSystem2 unk: %d pid: %" PRIu64, unk, client_process_id);
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
     Result IUserLocalCommunicationService::Finalize()
     {
         LogFormat("IUserLocalCommunicationService::Finalize");
         Result rc = ldnUserCommunicationFinalize(m_srv.get());
         LogFormat("IUserLocalCommunicationService::Finalize rc: %#x", rc);
+        return rc;
+    }
+
+    Result IUserLocalCommunicationService::Initialize2(u32 unk, const sf::ClientProcessId &client_process_id)
+    {
+        LogFormat("IUserLocalCommunicationService::Initialize2 unk: %d pid: %" PRIu64, unk, client_process_id);
+        Result rc = ldnUserCommunicationInitialize2(m_srv.get(), unk, static_cast<u64>(client_process_id.GetValue()));
+        LogFormat("IUserLocalCommunicationService::Initialize rc: %#x", rc);
         return rc;
     }
 }

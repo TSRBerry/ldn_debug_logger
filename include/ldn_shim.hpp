@@ -39,5 +39,6 @@ Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *d
 Result ldnUserCommunicationDisconnect(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationInitialize2(LdnIUserLocalCommunicationInterface *doc, u32 unk, u64 pid);
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc);
