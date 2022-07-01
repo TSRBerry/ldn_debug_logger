@@ -221,6 +221,16 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::Connect(ConnectNetworkData param, const NetworkInfo &data)
+    {
+        LogFormat("IUserLocalCommunicationService::Connect param ptr: %p networkInfo ptr: %p", &param, data);
+        // LogHex(&data, sizeof(NetworkInfo));
+        // LogHex(&param, sizeof(param));
+        Result rc = ldnUserCommunicationConnect(m_srv.get(), &param, &data);
+        LogFormat("IUserLocalCommunicationService::Connect rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -251,14 +261,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::Disconnect()
     {
         LogFormat("IUserLocalCommunicationService::Disconnect");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::Connect(ConnectNetworkData param, const NetworkInfo &data)
-    {
-        LogFormat("IUserLocalCommunicationService::Connect param ptr: %p networkInfo ptr: %p", &param, data);
-        // LogHex(&data, sizeof(NetworkInfo));
-        // LogHex(&param, sizeof(param));
         return sm::mitm::ResultShouldForwardToSession();
     }
 

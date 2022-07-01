@@ -191,6 +191,15 @@ static Result _ldnUserCommunicationCloseStation(Service *s)
     return serviceMitmDispatch(s, 301);
 }
 
+static Result _ldnUserCommunicationConnect(Service *s, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data)
+{
+    return serviceMitmDispatchIn(s, 302, dat,
+                                 .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer | SfBufferAttr_FixedSize},
+                                 .buffers = {
+                                     {data, sizeof(ams::mitm::ldn::NetworkInfo)},
+                                 }, );
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -320,6 +329,11 @@ Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc)
 Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationCloseStation(&doc->s);
+}
+
+Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data)
+{
+    return _ldnUserCommunicationConnect(&doc->s, dat, data);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

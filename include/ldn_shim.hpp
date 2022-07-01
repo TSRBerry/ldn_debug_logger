@@ -34,6 +34,7 @@ Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterf
 Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
