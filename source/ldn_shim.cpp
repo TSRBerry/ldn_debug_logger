@@ -205,6 +205,11 @@ static Result _ldnUserCommunicationConnectPrivate(Service *s, ams::mitm::ldn::Co
     return serviceMitmDispatchIn(s, 303, dat);
 }
 
+static Result _ldnUserCommunicationDisconnect(Service *s)
+{
+    return serviceMitmDispatch(s, 304);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -344,6 +349,11 @@ Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams
 Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat)
 {
     return _ldnUserCommunicationConnectPrivate(&doc->s, dat);
+}
+
+Result ldnUserCommunicationDisconnect(LdnIUserLocalCommunicationInterface *doc)
+{
+    return _ldnUserCommunicationDisconnect(&doc->s);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)
