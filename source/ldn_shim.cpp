@@ -138,6 +138,15 @@ static Result _ldnUserCommunicationCreateNetwork(Service *s, ams::mitm::ldn::Cre
     return serviceMitmDispatchIn(s, 202, data);
 }
 
+static Result _ldnUserCommunicationCreateNetworkPrivate(Service *s, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
+{
+    return serviceMitmDispatchIn(s, 203, data,
+                                 .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer},
+                                 .buffers = {
+                                     {entries, entries_size},
+                                 }, );
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -222,6 +231,11 @@ Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface 
 Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data)
 {
     return _ldnUserCommunicationCreateNetwork(&doc->s, data);
+}
+
+Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
+{
+    return _ldnUserCommunicationCreateNetworkPrivate(&doc->s, data, entries, entries_size);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

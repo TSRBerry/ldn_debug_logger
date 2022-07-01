@@ -65,6 +65,7 @@ namespace ams::mitm::ldn
         Result OpenAccessPoint();
         Result CloseAccessPoint();
         Result CreateNetwork(CreateNetworkConfig data);
+        Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result DestroyNetwork();
@@ -75,7 +76,6 @@ namespace ams::mitm::ldn
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
         /*nyi----------------------------------------------------------------------------*/
-        Result CreateNetworkPrivate();
         Result Reject();
         Result AddAcceptFilterEntry();
         Result ClearAcceptFilter();
