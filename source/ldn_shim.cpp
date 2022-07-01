@@ -181,6 +181,11 @@ static Result _ldnUserCommunicationClearAcceptFilter(Service *s)
     return serviceMitmDispatch(s, 209);
 }
 
+static Result _ldnUserCommunicationOpenStation(Service *s)
+{
+    return serviceMitmDispatch(s, 300);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -300,6 +305,11 @@ Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterf
 Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationClearAcceptFilter(&doc->s);
+}
+
+Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc)
+{
+    return _ldnUserCommunicationOpenStation(&doc->s);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

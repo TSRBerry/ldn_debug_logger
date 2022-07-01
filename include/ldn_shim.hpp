@@ -32,6 +32,7 @@ Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface 
 Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy);
 Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterface *doc, LdnMacAddress *mac);
 Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 

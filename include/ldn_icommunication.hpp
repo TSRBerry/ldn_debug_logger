@@ -72,9 +72,9 @@ namespace ams::mitm::ldn
         Result SetStationAcceptPolicy(LdnAcceptPolicy policy);
         Result AddAcceptFilterEntry(LdnMacAddress mac);
         Result ClearAcceptFilter();
+        Result OpenStation();
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
-        Result OpenStation();
         Result CloseStation();
         Result Disconnect();
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
