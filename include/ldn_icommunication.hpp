@@ -61,10 +61,10 @@ namespace ams::mitm::ldn
         Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
         Result ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
         Result SetWirelessControllerRestriction(WirelessControllerRestriction in);
-        Result Initialize(const sf::ClientProcessId &client_process_id);
-        Result Finalize();
         Result OpenAccessPoint();
         Result CloseAccessPoint();
+        Result Initialize(const sf::ClientProcessId &client_process_id);
+        Result Finalize();
         Result DestroyNetwork();
         Result CreateNetwork(CreateNetworkConfig data);
         Result OpenStation();

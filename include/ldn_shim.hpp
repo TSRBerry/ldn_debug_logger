@@ -22,6 +22,8 @@ Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnIUserLocalCommunication
 Result ldnUserCommunicationScan(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter);
 Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter);
 Result ldnUserCommunicationSetWirelessControllerRestriction(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::WirelessControllerRestriction in);
+Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc);

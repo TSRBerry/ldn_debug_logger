@@ -104,11 +104,28 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    // HOS: 5.0.0+
     Result IUserLocalCommunicationService::SetWirelessControllerRestriction(WirelessControllerRestriction in)
     {
         LogFormat("IUserLocalCommunicationService::SetWirelessControllerRestriction value: %d", in);
         Result rc = ldnUserCommunicationSetWirelessControllerRestriction(m_srv.get(), in);
         LogFormat("IUserLocalCommunicationService::SetWirelessControllerRestriction rc: %#x", rc);
+        return rc;
+    }
+
+    Result IUserLocalCommunicationService::OpenAccessPoint()
+    {
+        LogFormat("IUserLocalCommunicationService::OpenAccessPoint");
+        Result rc = ldnUserCommunicationOpenAccessPoint(m_srv.get());
+        LogFormat("IUserLocalCommunicationService::OpenAccessPoint rc: %#x", rc);
+        return rc;
+    }
+
+    Result IUserLocalCommunicationService::CloseAccessPoint()
+    {
+        LogFormat("IUserLocalCommunicationService::CloseAccessPoint");
+        Result rc = ldnUserCommunicationCloseAccessPoint(m_srv.get());
+        LogFormat("IUserLocalCommunicationService::CloseAccessPoint rc: %#x", rc);
         return rc;
     }
 
@@ -137,18 +154,6 @@ namespace ams::mitm::ldn
         Result rc = ldnUserCommunicationFinalize(m_srv.get());
         LogFormat("IUserLocalCommunicationService::Finalize rc: %#x", rc);
         return rc;
-    }
-
-    Result IUserLocalCommunicationService::OpenAccessPoint()
-    {
-        LogFormat("IUserLocalCommunicationService::OpenAccessPoint");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::CloseAccessPoint()
-    {
-        LogFormat("IUserLocalCommunicationService::CloseAccessPoint");
-        return sm::mitm::ResultShouldForwardToSession();
     }
 
     Result IUserLocalCommunicationService::DestroyNetwork()
