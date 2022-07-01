@@ -70,6 +70,7 @@ namespace ams::mitm::ldn
         Result Reject(LdnIpv4Address addr);
         Result SetAdvertiseData(sf::InAutoSelectBuffer data);
         Result SetStationAcceptPolicy(LdnAcceptPolicy policy);
+        Result AddAcceptFilterEntry(LdnMacAddress mac);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result OpenStation();
@@ -78,7 +79,6 @@ namespace ams::mitm::ldn
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
         /*nyi----------------------------------------------------------------------------*/
-        Result AddAcceptFilterEntry();
         Result ClearAcceptFilter();
         Result ConnectPrivate();
         Result InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id);

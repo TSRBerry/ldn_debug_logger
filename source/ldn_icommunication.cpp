@@ -189,6 +189,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::AddAcceptFilterEntry(LdnMacAddress mac)
+    {
+        LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry value: %x", mac);
+        Result rc = ldnUserCommunicationAddAcceptFilterEntry(m_srv.get(), &mac);
+        LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -243,12 +251,6 @@ namespace ams::mitm::ldn
     }
 
     /*nyi*/
-    Result IUserLocalCommunicationService::AddAcceptFilterEntry()
-    {
-        LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
     Result IUserLocalCommunicationService::ClearAcceptFilter()
     {
         LogFormat("IUserLocalCommunicationService::ClearAcceptFilter");

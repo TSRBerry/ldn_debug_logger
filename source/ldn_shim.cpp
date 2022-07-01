@@ -171,6 +171,11 @@ static Result _ldnUserCommunicationSetStationAcceptPolicy(Service *s, LdnAcceptP
     return serviceMitmDispatchIn(s, 207, policy);
 }
 
+static Result _ldnUserCommunicationAddAcceptFilterEntry(Service *s, LdnMacAddress *mac)
+{
+    return serviceMitmDispatchIn(s, 208, mac);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -280,6 +285,11 @@ Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface 
 Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy)
 {
     return _ldnUserCommunicationSetStationAcceptPolicy(&doc->s, policy);
+}
+
+Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterface *doc, LdnMacAddress *mac)
+{
+    return _ldnUserCommunicationAddAcceptFilterEntry(&doc->s, mac);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)
