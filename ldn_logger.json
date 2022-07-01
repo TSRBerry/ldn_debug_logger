@@ -1,10 +1,10 @@
 {
-	"name": "ldn",
-	"title_id": "0x0100000000000018",
-	"title_id_range_min": "0x0100000000000018",
-	"title_id_range_max": "0x0100000000000018",
-	"main_thread_stack_size": "0x4000",
-	"main_thread_priority": 34,
+	"name": "ldn.log",
+	"title_id": "0x4200000000000018",
+	"title_id_range_min": "0x4200000000000018",
+	"title_id_range_max": "0x4200000000000018",
+	"main_thread_stack_size": "0x20000",
+	"main_thread_priority": 49,
 	"default_cpu_id": 3,
 	"process_category": 1,
 	"is_retail": true,
@@ -15,42 +15,25 @@
 		"permissions": "0xFFFFFFFFFFFFFFFF"
 	},
 	"service_access": [
-		"arp:r",
-		"bsd:s",
-		"bsdcfg",
-		"btm",
-		"es",
-		"fatal:u",
-		"nifm:s",
-		"pl:u",
-		"psc:m",
-		"set:sys",
-		"spl:mig",
-		"wlan:lcl",
-		"wlan:lg",
-		"wlan:lga"
+		"*"
 	],
 	"service_host": [
-		"ldn:m",
-		"ldn:s",
-		"ldn:u",
-		"lp2p:app",
-		"lp2p:m",
-		"lp2p:sys"
+		"*"
 	],
 	"kernel_capabilities": [
 		{
 			"type": "kernel_flags",
 			"value": {
 				"highest_thread_priority": 63,
-				"lowest_thread_priority": 12,
-				"lowest_cpu_id": 3,
+				"lowest_thread_priority": 21,
+				"lowest_cpu_id": 0,
 				"highest_cpu_id": 3
 			}
 		},
 		{
 			"type": "syscalls",
 			"value": {
+				"svcUnknown": "0x00",
 				"svcSetHeapSize": "0x01",
 				"svcSetMemoryPermission": "0x02",
 				"svcSetMemoryAttribute": "0x03",
@@ -92,15 +75,39 @@
 				"svcOutputDebugString": "0x27",
 				"svcReturnFromException": "0x28",
 				"svcGetInfo": "0x29",
+				"svcFlushEntireDataCache": "0x2a",
+				"svcFlushDataCache": "0x2b",
+				"svcMapPhysicalMemory": "0x2c",
+				"svcUnmapPhysicalMemory": "0x2d",
+				"svcGetFutureThreadInfo": "0x2e",
+				"svcGetLastThreadInfo": "0x2f",
+				"svcGetResourceLimitLimitValue": "0x30",
+				"svcGetResourceLimitCurrentValue": "0x31",
+				"svcSetThreadActivity": "0x32",
+				"svcGetThreadContext3": "0x33",
 				"svcWaitForAddress": "0x34",
 				"svcSignalToAddress": "0x35",
+				"svcUnknown": "0x36",
+				"svcUnknown": "0x37",
+				"svcUnknown": "0x38",
+				"svcUnknown": "0x39",
+				"svcUnknown": "0x3a",
+				"svcUnknown": "0x3b",
+				"svcDumpInfo": "0x3c",
+				"svcDumpInfoNew": "0x3d",
+				"svcUnknown": "0x3e",
+				"svcUnknown": "0x3f",
 				"svcCreateSession": "0x40",
 				"svcAcceptSession": "0x41",
 				"svcReplyAndReceiveLight": "0x42",
 				"svcReplyAndReceive": "0x43",
 				"svcReplyAndReceiveWithUserBuffer": "0x44",
 				"svcCreateEvent": "0x45",
-
+				"svcUnknown": "0x46",
+				"svcUnknown": "0x47",
+				"svcMapPhysicalMemoryUnsafe": "0x48",
+				"svcUnmapPhysicalMemoryUnsafe": "0x49",
+				"svcSetUnsafeLimit": "0x4a",
 				"svcCreateCodeMemory": "0x4b",
 				"svcControlCodeMemory": "0x4c",
 				"svcSleepSystem": "0x4d",
@@ -158,11 +165,11 @@
 		},
 		{
 			"type": "min_kernel_version",
-			"value": "0x0091"
+			"value": "0x0030"
 		},
 		{
 			"type": "handle_table_size",
-			"value": 512
+			"value": 128
 		},
 		{
 			"type": "debug_flags",
