@@ -148,6 +148,15 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries)
+    {
+        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate config ptr: %p size: %d", &data, sizeof(CreateNetworkPrivateConfig));
+        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate entries ptr: %p size: %d", entries.GetPointer(), entries.GetSize());
+        Result rc = ldnUserCommunicationCreateNetworkPrivate(m_srv.get(), data, entries.GetPointer(), entries.GetSize());
+        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -217,12 +226,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::SetStationAcceptPolicy(u8 policy)
     {
         LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy value: %x", policy);
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::CreateNetworkPrivate()
-    {
-        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate");
         return sm::mitm::ResultShouldForwardToSession();
     }
 

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include <stratosphere.hpp>
+#include <switch.h>
 
 namespace ams::mitm::ldn
 {
@@ -52,6 +53,11 @@ namespace ams::mitm::ldn
     {
         uint8_t raw[6];
         bool operator==(const MacAddress &b) const;
+    };
+
+    struct AddressEntry : sf::LargeData
+    {
+        LdnAddressEntry entry;
     };
 
     struct Ssid
@@ -158,6 +164,15 @@ namespace ams::mitm::ldn
         NetworkConfig networkConfig;
     };
 
+    struct CreateNetworkPrivateConfig
+    {
+        SecurityConfig securityConfig;
+        LdnSecurityParameter securityParameter;
+        UserConfig userConfig;
+        uint8_t _unk[4];
+        NetworkConfig networkConfig;
+    };
+
     struct ConnectNetworkData
     {
         SecurityConfig securityConfig;
@@ -166,16 +181,15 @@ namespace ams::mitm::ldn
         uint32_t option;
     };
 
-    struct NodeLatestUpdate : sf::PrefersPointerTransferMode
+    struct NodeLatestUpdate : sf::LargeData
     {
         uint8_t stateChange;
         uint8_t _unk[7];
     };
 
-    struct SecurityParameter
+    struct SecurityParameter : sf::LargeData
     {
-        uint8_t unkRandom[16];
-        SessionId sessionId;
+        LdnSecurityParameter securityParam;
     };
 
     struct ScanFilter
@@ -187,7 +201,4 @@ namespace ams::mitm::ldn
         uint8_t unk[16];
         uint32_t flag;
     };
-
-    void NetworkInfo2NetworkConfig(NetworkInfo *info, NetworkConfig *out);
-    void NetworkInfo2SecurityParameter(NetworkInfo *info, SecurityParameter *out);
 }
