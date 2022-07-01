@@ -2,15 +2,12 @@
 
 namespace ams::mitm::ldn
 {
-    static_assert(sizeof(NetworkInfo) == 0x480, "sizeof(NetworkInfo) should be 0x480");
-    static_assert(sizeof(ConnectNetworkData) == 0x7C, "sizeof(ConnectNetworkData) should be 0x7C");
-    static_assert(sizeof(ScanFilter) == 0x60, "sizeof(ScanFilter) should be 0x60");
-
     Result IUserLocalCommunicationService::GetState(sf::Out<u32> state)
     {
-        LogFormat("IUserLocalCommunicationService::GetState ptr: %p value: %d", state.GetPointer(), state.GetValue());
+        LogFormat("IUserLocalCommunicationService::GetState ptr: %p", state.GetPointer());
         Result rc = ldnUserCommunicationGetState(m_srv.get(), state.GetPointer());
         LogFormat("IUserLocalCommunicationService::GetState rc: %#x", rc);
+        LogFormat("IUserLocalCommunicationService::GetState value: %d", state.GetValue());
         return rc;
     }
 
@@ -19,15 +16,20 @@ namespace ams::mitm::ldn
         LogFormat("IUserLocalCommunicationService::GetNetworkInfo ptr: %p", buffer.GetPointer());
         Result rc = ldnUserCommunicationGetNetworkInfo(m_srv.get(), buffer.GetPointer());
         LogFormat("IUserLocalCommunicationService::GetNetworkInfo rc: %#x", rc);
+        LogFormat("IUserLocalCommunicationService::GetNetworkInfo NetworkInfo:");
+        LogHex(buffer.GetPointer(), sizeof(NetworkInfo));
         return rc;
     }
 
-    Result IUserLocalCommunicationService::GetIpv4Address(sf::Out<LdnIpv4Address> address, sf::Out<LdnSubnetMask> netmask)
+    Result IUserLocalCommunicationService::GetIpv4Address(sf::Out<Ipv4Address> address, sf::Out<SubnetMask> netmask)
     {
         LogFormat("IUserLocalCommunicationService::GetIpv4Address addr ptr: %p netmask ptr: %p", address.GetPointer(), netmask.GetPointer());
         Result rc = ldnUserCommunicationGetIpv4Address(m_srv.get(), address.GetPointer(), netmask.GetPointer());
         LogFormat("IUserLocalCommunicationService::GetIpv4Address rc: %#x", rc);
-        LogFormat("IUserLocalCommunicationService::GetIpv4Address addr: %x netmask: %x", address.GetValue().addr, netmask.GetValue().mask);
+        LogFormat("IUserLocalCommunicationService::GetIpv4Address addr:");
+        LogHex(address.GetPointer(), sizeof(Ipv4Address));
+        LogFormat("IUserLocalCommunicationService::GetIpv4Address netmask:");
+        LogHex(netmask.GetPointer(), sizeof(SubnetMask));
         return rc;
     }
 
@@ -45,12 +47,12 @@ namespace ams::mitm::ldn
         LogFormat("IUserLocalCommunicationService::GetSecurityParameter ptr: %p", out.GetPointer());
         Result rc = ldnUserCommunicationGetSecurityParameter(m_srv.get(), out.GetPointer());
         LogFormat("IUserLocalCommunicationService::GetSecurityParameter rc: %#x", rc);
-        LogFormat("IUserLocalCommunicationService::GetSecurityParameter SecurityParameter:");
+        LogFormat("IUserLocalCommunicationService::GetSecurityParame1ter SecurityParameter:");
         LogHex(out.GetPointer(), sizeof(SecurityParameter));
         return rc;
     }
 
-    Result IUserLocalCommunicationService::GetNetworkConfig(sf::Out<LdnNetworkConfig> out)
+    Result IUserLocalCommunicationService::GetNetworkConfig(sf::Out<NetworkConfig> out)
     {
         LogFormat("IUserLocalCommunicationService::GetNetworkConfig ptr: %p", out.GetPointer());
         Result rc = ldnUserCommunicationGetNetworkConfig(m_srv.get(), out.GetPointer());
@@ -82,10 +84,12 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::Scan(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter)
+    Result IUserLocalCommunicationService::Scan(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter)
     {
         LogFormat("IUserLocalCommunicationService::Scan outCount ptr: %p buffer ptr: %p", outCount.GetPointer(), buffer.GetPointer());
-        LogFormat("IUserLocalCommunicationService::Scan channel value: %x filter value: %x", channel, filter);
+        LogFormat("IUserLocalCommunicationService::Scan channel value: %x filter ptr: %p", channel, &filter);
+        LogFormat("IUserLocalCommunicationService::Scan filter:");
+        LogHex(&filter, sizeof(LdnScanFilter));
         Result rc = ldnUserCommunicationScan(m_srv.get(), outCount.GetPointer(), buffer.GetPointer(), buffer.GetSize(), channel, filter);
         LogFormat("IUserLocalCommunicationService::Scan rc: %#x", rc);
         LogFormat("IUserLocalCommunicationService::Scan NetworkInfo[%d]:", outCount.GetValue());
@@ -93,10 +97,12 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter)
+    Result IUserLocalCommunicationService::ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter)
     {
         LogFormat("IUserLocalCommunicationService::ScanPrivate outCount ptr: %p buffer ptr: %p", outCount.GetPointer(), buffer.GetPointer());
-        LogFormat("IUserLocalCommunicationService::ScanPrivate channel value: %x filter value: %x", channel, filter);
+        LogFormat("IUserLocalCommunicationService::ScanPrivate channel value: %x filter ptr: %x", channel, &filter);
+        LogFormat("IUserLocalCommunicationService::ScanPrivate filter:");
+        LogHex(&filter, sizeof(LdnScanFilter));
         Result rc = ldnUserCommunicationScanPrivate(m_srv.get(), outCount.GetPointer(), buffer.GetPointer(), buffer.GetSize(), channel, filter);
         LogFormat("IUserLocalCommunicationService::ScanPrivate rc: %#x", rc);
         LogFormat("IUserLocalCommunicationService::ScanPrivate NetworkInfo[%d]:", outCount.GetValue());
@@ -151,7 +157,11 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries)
     {
         LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate config ptr: %p size: %d", &data, sizeof(CreateNetworkPrivateConfig));
+        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate config:");
+        LogHex(&data, sizeof(CreateNetworkConfig));
         LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate entries ptr: %p size: %d", entries.GetPointer(), entries.GetSize());
+        LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate entries:");
+        LogHex(entries.GetPointer(), entries.GetSize());
         Result rc = ldnUserCommunicationCreateNetworkPrivate(m_srv.get(), data, entries.GetPointer(), entries.GetSize());
         LogFormat("IUserLocalCommunicationService::CreateNetworkPrivate rc: %#x", rc);
         return rc;
@@ -176,6 +186,8 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::SetAdvertiseData(sf::InAutoSelectBuffer data)
     {
         LogFormat("IUserLocalCommunicationService::SetAdvertiseData ptr: %p size: %d", data.GetPointer(), data.GetSize());
+        LogFormat("IUserLocalCommunicationService::SetAdvertiseData data:");
+        LogHex(data.GetPointer(), data.GetSize());
         Result rc = ldnUserCommunicationSetAdvertiseData(m_srv.get(), data.GetPointer(), data.GetSize());
         LogFormat("IUserLocalCommunicationService::SetAdvertiseData rc: %#x", rc);
         return rc;
@@ -183,7 +195,8 @@ namespace ams::mitm::ldn
 
     Result IUserLocalCommunicationService::SetStationAcceptPolicy(LdnAcceptPolicy policy)
     {
-        LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy value: %x", policy);
+        LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy policy:");
+        LogHex(&policy, sizeof(LdnAcceptPolicy));
         Result rc = ldnUserCommunicationSetStationAcceptPolicy(m_srv.get(), &policy);
         LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy rc: %#x", rc);
         return rc;
@@ -191,7 +204,8 @@ namespace ams::mitm::ldn
 
     Result IUserLocalCommunicationService::AddAcceptFilterEntry(LdnMacAddress mac)
     {
-        LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry value: %x", mac);
+        LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry mac:");
+        LogHex(&mac, sizeof(LdnMacAddress));
         Result rc = ldnUserCommunicationAddAcceptFilterEntry(m_srv.get(), &mac);
         LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry rc: %#x", rc);
         return rc;
@@ -221,11 +235,13 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::Connect(ConnectNetworkData param, const NetworkInfo &data)
+    Result IUserLocalCommunicationService::Connect(ConnectNetworkData param, const LdnNetworkInfo &data)
     {
         LogFormat("IUserLocalCommunicationService::Connect param ptr: %p networkInfo ptr: %p", &param, data);
-        // LogHex(&data, sizeof(NetworkInfo));
-        // LogHex(&param, sizeof(param));
+        LogFormat("IUserLocalCommunicationService::Connect param:");
+        LogHex(&param, sizeof(ConnectNetworkData));
+        LogFormat("IUserLocalCommunicationService::Connect networkInfo:");
+        LogHex(&data, sizeof(LdnNetworkInfo));
         Result rc = ldnUserCommunicationConnect(m_srv.get(), &param, &data);
         LogFormat("IUserLocalCommunicationService::Connect rc: %#x", rc);
         return rc;
@@ -234,6 +250,8 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::ConnectPrivate(ConnectNetworkPrivateData param)
     {
         LogFormat("IUserLocalCommunicationService::ConnectPrivate param ptr: %p", &param);
+        LogFormat("IUserLocalCommunicationService::ConnectPrivate param:");
+        LogHex(&param, sizeof(ConnectNetworkData));
         Result rc = ldnUserCommunicationConnectPrivate(m_srv.get(), &param);
         LogFormat("IUserLocalCommunicationService::ConnectPrivate rc: %#x", rc);
         return rc;

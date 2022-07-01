@@ -41,7 +41,7 @@ static Result _ldnUserCommunicationGetNetworkInfo(Service *s, ams::mitm::ldn::Ne
                                }, );
 }
 
-static Result _ldnUserCommunicationGetIpv4Address(Service *s, LdnIpv4Address *addr, LdnSubnetMask *subnetMask)
+static Result _ldnUserCommunicationGetIpv4Address(Service *s, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *subnetMask)
 {
     struct
     {
@@ -49,8 +49,8 @@ static Result _ldnUserCommunicationGetIpv4Address(Service *s, LdnIpv4Address *ad
         u32 netmask;
     } out;
     Result rc = serviceMitmDispatchOut(s, 2, out);
-    addr->addr = out.addr;
-    subnetMask->mask = out.netmask;
+    addr->addr.addr = out.addr;
+    subnetMask->netmask.mask = out.netmask;
     return rc;
 }
 
@@ -64,7 +64,7 @@ static Result _ldnUserCommunicationGetSecurityParameter(Service *s, ams::mitm::l
     return serviceMitmDispatchOut(s, 4, out);
 }
 
-static Result _ldnUserCommunicationGetNetworkConfig(Service *s, LdnNetworkConfig *out)
+static Result _ldnUserCommunicationGetNetworkConfig(Service *s, ams::mitm::ldn::NetworkConfig *out)
 {
     return serviceMitmDispatchOut(s, 5, out);
 }
@@ -85,12 +85,12 @@ static Result _ldnUserCommunicationGetNetworkInfoLatestUpdate(Service *s, ams::m
                                }, );
 }
 
-static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter)
+static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     const struct
     {
         s16 channel;
-        ams::mitm::ldn::ScanFilter filter;
+        LdnScanFilter filter;
     } in = {channel, filter};
     return serviceMitmDispatchInOut(s, 102, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
@@ -99,12 +99,12 @@ static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::l
                                     }, );
 }
 
-static Result _ldnUserCommunicationScanPrivate(Service *s, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter)
+static Result _ldnUserCommunicationScanPrivate(Service *s, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     const struct
     {
         s16 channel;
-        ams::mitm::ldn::ScanFilter filter;
+        LdnScanFilter filter;
     } in = {channel, filter};
     return serviceMitmDispatchInOut(s, 103, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
@@ -191,7 +191,7 @@ static Result _ldnUserCommunicationCloseStation(Service *s)
     return serviceMitmDispatch(s, 301);
 }
 
-static Result _ldnUserCommunicationConnect(Service *s, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data)
+static Result _ldnUserCommunicationConnect(Service *s, ams::mitm::ldn::ConnectNetworkData *dat, const LdnNetworkInfo *data)
 {
     return serviceMitmDispatchIn(s, 302, dat,
                                  .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer | SfBufferAttr_FixedSize},
@@ -241,7 +241,7 @@ Result ldnUserCommunicationGetNetworkInfo(LdnIUserLocalCommunicationInterface *d
     return _ldnUserCommunicationGetNetworkInfo(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetIpv4Address(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr, LdnSubnetMask *netmask)
+Result ldnUserCommunicationGetIpv4Address(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *netmask)
 {
     return _ldnUserCommunicationGetIpv4Address(&doc->s, addr, netmask);
 }
@@ -256,7 +256,7 @@ Result ldnUserCommunicationGetSecurityParameter(LdnIUserLocalCommunicationInterf
     return _ldnUserCommunicationGetSecurityParameter(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, LdnNetworkConfig *out)
+Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out)
 {
     return _ldnUserCommunicationGetNetworkConfig(&doc->s, out);
 }
@@ -271,12 +271,12 @@ Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnIUserLocalCommunication
     return _ldnUserCommunicationGetNetworkInfoLatestUpdate(&doc->s, out, out_buffer, out_buffer_size);
 }
 
-Result ldnUserCommunicationScan(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter)
+Result ldnUserCommunicationScan(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     return _ldnUserCommunicationScan(&doc->s, total_out, out_buffer, out_buffer_size, channel, filter);
 }
 
-Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter)
+Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     return _ldnUserCommunicationScanPrivate(&doc->s, total_out, out_buffer, out_buffer_size, channel, filter);
 }
@@ -351,7 +351,7 @@ Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc
     return _ldnUserCommunicationCloseStation(&doc->s);
 }
 
-Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data)
+Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const LdnNetworkInfo *data)
 {
     return _ldnUserCommunicationConnect(&doc->s, dat, data);
 }

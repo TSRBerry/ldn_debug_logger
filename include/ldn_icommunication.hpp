@@ -52,14 +52,14 @@ namespace ams::mitm::ldn
     public:
         Result GetState(sf::Out<u32> state);
         Result GetNetworkInfo(sf::Out<NetworkInfo> buffer);
-        Result GetIpv4Address(sf::Out<LdnIpv4Address> address, sf::Out<LdnSubnetMask> mask);
+        Result GetIpv4Address(sf::Out<Ipv4Address> address, sf::Out<SubnetMask> mask);
         Result GetDisconnectReason(sf::Out<s16> reason);
         Result GetSecurityParameter(sf::Out<SecurityParameter> out);
-        Result GetNetworkConfig(sf::Out<LdnNetworkConfig> out);
+        Result GetNetworkConfig(sf::Out<NetworkConfig> out);
         Result AttachStateChangeEvent(sf::Out<sf::CopyHandle> handle);
         Result GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<NodeLatestUpdate> pUpdates);
-        Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
-        Result ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
+        Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter);
+        Result ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter);
         Result SetWirelessControllerRestriction(WirelessControllerRestriction in);
         Result SetBluetoothAudioDeviceConnectableMode(u32 in);
         Result OpenAccessPoint();
@@ -74,7 +74,7 @@ namespace ams::mitm::ldn
         Result ClearAcceptFilter();
         Result OpenStation();
         Result CloseStation();
-        Result Connect(ConnectNetworkData param, const NetworkInfo &data);
+        Result Connect(ConnectNetworkData param, const LdnNetworkInfo &data);
         Result ConnectPrivate(ConnectNetworkPrivateData param);
         Result Disconnect();
         Result Initialize(const sf::ClientProcessId &client_process_id);
