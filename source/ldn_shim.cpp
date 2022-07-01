@@ -166,6 +166,11 @@ static Result _ldnUserCommunicationSetAdvertiseData(Service *s, const void *adve
                                }, );
 }
 
+static Result _ldnUserCommunicationSetStationAcceptPolicy(Service *s, LdnAcceptPolicy *policy)
+{
+    return serviceMitmDispatchIn(s, 207, policy);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -270,6 +275,11 @@ Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnI
 Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size)
 {
     return _ldnUserCommunicationSetAdvertiseData(&doc->s, advertiseData, advertiseData_size);
+}
+
+Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy)
+{
+    return _ldnUserCommunicationSetStationAcceptPolicy(&doc->s, policy);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

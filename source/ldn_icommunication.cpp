@@ -181,6 +181,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::SetStationAcceptPolicy(LdnAcceptPolicy policy)
+    {
+        LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy value: %x", policy);
+        Result rc = ldnUserCommunicationSetStationAcceptPolicy(m_srv.get(), &policy);
+        LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -235,12 +243,6 @@ namespace ams::mitm::ldn
     }
 
     /*nyi*/
-    Result IUserLocalCommunicationService::SetStationAcceptPolicy(u8 policy)
-    {
-        LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy value: %x", policy);
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
     Result IUserLocalCommunicationService::AddAcceptFilterEntry()
     {
         LogFormat("IUserLocalCommunicationService::AddAcceptFilterEntry");
