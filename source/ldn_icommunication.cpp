@@ -165,6 +165,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::Reject(LdnIpv4Address addr)
+    {
+        LogFormat("IUserLocalCommunicationService::Reject addr: %x", addr);
+        Result rc = ldnUserCommunicationReject(m_srv.get(), &addr);
+        LogFormat("IUserLocalCommunicationService::Reject rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -228,12 +236,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::SetStationAcceptPolicy(u8 policy)
     {
         LogFormat("IUserLocalCommunicationService::SetStationAcceptPolicy value: %x", policy);
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::Reject()
-    {
-        LogFormat("IUserLocalCommunicationService::Reject");
         return sm::mitm::ResultShouldForwardToSession();
     }
 
