@@ -146,22 +146,11 @@ namespace ams::mitm::ldn
         uint8_t _unk[15];
     };
 
-    struct NetworkConfig
-    {
-        IntentId intentId; // 16byte
-        uint16_t channel;
-        uint8_t nodeCountMax;
-        uint8_t _unk1;
-        uint16_t localCommunicationVersion;
-        uint8_t _unk2[10];
-    }; // 32bytes
-
     struct CreateNetworkConfig
     {
         SecurityConfig securityConfig;
         UserConfig userConfig;
-        uint8_t _unk[4];
-        NetworkConfig networkConfig;
+        LdnNetworkConfig networkConfig;
     };
 
     struct CreateNetworkPrivateConfig
@@ -169,8 +158,7 @@ namespace ams::mitm::ldn
         SecurityConfig securityConfig;
         LdnSecurityParameter securityParameter;
         UserConfig userConfig;
-        uint8_t _unk[4];
-        NetworkConfig networkConfig;
+        LdnNetworkConfig networkConfig;
     };
 
     struct ConnectNetworkData
@@ -179,6 +167,16 @@ namespace ams::mitm::ldn
         UserConfig userConfig;
         uint32_t localCommunicationVersion;
         uint32_t option;
+    };
+
+    struct ConnectNetworkPrivateData
+    {
+        SecurityConfig securityConfig;
+        LdnSecurityParameter securityParameter;
+        UserConfig userConfig;
+        uint32_t localCommunicationVersion;
+        uint32_t option;
+        LdnNetworkConfig networkConfig;
     };
 
     struct NodeLatestUpdate : sf::LargeData

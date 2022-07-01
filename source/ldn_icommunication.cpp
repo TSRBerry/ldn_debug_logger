@@ -50,13 +50,13 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::GetNetworkConfig(sf::Out<NetworkConfig> out)
+    Result IUserLocalCommunicationService::GetNetworkConfig(sf::Out<LdnNetworkConfig> out)
     {
         LogFormat("IUserLocalCommunicationService::GetNetworkConfig ptr: %p", out.GetPointer());
         Result rc = ldnUserCommunicationGetNetworkConfig(m_srv.get(), out.GetPointer());
         LogFormat("IUserLocalCommunicationService::GetNetworkConfig rc: %#x", rc);
         LogFormat("IUserLocalCommunicationService::GetNetworkConfig NetworkConfig:");
-        LogHex(out.GetPointer(), sizeof(NetworkConfig));
+        LogHex(out.GetPointer(), sizeof(LdnNetworkConfig));
         return rc;
     }
 
@@ -231,6 +231,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::ConnectPrivate(ConnectNetworkPrivateData param)
+    {
+        LogFormat("IUserLocalCommunicationService::ConnectPrivate param ptr: %p", &param);
+        Result rc = ldnUserCommunicationConnectPrivate(m_srv.get(), &param);
+        LogFormat("IUserLocalCommunicationService::ConnectPrivate rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -261,14 +269,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::Disconnect()
     {
         LogFormat("IUserLocalCommunicationService::Disconnect");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    /*nyi*/
-
-    Result IUserLocalCommunicationService::ConnectPrivate()
-    {
-        LogFormat("IUserLocalCommunicationService::ConnectPrivate");
         return sm::mitm::ResultShouldForwardToSession();
     }
 }

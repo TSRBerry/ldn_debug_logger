@@ -15,7 +15,7 @@ Result ldnUserCommunicationGetNetworkInfo(LdnIUserLocalCommunicationInterface *d
 Result ldnUserCommunicationGetIpv4Address(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr, LdnSubnetMask *netmask);
 Result ldnUserCommunicationGetDisconnectReason(LdnIUserLocalCommunicationInterface *doc, s16 *reason);
 Result ldnUserCommunicationGetSecurityParameter(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::SecurityParameter *out);
-Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out);
+Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, LdnNetworkConfig *out);
 Result ldnUserCommunicationAttachStateChangeEvent(LdnIUserLocalCommunicationInterface *doc, ams::os::SystemEvent *handle);
 Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size);
 Result ldnUserCommunicationScan(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, ams::mitm::ldn::ScanFilter filter);
@@ -35,6 +35,7 @@ Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface
 Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data);
+Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
