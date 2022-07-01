@@ -76,9 +76,9 @@ namespace ams::mitm::ldn
         Result CloseStation();
         Result Connect(ConnectNetworkData param, const NetworkInfo &data);
         Result ConnectPrivate(ConnectNetworkPrivateData param);
+        Result Disconnect();
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
-        Result Disconnect();
 
         /*nyi----------------------------------------------------------------------------*/
         Result InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id);

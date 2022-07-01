@@ -36,6 +36,7 @@ Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc)
 Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data);
 Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat);
+Result ldnUserCommunicationDisconnect(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
