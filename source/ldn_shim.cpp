@@ -157,6 +157,15 @@ static Result _ldnUserCommunicationReject(Service *s, LdnIpv4Address *addr)
     return serviceMitmDispatchIn(s, 205, addr);
 }
 
+static Result _ldnUserCommunicationSetAdvertiseData(Service *s, const void *advertiseData, size_t advertiseData_size)
+{
+    return serviceMitmDispatch(s, 206,
+                               .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcAutoSelect},
+                               .buffers = {
+                                   {advertiseData, advertiseData_size},
+                               }, );
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -256,6 +265,11 @@ Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *d
 Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr)
 {
     return _ldnUserCommunicationReject(&doc->s, addr);
+}
+
+Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size)
+{
+    return _ldnUserCommunicationSetAdvertiseData(&doc->s, advertiseData, advertiseData_size);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)
