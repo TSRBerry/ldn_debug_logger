@@ -30,6 +30,7 @@ Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *d
 Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr);
 Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size);
 Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy);
+Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterface *doc, LdnMacAddress *mac);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
