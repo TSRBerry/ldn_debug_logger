@@ -64,7 +64,7 @@ static Result _ldnUserCommunicationGetSecurityParameter(Service *s, ams::mitm::l
     return serviceMitmDispatchOut(s, 4, out);
 }
 
-static Result _ldnUserCommunicationGetNetworkConfig(Service *s, ams::mitm::ldn::NetworkConfig *out)
+static Result _ldnUserCommunicationGetNetworkConfig(Service *s, LdnNetworkConfig *out)
 {
     return serviceMitmDispatchOut(s, 5, out);
 }
@@ -200,6 +200,11 @@ static Result _ldnUserCommunicationConnect(Service *s, ams::mitm::ldn::ConnectNe
                                  }, );
 }
 
+static Result _ldnUserCommunicationConnectPrivate(Service *s, ams::mitm::ldn::ConnectNetworkPrivateData *dat)
+{
+    return serviceMitmDispatchIn(s, 303, dat);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -236,7 +241,7 @@ Result ldnUserCommunicationGetSecurityParameter(LdnIUserLocalCommunicationInterf
     return _ldnUserCommunicationGetSecurityParameter(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out)
+Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, LdnNetworkConfig *out)
 {
     return _ldnUserCommunicationGetNetworkConfig(&doc->s, out);
 }
@@ -334,6 +339,11 @@ Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc
 Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const ams::mitm::ldn::NetworkInfo *data)
 {
     return _ldnUserCommunicationConnect(&doc->s, dat, data);
+}
+
+Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat)
+{
+    return _ldnUserCommunicationConnectPrivate(&doc->s, dat);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

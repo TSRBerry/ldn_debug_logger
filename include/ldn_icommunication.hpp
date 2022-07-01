@@ -55,7 +55,7 @@ namespace ams::mitm::ldn
         Result GetIpv4Address(sf::Out<LdnIpv4Address> address, sf::Out<LdnSubnetMask> mask);
         Result GetDisconnectReason(sf::Out<s16> reason);
         Result GetSecurityParameter(sf::Out<SecurityParameter> out);
-        Result GetNetworkConfig(sf::Out<NetworkConfig> out);
+        Result GetNetworkConfig(sf::Out<LdnNetworkConfig> out);
         Result AttachStateChangeEvent(sf::Out<sf::CopyHandle> handle);
         Result GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<NodeLatestUpdate> pUpdates);
         Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
@@ -74,13 +74,13 @@ namespace ams::mitm::ldn
         Result ClearAcceptFilter();
         Result OpenStation();
         Result CloseStation();
-        Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
+        Result Connect(ConnectNetworkData param, const NetworkInfo &data);
+        Result ConnectPrivate(ConnectNetworkPrivateData param);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result Disconnect();
 
         /*nyi----------------------------------------------------------------------------*/
-        Result ConnectPrivate();
         Result InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id);
         /*-------------------------------------------------------------------------------*/
     };
