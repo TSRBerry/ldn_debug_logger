@@ -74,10 +74,10 @@ namespace ams::mitm::ldn
         Result ClearAcceptFilter();
         Result OpenStation();
         Result CloseStation();
+        Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result Disconnect();
-        Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
         /*nyi----------------------------------------------------------------------------*/
         Result ConnectPrivate();
