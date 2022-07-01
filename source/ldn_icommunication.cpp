@@ -157,6 +157,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::DestroyNetwork()
+    {
+        LogFormat("IUserLocalCommunicationService::DestroyNetwork");
+        Result rc = ldnUserCommunicationDestroyNetwork(m_srv.get());
+        LogFormat("IUserLocalCommunicationService::DestroyNetwork rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -182,12 +190,6 @@ namespace ams::mitm::ldn
         Result rc = ldnUserCommunicationFinalize(m_srv.get());
         LogFormat("IUserLocalCommunicationService::Finalize rc: %#x", rc);
         return rc;
-    }
-
-    Result IUserLocalCommunicationService::DestroyNetwork()
-    {
-        LogFormat("IUserLocalCommunicationService::DestroyNetwork");
-        return sm::mitm::ResultShouldForwardToSession();
     }
 
     Result IUserLocalCommunicationService::OpenStation()

@@ -66,9 +66,9 @@ namespace ams::mitm::ldn
         Result CloseAccessPoint();
         Result CreateNetwork(CreateNetworkConfig data);
         Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries);
+        Result DestroyNetwork();
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
-        Result DestroyNetwork();
         Result OpenStation();
         Result CloseStation();
         Result Disconnect();
