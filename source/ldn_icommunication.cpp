@@ -213,6 +213,14 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::CloseStation()
+    {
+        LogFormat("IUserLocalCommunicationService::CloseStation");
+        Result rc = ldnUserCommunicationCloseStation(m_srv.get());
+        LogFormat("IUserLocalCommunicationService::CloseStation rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -238,12 +246,6 @@ namespace ams::mitm::ldn
         Result rc = ldnUserCommunicationFinalize(m_srv.get());
         LogFormat("IUserLocalCommunicationService::Finalize rc: %#x", rc);
         return rc;
-    }
-
-    Result IUserLocalCommunicationService::CloseStation()
-    {
-        LogFormat("IUserLocalCommunicationService::CloseStation");
-        return sm::mitm::ResultShouldForwardToSession();
     }
 
     Result IUserLocalCommunicationService::Disconnect()
