@@ -147,6 +147,11 @@ static Result _ldnUserCommunicationCreateNetworkPrivate(Service *s, ams::mitm::l
                                  }, );
 }
 
+static Result _ldnUserCommunicationDestroyNetwork(Service *s)
+{
+    return serviceMitmDispatch(s, 204);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -236,6 +241,11 @@ Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *do
 Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
 {
     return _ldnUserCommunicationCreateNetworkPrivate(&doc->s, data, entries, entries_size);
+}
+
+Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *doc)
+{
+    return _ldnUserCommunicationDestroyNetwork(&doc->s);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

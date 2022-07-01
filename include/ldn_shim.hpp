@@ -27,6 +27,7 @@ Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *
 Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data);
 Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entires_size);
+Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc);
