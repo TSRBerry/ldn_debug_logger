@@ -69,6 +69,7 @@ namespace ams::mitm::ldn
         Result DestroyNetwork();
         Result Reject(LdnIpv4Address addr);
         Result SetAdvertiseData(sf::InAutoSelectBuffer data);
+        Result SetStationAcceptPolicy(LdnAcceptPolicy policy);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result OpenStation();
@@ -80,7 +81,6 @@ namespace ams::mitm::ldn
         Result AddAcceptFilterEntry();
         Result ClearAcceptFilter();
         Result ConnectPrivate();
-        Result SetStationAcceptPolicy(u8 policy);
         Result InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id);
         /*-------------------------------------------------------------------------------*/
     };
