@@ -79,10 +79,7 @@ namespace ams::mitm::ldn
         Result Disconnect();
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
-
-        /*nyi----------------------------------------------------------------------------*/
-        Result InitializeSystem2(u64 unk, const sf::ClientProcessId &client_process_id);
-        /*-------------------------------------------------------------------------------*/
+        Result Initialize2(u32 unk, const sf::ClientProcessId &client_process_id);
     };
     static_assert(ams::mitm::ldn::IsIUserLocalCommunicationInterface<IUserLocalCommunicationService>);
 }

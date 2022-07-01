@@ -221,6 +221,16 @@ static Result _ldnUserCommunicationFinalize(Service *s)
     return serviceMitmDispatch(s, 401);
 }
 
+static Result _ldnUserCommunicationInitialize2(Service *s, u32 unk, u64 pid)
+{
+    const struct
+    {
+        u32 unk;
+        u64 pid_placeholder;
+    } in = {unk, 0};
+    return serviceMitmDispatchIn(s, 402, in, .in_send_pid = true, .override_pid = pid, );
+}
+
 Result ldnUserCommunicationGetState(LdnIUserLocalCommunicationInterface *doc, u32 *state)
 {
     return _ldnUserCommunicationGetState(&doc->s, state);
@@ -364,6 +374,11 @@ Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, 
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationFinalize(&doc->s);
+}
+
+Result ldnUserCommunicationInitialize2(LdnIUserLocalCommunicationInterface *doc, u32 unk, u64 pid)
+{
+    return _ldnUserCommunicationInitialize2(&doc->s, unk, pid);
 }
 
 void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc)

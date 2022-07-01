@@ -34,6 +34,6 @@
        AMS_SF_METHOD_INFO(C, H, 304, Result, Disconnect, (), ())                                                                                                                                                                        \
        AMS_SF_METHOD_INFO(C, H, 400, Result, Initialize, (const ams::sf::ClientProcessId &client_process_id), (client_process_id))                                                                                                      \
        AMS_SF_METHOD_INFO(C, H, 401, Result, Finalize, (), ())                                                                                                                                                                          \
-       AMS_SF_METHOD_INFO(C, H, 402, Result, InitializeSystem2, (u64 unk, const ams::sf::ClientProcessId &client_process_id), (unk, client_process_id))
+       AMS_SF_METHOD_INFO(C, H, 402, Result, Initialize2, (u32 unk, const ams::sf::ClientProcessId &client_process_id), (unk, client_process_id))
 
 AMS_SF_DEFINE_INTERFACE(ams::mitm::ldn, IUserLocalCommunicationInterface, AMS_LDN_IUSERLOCALCOMMUNICATION, 0x85280DC3)
