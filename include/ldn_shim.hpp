@@ -33,6 +33,7 @@ Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInte
 Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterface *doc, LdnMacAddress *mac);
 Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc);
+Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc);
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid);
 Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc);
 

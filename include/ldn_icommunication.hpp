@@ -73,9 +73,9 @@ namespace ams::mitm::ldn
         Result AddAcceptFilterEntry(LdnMacAddress mac);
         Result ClearAcceptFilter();
         Result OpenStation();
+        Result CloseStation();
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
-        Result CloseStation();
         Result Disconnect();
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
