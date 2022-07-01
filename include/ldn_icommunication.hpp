@@ -61,6 +61,7 @@ namespace ams::mitm::ldn
         Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
         Result ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, ScanFilter filter);
         Result SetWirelessControllerRestriction(WirelessControllerRestriction in);
+        Result SetBluetoothAudioDeviceConnectableMode(u32 in);
         Result OpenAccessPoint();
         Result CloseAccessPoint();
         Result Initialize(const sf::ClientProcessId &client_process_id);

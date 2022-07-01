@@ -118,6 +118,11 @@ static Result _ldnUserCommunicationSetWirelessControllerRestriction(Service *s, 
     return serviceMitmDispatchIn(s, 104, in);
 }
 
+static Result _ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(Service *s, u32 in)
+{
+    return serviceMitmDispatchIn(s, 105, in);
+}
+
 static Result _ldnUserCommunicationOpenAccessPoint(Service *s)
 {
     return serviceMitmDispatch(s, 200);
@@ -192,6 +197,11 @@ Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc,
 Result ldnUserCommunicationSetWirelessControllerRestriction(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::WirelessControllerRestriction in)
 {
     return _ldnUserCommunicationSetWirelessControllerRestriction(&doc->s, in);
+}
+
+Result ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(LdnIUserLocalCommunicationInterface *doc, u32 in)
+{
+    return _ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(&doc->s, in);
 }
 
 Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *doc)

@@ -113,6 +113,15 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    // HOS: 13.1.0+
+    Result IUserLocalCommunicationService::SetBluetoothAudioDeviceConnectableMode(u32 in)
+    {
+        LogFormat("IUserLocalCommunicationService::SetBluetoothAudioDeviceConnectableMode value: %d", in);
+        Result rc = ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(m_srv.get(), in);
+        LogFormat("IUserLocalCommunicationService::SetBluetoothAudioDeviceConnectableMode rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::OpenAccessPoint()
     {
         LogFormat("IUserLocalCommunicationService::OpenAccessPoint");
