@@ -133,6 +133,11 @@ static Result _ldnUserCommunicationCloseAccessPoint(Service *s)
     return serviceMitmDispatch(s, 201);
 }
 
+static Result _ldnUserCommunicationCreateNetwork(Service *s, ams::mitm::ldn::CreateNetworkConfig data)
+{
+    return serviceMitmDispatchIn(s, 202, data);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -212,6 +217,11 @@ Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *
 Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationCloseAccessPoint(&doc->s);
+}
+
+Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data)
+{
+    return _ldnUserCommunicationCreateNetwork(&doc->s, data);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

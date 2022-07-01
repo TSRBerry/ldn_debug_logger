@@ -138,6 +138,16 @@ namespace ams::mitm::ldn
         return rc;
     }
 
+    Result IUserLocalCommunicationService::CreateNetwork(CreateNetworkConfig data)
+    {
+        LogFormat("IUserLocalCommunicationService::CreateNetwork ptr: %p size: %d", &data, sizeof(CreateNetworkConfig));
+        LogFormat("IUserLocalCommunicationService::CreateNetwork");
+        LogHex(&data, sizeof(CreateNetworkConfig));
+        Result rc = ldnUserCommunicationCreateNetwork(m_srv.get(), data);
+        LogFormat("IUserLocalCommunicationService::CreateNetwork rc: %#x", rc);
+        return rc;
+    }
+
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
@@ -186,12 +196,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::Disconnect()
     {
         LogFormat("IUserLocalCommunicationService::Disconnect");
-        return sm::mitm::ResultShouldForwardToSession();
-    }
-
-    Result IUserLocalCommunicationService::CreateNetwork(CreateNetworkConfig data)
-    {
-        LogFormat("IUserLocalCommunicationService::CreateNetwork ptr: %p size: %d", &data, sizeof(data));
         return sm::mitm::ResultShouldForwardToSession();
     }
 
