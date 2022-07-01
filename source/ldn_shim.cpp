@@ -152,6 +152,11 @@ static Result _ldnUserCommunicationDestroyNetwork(Service *s)
     return serviceMitmDispatch(s, 204);
 }
 
+static Result _ldnUserCommunicationReject(Service *s, LdnIpv4Address *addr)
+{
+    return serviceMitmDispatchIn(s, 205, addr);
+}
+
 static Result _ldnUserCommunicationInitialize(Service *s, u64 pid)
 {
     u64 pid_placeholder = 0;
@@ -246,6 +251,11 @@ Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterf
 Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationDestroyNetwork(&doc->s);
+}
+
+Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr)
+{
+    return _ldnUserCommunicationReject(&doc->s, addr);
 }
 
 Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)

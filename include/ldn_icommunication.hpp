@@ -67,6 +67,7 @@ namespace ams::mitm::ldn
         Result CreateNetwork(CreateNetworkConfig data);
         Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries);
         Result DestroyNetwork();
+        Result Reject(LdnIpv4Address addr);
         Result Initialize(const sf::ClientProcessId &client_process_id);
         Result Finalize();
         Result OpenStation();
@@ -76,7 +77,6 @@ namespace ams::mitm::ldn
         Result Connect(ConnectNetworkData dat, const NetworkInfo &data);
 
         /*nyi----------------------------------------------------------------------------*/
-        Result Reject();
         Result AddAcceptFilterEntry();
         Result ClearAcceptFilter();
         Result ConnectPrivate();
