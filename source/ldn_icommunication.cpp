@@ -84,7 +84,7 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::Scan(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter)
+    Result IUserLocalCommunicationService::Scan(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> outCount, LdnScanFilter filter, s16 channel)
     {
         LogFormat("IUserLocalCommunicationService::Scan outCount ptr: %p buffer ptr: %p", outCount.GetPointer(), buffer.GetPointer());
         LogFormat("IUserLocalCommunicationService::Scan channel value: %x filter ptr: %p", channel, &filter);
@@ -97,7 +97,7 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter)
+    Result IUserLocalCommunicationService::ScanPrivate(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> outCount, LdnScanFilter filter, s16 channel)
     {
         LogFormat("IUserLocalCommunicationService::ScanPrivate outCount ptr: %p buffer ptr: %p", outCount.GetPointer(), buffer.GetPointer());
         LogFormat("IUserLocalCommunicationService::ScanPrivate channel value: %x filter ptr: %x", channel, &filter);
