@@ -92,13 +92,17 @@ static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::l
 {
     const struct
     {
-        s16 channel;
+        // 0x60
         LdnScanFilter filter;
-    } in = {channel, filter};
+        // 0x06
+        u8 _pad[6];
+        // 0x02
+        s16 channel;
+    } in = {.filter = filter, .channel = channel};
     return serviceMitmDispatchInOut(s, 102, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
-                                        {out_buffer, out_buffer_size},
+                                        {out_buffer, out_buffer_size * sizeof(ams::mitm::ldn::NetworkInfo)},
                                     }, );
 }
 
@@ -106,13 +110,17 @@ static Result _ldnUserCommunicationScanPrivate(Service *s, s16 *total_out, ams::
 {
     const struct
     {
-        s16 channel;
+        // 0x60
         LdnScanFilter filter;
-    } in = {channel, filter};
+        // 0x06
+        u8 _pad[6];
+        // 0x02
+        s16 channel;
+    } in = {.filter = filter, .channel = channel};
     return serviceMitmDispatchInOut(s, 103, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
-                                        {out_buffer, out_buffer_size},
+                                        {out_buffer, out_buffer_size * sizeof(ams::mitm::ldn::NetworkInfo)},
                                     }, );
 }
 
