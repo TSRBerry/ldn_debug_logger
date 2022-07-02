@@ -61,8 +61,8 @@ namespace ams::mitm::ldn
         Result GetNetworkConfig(sf::Out<NetworkConfig> out);
         Result AttachStateChangeEvent(sf::Out<sf::CopyHandle> handle);
         Result GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<NodeLatestUpdate> pUpdates);
-        Result Scan(sf::Out<s16> count, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter);
-        Result ScanPrivate(sf::Out<s16> outCount, sf::OutAutoSelectArray<NetworkInfo> buffer, s16 channel, LdnScanFilter filter);
+        Result Scan(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> count, LdnScanFilter filter, s16 channel);
+        Result ScanPrivate(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> outCount, LdnScanFilter filter, s16 channel);
         Result SetWirelessControllerRestriction(WirelessControllerRestriction in);
         Result SetBluetoothAudioDeviceConnectableMode(u32 in);
         Result OpenAccessPoint();
