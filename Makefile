@@ -94,8 +94,6 @@ else
 	export APP_JSON := $(TOPDIR)/$(CONFIG_JSON)
 endif
 
-export KIP_JSON := $(TOPDIR)/kip.json
-
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
@@ -119,13 +117,9 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-all: $(OUTPUT).kip $(OUTPUT).nsp
+all: $(OUTPUT).nsp
 
 $(OUTPUT).nsp: $(OUTPUT).nso $(OUTPUT).npdm
-
-$(OUTPUT).kip: $(OUTPUT).elf $(KIP_JSON)
-	@elf2kip $< $(KIP_JSON) $@
-	@echo built ... $(notdir $@)
 
 $(OUTPUT).elf: $(OFILES)
 
