@@ -62,12 +62,13 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result IUserLocalCommunicationService::AttachStateChangeEvent(sf::Out<sf::CopyHandle> handle)
+    Result IUserLocalCommunicationService::AttachStateChangeEvent(sf::Out<sf::CopyHandle> out_handle)
     {
+        os::NativeHandle handle;
         LogFormat("IUserLocalCommunicationService::AttachStateChangeEvent");
-        Result rc = ldnUserCommunicationAttachStateChangeEvent(m_srv.get(), this->state_event);
+        Result rc = ldnUserCommunicationAttachStateChangeEvent(m_srv.get(), &handle);
         LogFormat("IUserLocalCommunicationService::AttachStateChangeEvent rc: %x", rc);
-        handle.SetValue(this->state_event->GetReadableHandle(), true);
+        out_handle.SetValue(handle, false);
         return rc;
     }
 
@@ -268,11 +269,6 @@ namespace ams::mitm::ldn
     Result IUserLocalCommunicationService::Initialize(const sf::ClientProcessId &client_process_id)
     {
         LogFormat("IUserLocalCommunicationService::Initialize pid: %" PRIu64, client_process_id);
-        if (this->state_event == nullptr)
-        {
-            // ClearMode, inter_process
-            this->state_event = new os::SystemEvent(::ams::os::EventClearMode_AutoClear, true);
-        }
         Result rc = ldnUserCommunicationInitialize(m_srv.get(), static_cast<u64>(client_process_id.GetValue()));
         LogFormat("IUserLocalCommunicationService::Initialize rc: %#x", rc);
         return rc;

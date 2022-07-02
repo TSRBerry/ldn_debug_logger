@@ -7,7 +7,8 @@ Forked from [ldn_mitm](https://github.com/spacemeowx2/ldn_mitm).
 ## Progress
 
 - [x] Implement all IUserLocalCommunicationService shims
-- [ ] Don't crash the console immediately
+- [x] Don't crash the console immediately
+- [ ] Fix broken functions
 - [ ] Log everything in a nice format
 
 ## References

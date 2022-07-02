@@ -71,10 +71,11 @@ static Result _ldnUserCommunicationGetNetworkConfig(Service *s, ams::mitm::ldn::
     return serviceMitmDispatchOut(s, 5, out);
 }
 
-static Result _ldnUserCommunicationAttachStateChangeEvent(Service *s, ams::os::NativeHandle handle)
+static Result _ldnUserCommunicationAttachStateChangeEvent(Service *s, Handle *handle)
 {
     return serviceMitmDispatch(s, 100,
-                               .out_handles = &handle, );
+                               .out_handle_attrs = {SfOutHandleAttr_HipcCopy},
+                               .out_handles = handle, );
 }
 
 static Result _ldnUserCommunicationGetNetworkInfoLatestUpdate(Service *s, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
@@ -263,9 +264,9 @@ Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface 
     return _ldnUserCommunicationGetNetworkConfig(&doc->s, out);
 }
 
-Result ldnUserCommunicationAttachStateChangeEvent(LdnIUserLocalCommunicationInterface *doc, ams::os::SystemEvent *handle)
+Result ldnUserCommunicationAttachStateChangeEvent(LdnIUserLocalCommunicationInterface *doc, Handle *handle)
 {
-    return _ldnUserCommunicationAttachStateChangeEvent(&doc->s, handle->GetReadableHandle());
+    return _ldnUserCommunicationAttachStateChangeEvent(&doc->s, handle);
 }
 
 Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
