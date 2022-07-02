@@ -1,4 +1,7 @@
 /*
+ * Copyright (c) 2022 TSRBerry
+ *  -> set default logging_enabled to true
+ *  -> renamed log files stored on the sd card
  * Copyright (c) 2018 Atmosphère-NX
  *
  * This program is free software; you can redistribute it and/or modify it

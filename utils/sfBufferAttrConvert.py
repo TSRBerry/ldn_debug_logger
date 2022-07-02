@@ -1,6 +1,7 @@
 from enum import IntFlag
 import argparse
 
+# Source: https://github.com/switchbrew/libnx/blob/62755bebe0ef0e90ae4918a96fe5334da64bec94/nx/include/switch/sf/service.h#L20-L29
 class SfBufferAttrs(IntFlag):
     SfBufferAttr_In                             = 0
     SfBufferAttr_Out                            = 1
