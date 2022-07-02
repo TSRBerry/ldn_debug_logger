@@ -32,10 +32,9 @@ namespace ams::mitm::ldn
     {
     private:
         std::unique_ptr<::LdnIUserLocalCommunicationInterface> m_srv;
-        os::SystemEvent *state_event;
 
     public:
-        IUserLocalCommunicationService(std::unique_ptr<::LdnIUserLocalCommunicationInterface> s) : m_srv(std::move(s)), state_event(nullptr)
+        IUserLocalCommunicationService(std::unique_ptr<::LdnIUserLocalCommunicationInterface> s) : m_srv(std::move(s))
         {
             LogFormat("IUserLocalCommunicationService");
             /* ... */
@@ -44,11 +43,6 @@ namespace ams::mitm::ldn
         ~IUserLocalCommunicationService()
         {
             LogFormat("~IUserLocalCommunicationService");
-            if (this->state_event != nullptr)
-            {
-                delete this->state_event;
-                this->state_event = nullptr;
-            }
             ldnIUserLocalCommunicationInterfaceClose(m_srv.get());
         };
 
