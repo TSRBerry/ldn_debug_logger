@@ -24,7 +24,7 @@ namespace ams
 {
     namespace
     {
-        constexpr size_t MallocBufferSize = 1_MB;
+        constexpr size_t MallocBufferSize = 32_KB;
         alignas(os::MemoryPageSize) constinit u8 g_malloc_buffer[MallocBufferSize];
     }
 
@@ -32,8 +32,7 @@ namespace ams
     {
         namespace
         {
-
-            struct WlanLclMitmManagerOptions
+            struct ServerOptions
             {
                 static constexpr size_t PointerBufferSize = 0x1000;
                 static constexpr size_t MaxDomains = 0x10;
@@ -42,7 +41,9 @@ namespace ams
                 static constexpr bool CanManageMitmServers = true;
             };
 
-            class ServerManager final : public sf::hipc::ServerManager<1, WlanLclMitmManagerOptions, 3>
+            constexpr size_t MaxSessions = 61;
+
+            class ServerManager final : public sf::hipc::ServerManager<1, ServerOptions, MaxSessions>
             {
             private:
                 virtual ams::Result OnNeedsToAccept(int port_index, Server *server) override;
@@ -57,7 +58,7 @@ namespace ams
                 std::shared_ptr<::Service> fsrv;
                 sm::MitmProcessInfo client_info;
                 server->AcknowledgeMitmSession(std::addressof(fsrv), std::addressof(client_info));
-                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitMService, mitm::wlan::WlanLclMitMService>(decltype(fsrv)(fsrv), client_info), fsrv);
+                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitmInterface, mitm::wlan::WlanLclMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
             }
 
         }
@@ -103,8 +104,7 @@ namespace ams
     {
         LogFormat("Main");
         constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("wlan:lcl");
-        // sf::hipc::ServerManager<2, WlanMitmManagerOptions, 3> server_manager;
-        R_ABORT_UNLESS((mitm::g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitMService>(0, MitmServiceName)));
+        R_ABORT_UNLESS((mitm::g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
         LogFormat("Registered");
 
         mitm::g_server_manager.LoopProcess();
