@@ -12,17 +12,12 @@
 namespace ams::mitm::wlan
 {
 
-    class WlanLclMitMService : public sf::MitmServiceImplBase
+    class WlanLclMitmService : public sf::MitmServiceImplBase
     {
-    private:
-        using RedirectOnlyLocationResolverFactory = sf::ObjectFactory<sf::StdAllocationPolicy<std::allocator>>;
-
     public:
         using MitmServiceImplBase::MitmServiceImplBase;
 
     public:
-        WlanLclMitMService(std::shared_ptr<::Service> &&s, const sm::MitmProcessInfo &c);
-
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
             LogFormat("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
@@ -84,6 +79,6 @@ namespace ams::mitm::wlan
         Result Cmd50();
         Result Cmd51(sf::Out<u32> out);
     };
-    static_assert(ams::mitm::wlan::IsIWlanLclMitMService<WlanLclMitMService>);
+    static_assert(ams::mitm::wlan::IsIWlanLclMitmInterface<WlanLclMitmService>);
 
 }

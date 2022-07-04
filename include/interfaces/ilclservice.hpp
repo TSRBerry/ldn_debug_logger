@@ -9,7 +9,7 @@
 // https://switchbrew.org/wiki/WLAN_services#wlan:lcl
 // Labels could be wrong since they moved around?
 
-#define AMS_IWLAN_LCL_MITM_SERVICE(C, H)                                                                                                                                              \
+#define AMS_WLAN_LCL_INTERFACE_INFO(C, H)                                                                                                                                             \
     AMS_SF_METHOD_INFO(C, H, 0, Result, OpenMasterMode, (u32 in), (in))                                                                                                               \
     AMS_SF_METHOD_INFO(C, H, 1, Result, CloseMasterMode, (u32 in), (in))                                                                                                              \
     AMS_SF_METHOD_INFO(C, H, 2, Result, OpenClientMode, (ams::sf::Out<ams::mitm::wlan::OpenClientModeData> out), (out))                                                               \
@@ -63,4 +63,4 @@
     AMS_SF_METHOD_INFO(C, H, 50, Result, Cmd50, (), ())                                                                                                                               \
     AMS_SF_METHOD_INFO(C, H, 51, Result, Cmd51, (ams::sf::Out<u32> out), (out))
 
-AMS_SF_DEFINE_MITM_INTERFACE(ams::mitm::wlan, IWlanLclMitMService, AMS_IWLAN_LCL_MITM_SERVICE, 0x4F84FB56)
+AMS_SF_DEFINE_MITM_INTERFACE(ams::mitm::wlan, IWlanLclMitmInterface, AMS_WLAN_LCL_INTERFACE_INFO, 0x4F84FB56)
