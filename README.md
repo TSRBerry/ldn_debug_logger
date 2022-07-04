@@ -1,6 +1,6 @@
 # ldn_logger
 
-A mitm sysmodule to log all arguments and objects going through LDN.
+A mitm sysmodule to log all arguments and objects going through `ldn:u`.
 
 Forked from [ldn_mitm](https://github.com/spacemeowx2/ldn_mitm).
 
