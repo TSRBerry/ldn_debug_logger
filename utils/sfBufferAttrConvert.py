@@ -18,12 +18,20 @@ class SfBufferAttrs(IntFlag):
 
 
 def hextype(string) -> int:
-    return int(string, 16)
+    if string.startswith("0x"):
+        return int(string, 16)
+    else:
+        return int(string)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("type_num", type=hextype, nargs="+", help="hex value(s) that should be converted")
 args = parser.parse_args()
 
+first_num = True
 for type_num in args.type_num:
+    if not first_num:
+        print()
+    else:
+        first_num = False
     print(f"{hex(type_num)} -> {f'{type_num:0>8b}'}")
-    print(f"{{{' | '.join([x.name for x in SfBufferAttrs.find_attrs(type_num)])}}}\n")
+    print(f"{{{' | '.join([x.name for x in SfBufferAttrs.find_attrs(type_num)])}}}")
