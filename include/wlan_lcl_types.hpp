@@ -57,17 +57,7 @@ namespace ams::mitm::wlan
         u8 unknown[0x10];
     };
 
-    struct RxEntryDataBuffer
-    {
-        u8 unknown[0x10];
-    };
-
-    struct ScanResultDataBuffer
-    {
-        u8 unknown[0x10];
-    };
-
-    struct DeleteSubtypeFromRxEntryForActionFrameDataBuffer
+    struct DeleteEthertypeFromRxEntryData
     {
         u8 data[0x10];
     };
