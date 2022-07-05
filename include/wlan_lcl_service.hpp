@@ -21,7 +21,7 @@ namespace ams::mitm::wlan
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
             LogFormat("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
-            return true;
+            return client_info.program_id == ncm::SystemProgramId::Ldn;
         }
 
     public:
