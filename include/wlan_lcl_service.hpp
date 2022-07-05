@@ -5,7 +5,7 @@
 #include <stratosphere.hpp>
 #include <switch.h>
 
-#include "debug.hpp"
+#include "logging.hpp"
 #include "interfaces/ilclservice.hpp"
 #include "wlan_lcl_shim.hpp"
 
@@ -20,7 +20,7 @@ namespace ams::mitm::wlan
     public:
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
-            LogFormat("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
+            log::DEBUG_LOG("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
             return client_info.program_id == ncm::SystemProgramId::Ldn;
         }
 

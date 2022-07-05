@@ -108,6 +108,38 @@ namespace ams
                     }
                 }
             }
+
+            alignas(0x40) constinit u8 g_heap_memory[128_KB];
+            constinit lmem::HeapHandle g_heap_handle;
+            constinit bool g_heap_initialized;
+            constinit os::SdkMutex g_heap_init_mutex;
+
+            lmem::HeapHandle GetHeapHandle()
+            {
+                if (AMS_UNLIKELY(!g_heap_initialized))
+                {
+                    std::scoped_lock lk(g_heap_init_mutex);
+
+                    if (AMS_LIKELY(!g_heap_initialized))
+                    {
+                        g_heap_handle = lmem::CreateExpHeap(g_heap_memory, sizeof(g_heap_memory), lmem::CreateOption_ThreadSafe);
+                        g_heap_initialized = true;
+                    }
+                }
+
+                return g_heap_handle;
+            }
+
+            void *Allocate(size_t size)
+            {
+                return lmem::AllocateFromExpHeap(GetHeapHandle(), size);
+            }
+
+            void Deallocate(void *p, size_t size)
+            {
+                AMS_UNUSED(size);
+                return lmem::FreeToExpHeap(GetHeapHandle(), p);
+            }
         }
 
     }
@@ -122,10 +154,11 @@ namespace ams
 
             /* Initialize fs. */
             fs::InitializeForSystem();
+            fs::SetAllocator(mitm::Allocate, mitm::Deallocate);
             fs::SetEnabledAutoAbort(false);
 
             /* Mount the SD card. */
-            R_ABORT_UNLESS(fsdevMountSdmc());
+            R_ABORT_UNLESS(fs::MountSdCard("sdmc"));
         }
 
         void FinalizeSystemModule()
@@ -149,11 +182,52 @@ namespace ams
 
     void Main()
     {
-        LogFormat("Main");
+        R_ABORT_UNLESS(log::Initialize());
+        log::DEBUG_LOG("Main");
         constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("wlan:lcl");
         R_ABORT_UNLESS((mitm::g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
-        LogFormat("Registered");
+        log::DEBUG_LOG("Registered");
 
         mitm::ProcessForServerOnAllThreads();
     }
+}
+
+void *operator new(size_t size)
+{
+    return ams::mitm::Allocate(size);
+}
+
+void *operator new(size_t size, const std::nothrow_t &)
+{
+    return ams::mitm::Allocate(size);
+}
+
+void operator delete(void *p)
+{
+    return ams::mitm::Deallocate(p, 0);
+}
+
+void operator delete(void *p, size_t size)
+{
+    return ams::mitm::Deallocate(p, size);
+}
+
+void *operator new[](size_t size)
+{
+    return ams::mitm::Allocate(size);
+}
+
+void *operator new[](size_t size, const std::nothrow_t &)
+{
+    return ams::mitm::Allocate(size);
+}
+
+void operator delete[](void *p)
+{
+    return ams::mitm::Deallocate(p, 0);
+}
+
+void operator delete[](void *p, size_t size)
+{
+    return ams::mitm::Deallocate(p, size);
 }
