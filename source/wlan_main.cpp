@@ -61,6 +61,53 @@ namespace ams
                 return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitmInterface, mitm::wlan::WlanLclMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
             }
 
+            const s32 ThreadPriority = 3;
+            const size_t TotalThreads = 4;
+            const size_t NumExtraThreads = TotalThreads - 1;
+            const size_t ThreadStackSize = 0x4000;
+
+            alignas(os::MemoryPageSize) u8 g_extra_thread_stacks[NumExtraThreads][ThreadStackSize];
+            os::ThreadType g_extra_threads[NumExtraThreads];
+
+            void LoopServerThread(void *)
+            {
+                g_server_manager.LoopProcess();
+            }
+
+            void ProcessForServerOnAllThreads()
+            {
+                /* Initialize threads. */
+                if constexpr (NumExtraThreads > 0)
+                {
+                    const s32 priority = os::GetThreadCurrentPriority(os::GetCurrentThread());
+                    for (size_t i = 0; i < NumExtraThreads; i++)
+                    {
+                        R_ABORT_UNLESS(os::CreateThread(g_extra_threads + i, LoopServerThread, nullptr, g_extra_thread_stacks[i], ThreadStackSize, priority));
+                        os::SetThreadNamePointer(g_extra_threads + i, "wlan::LclMitmThread");
+                    }
+                }
+
+                /* Start extra threads. */
+                if constexpr (NumExtraThreads > 0)
+                {
+                    for (size_t i = 0; i < NumExtraThreads; i++)
+                    {
+                        os::StartThread(g_extra_threads + i);
+                    }
+                }
+
+                /* Loop this thread. */
+                LoopServerThread(nullptr);
+
+                /* Wait for extra threads to finish. */
+                if constexpr (NumExtraThreads > 0)
+                {
+                    for (size_t i = 0; i < NumExtraThreads; i++)
+                    {
+                        os::WaitThread(g_extra_threads + i);
+                    }
+                }
+            }
         }
 
     }
@@ -107,6 +154,6 @@ namespace ams
         R_ABORT_UNLESS((mitm::g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
         LogFormat("Registered");
 
-        mitm::g_server_manager.LoopProcess();
+        mitm::ProcessForServerOnAllThreads();
     }
 }
