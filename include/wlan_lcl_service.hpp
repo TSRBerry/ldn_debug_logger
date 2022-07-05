@@ -39,10 +39,10 @@ namespace ams::mitm::wlan
         Result StopScan();
         Result Connect(ConnectData in);
         Result CancelConnect(u32 in);
-        Result Join(u32 in, sf::Out<sf::CopyHandle> handle);
+        Result Join(u32 in, sf::Out<sf::CopyHandle> out_handle);
         Result CancelJoin(sf::Out<CancelJoinData> out);
         Result Disconnect(sf::OutMapAliasBuffer data);
-        Result SetBeaconLostCount(sf::Out<sf::CopyHandle> handle);
+        Result SetBeaconLostCount(sf::Out<sf::CopyHandle> out_handle);
         Result GetSystemEvent(sf::OutMapAliasBuffer data);
         Result GetConnectionStatus(sf::Out<u32> out);
         Result GetClientStatus(sf::Out<u32> out, sf::OutPointerArray<ClientStatusData> out_data);
