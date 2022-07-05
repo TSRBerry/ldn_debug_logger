@@ -22,6 +22,7 @@ In particular I want to thank the following people:
 - [@misson20000](https://github.com/misson20000) for creating [twili](https://github.com/misson20000/twili) and [ilia](https://github.com/misson20000/ilia) which I used for debugging wlan.
 - [@yellows8](https://github.com/yellows8) for creating the [Nintendo System Update reports](https://yls8.mtheall.com/) website, which I used a lot during reverse engineering and creating this sysmodule.
 - [SwitchBrew](https://switchbrew.org/wiki/Main_Page) for documenting [WLAN services](https://switchbrew.org/wiki/WLAN_services) which gave me an inital understanding of the services hosted by the wlan sysmodule.
+- [@Lenrow](https://github.com/Lenrow) for enduring me only talking about this topic for the last few days.
 
 
 You might also want to take a look at [ldn_logger](https://github.com/TSRBerry/ldn_logger) which was the first mitm logging module I created.
