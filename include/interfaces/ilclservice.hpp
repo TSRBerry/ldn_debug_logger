@@ -9,6 +9,9 @@
 // https://switchbrew.org/wiki/WLAN_services#wlan:lcl
 // Labels could be wrong since they moved around?
 
+// NOTE: Cmd 48 supported firmwares: 4.0.0-8.1.0 and 10.0.0+
+// NOTE: Cmd 49-52 different for the following firmware versions: [6.0.0-8.1.0] and [13.0.0+]
+
 #define AMS_WLAN_LCL_INTERFACE_INFO(C, H)                                                                                                                                             \
     AMS_SF_METHOD_INFO(C, H, 0, Result, OpenMasterMode, (u32 in), (in))                                                                                                               \
     AMS_SF_METHOD_INFO(C, H, 1, Result, CloseMasterMode, (u32 in), (in))                                                                                                              \
@@ -55,12 +58,12 @@
     AMS_SF_METHOD_INFO(C, H, 42, Result, CancelGetActionFrame, (u8 in), (in))                                                                                                         \
     AMS_SF_METHOD_INFO(C, H, 43, Result, GetRssi, (ams::mitm::wlan::GetRssiData in), (in))                                                                                            \
     AMS_SF_METHOD_INFO(C, H, 44, Result, SetMaxAssociationNumber, (ams::mitm::wlan::UnknownNetworkData in), (in))                                                                     \
-    AMS_SF_METHOD_INFO(C, H, 45, Result, Cmd45, (ams::mitm::wlan::Cmd45Data in, const ams::sf::InMapAliasBuffer &in_buffer), (in, in_buffer))                                         \
-    AMS_SF_METHOD_INFO(C, H, 46, Result, Cmd46, (u8 in), (in))                                                                                                                        \
-    AMS_SF_METHOD_INFO(C, H, 47, Result, Cmd47, (ams::mitm::wlan::Cmd47Data in, ams::sf::Out<u32> out), (in, out))                                                                    \
-    AMS_SF_METHOD_INFO(C, H, 48, Result, Cmd48, (u32 in), (in))                                                                                                                       \
-    AMS_SF_METHOD_INFO(C, H, 49, Result, Cmd49, (u32 in), (in))                                                                                                                       \
-    AMS_SF_METHOD_INFO(C, H, 50, Result, Cmd50, (), ())                                                                                                                               \
-    AMS_SF_METHOD_INFO(C, H, 51, Result, Cmd51, (ams::sf::Out<u32> out), (out))
+    AMS_SF_METHOD_INFO(C, H, 45, Result, Cmd45, (ams::mitm::wlan::Cmd45Data in, const ams::sf::InMapAliasBuffer &in_buffer), (in, in_buffer), hos::Version_4_0_0)                     \
+    AMS_SF_METHOD_INFO(C, H, 46, Result, Cmd46, (u8 in), (in), hos::Version_4_0_0)                                                                                                    \
+    AMS_SF_METHOD_INFO(C, H, 47, Result, Cmd47, (ams::mitm::wlan::Cmd47Data in, ams::sf::Out<u32> out), (in, out), hos::Version_4_0_0)                                                \
+    AMS_SF_METHOD_INFO(C, H, 48, Result, Cmd48, (u32 in), (in), hos::Version_10_0_0)                                                                                                  \
+    AMS_SF_METHOD_INFO(C, H, 49, Result, Cmd49, (u32 in), (in), hos::Version_13_0_0)                                                                                                  \
+    AMS_SF_METHOD_INFO(C, H, 50, Result, Cmd50, (), (), hos::Version_13_0_0)                                                                                                          \
+    AMS_SF_METHOD_INFO(C, H, 51, Result, Cmd51, (ams::sf::Out<u32> out), (out), hos::Version_13_0_0)
 
 AMS_SF_DEFINE_MITM_INTERFACE(ams::mitm::wlan, IWlanLclMitmInterface, AMS_WLAN_LCL_INTERFACE_INFO, 0x4F84FB56)
