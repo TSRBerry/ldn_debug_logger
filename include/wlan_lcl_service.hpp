@@ -31,7 +31,7 @@ namespace ams::mitm::wlan
         Result OpenClientMode(sf::Out<OpenClientModeData> out);
         Result CloseClientMode(UnknownNetworkData in);
         Result OpenSpectatorMode();
-        Result CloseSpectatorMode(const sf::InMapAliasArray<SpectatorModeData> &data);
+        Result CloseSpectatorMode(const sf::InMapAliasArray<u8> &data);
         Result GetMacAddress();
         Result CreateBss(UnknownNetworkData in);
         Result DestroyBss();
@@ -45,12 +45,12 @@ namespace ams::mitm::wlan
         Result SetBeaconLostCount(sf::Out<sf::CopyHandle> out_handle);
         Result GetSystemEvent(sf::OutMapAliasBuffer data);
         Result GetConnectionStatus(sf::Out<u32> out);
-        Result GetClientStatus(sf::Out<u32> out, sf::OutPointerArray<ClientStatusData> out_data);
+        Result GetClientStatus(sf::Out<u32> out, sf::OutPointerBuffer out_data);
         Result GetBssIndicationEvent(u32 in, sf::Out<u32> out, const sf::InBuffer &in_buffer);
         Result GetBssIndicationInfo(u32 in);
         Result GetState(const sf::InBuffer &in_buffer);
         Result GetAllowedChannels(u32 in);
-        Result AddIe(u32 in, sf::Out<u32> out, const sf::InPointerArray<IeData> &in_array);
+        Result AddIe(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_array);
         Result DeleteIe(u32 in);
         Result PutFrameRaw(u64 in);
         Result CancelGetFrame(u16 in, sf::Out<u32> out);

@@ -47,12 +47,12 @@ Result wlanLocalManagerOpenSpectatorMode(Service *s)
     return serviceMitmDispatch(s, 4);
 }
 
-Result wlanLocalManagerCloseSpectatorMode(Service *s, const ams::mitm::wlan::SpectatorModeData *data)
+Result wlanLocalManagerCloseSpectatorMode(Service *s, const u8 *data, size_t data_size)
 {
     return serviceMitmDispatch(s, 5,
                                .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias | SfBufferAttr_FixedSize},
                                .buffers = {
-                                   {data, sizeof(ams::mitm::wlan::SpectatorModeData)},
+                                   {data, data_size},
                                }, );
 }
 
@@ -133,12 +133,12 @@ Result wlanLocalManagerGetConnectionStatus(Service *s, u32 *out)
     return serviceMitmDispatchOut(s, 18, out);
 }
 
-Result wlanLocalManagerGetClientStatus(Service *s, u32 *out, ams::mitm::wlan::ClientStatusData *out_data)
+Result wlanLocalManagerGetClientStatus(Service *s, u32 *out, void *out_data, size_t out_data_size)
 {
     return serviceMitmDispatchOut(s, 19, out,
                                   .buffer_attrs = {SfBufferAttr_Out | SfBufferAttr_HipcPointer},
                                   .buffers = {
-                                      {out_data, sizeof(ams::mitm::wlan::ClientStatusData)},
+                                      {out_data, out_data_size},
                                   }, );
 }
 
@@ -170,11 +170,13 @@ Result wlanLocalManagerGetAllowedChannels(Service *s, u32 in)
     return serviceMitmDispatchIn(s, 23, in);
 }
 
-Result wlanLocalManagerAddIe(Service *s, u32 in, u32 *out, const ams::mitm::wlan::IeData *in_array, size_t in_array_size)
+Result wlanLocalManagerAddIe(Service *s, u32 in, u32 *out, const void *in_array, size_t in_array_size)
 {
     return serviceMitmDispatchInOut(s, 24, in, out,
                                     .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer},
-                                    .buffers = {{in_array, sizeof(ams::mitm::wlan::IeData) * in_array_size}});
+                                    .buffers = {
+                                        {in_array, in_array_size},
+                                    }, );
 }
 
 Result wlanLocalManagerDeleteIe(Service *s, u32 in)

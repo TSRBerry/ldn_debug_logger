@@ -65,11 +65,11 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::CloseSpectatorMode(const sf::InMapAliasArray<SpectatorModeData> &data)
+    Result WlanLclMitmService::CloseSpectatorMode(const sf::InMapAliasArray<u8> &data)
     {
         log::DEBUG_LOG("CloseSpectatorMode SpectatorModeData ptr: %p", data.GetPointer());
         log::DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "CloseSpectatorMode SpectatorModeData");
-        Result rc = wlanLocalManagerCloseSpectatorMode(m_forward_service.get(), data.GetPointer());
+        Result rc = wlanLocalManagerCloseSpectatorMode(m_forward_service.get(), data.GetPointer(), data.GetSize());
         log::DEBUG_LOG("CloseSpectatorMode rc: %#x", rc);
         return rc;
     }
@@ -186,13 +186,13 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::GetClientStatus(sf::Out<u32> out, sf::OutPointerArray<ClientStatusData> out_data)
+    Result WlanLclMitmService::GetClientStatus(sf::Out<u32> out, sf::OutPointerBuffer out_data)
     {
         log::DEBUG_LOG("GetClientStatus out ptr: %p out_data ptr: %p", out.GetPointer(), out_data.GetPointer());
-        Result rc = wlanLocalManagerGetClientStatus(m_forward_service.get(), out.GetPointer(), out_data.GetPointer());
+        Result rc = wlanLocalManagerGetClientStatus(m_forward_service.get(), out.GetPointer(), out_data.GetPointer(), out_data.GetSize());
         log::DEBUG_LOG("GetClientStatus rc: %#x", rc);
         log::DEBUG_LOG("GetClientStatus out value: %x", out);
-        log::DEBUG_DATA_DUMP(out_data.GetPointer(), sizeof(ClientStatusData), "GetClientStatus out_data[%d]", out_data.GetSize());
+        log::DEBUG_DATA_DUMP(out_data.GetPointer(), out_data.GetSize(), "GetClientStatus out_data[%d]", out_data.GetSize());
         return rc;
     }
 
@@ -230,14 +230,15 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::AddIe(u32 in, sf::Out<u32> out, const sf::InPointerArray<IeData> &in_array)
+    Result WlanLclMitmService::AddIe(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_array)
     {
         log::DEBUG_LOG("AddIe in value: %x out ptr: %p", in, out.GetPointer());
         log::DEBUG_DATA_DUMP(in_array.GetPointer(), in_array.GetSize(), "AddIe in_array");
         Result rc = wlanLocalManagerAddIe(m_forward_service.get(), in, out.GetPointer(), in_array.GetPointer(), in_array.GetSize());
-        log::DEBUG_LOG("AddIe out value: %x", out.GetValue());
         log::DEBUG_LOG("AddIe rc: %#x", rc);
+        log::DEBUG_LOG("AddIe out value: %x", out.GetValue());
         return rc;
+        // return sm::mitm::ResultShouldForwardToSession();
     }
 
     Result WlanLclMitmService::DeleteIe(u32 in)
@@ -321,10 +322,11 @@ namespace ams::mitm::wlan
     {
         log::DEBUG_LOG("GetScanResult in value: %x out ptr: %p", in, out.GetPointer());
         log::DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "GetScanResult in_buffer");
-        Result rc = wlanLocalManagerGetScanResult(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
-        log::DEBUG_LOG("GetScanResult rc: %#x", rc);
-        log::DEBUG_LOG("GetScanResult out value: %x", out.GetValue());
-        return rc;
+        // Result rc = wlanLocalManagerGetScanResult(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
+        // log::DEBUG_LOG("GetScanResult rc: %#x", rc);
+        // log::DEBUG_LOG("GetScanResult out value: %x", out.GetValue());
+        // return rc;
+        return sm::mitm::ResultShouldForwardToSession();
     }
 
     Result WlanLclMitmService::PutActionFrameOneShot(u32 in)

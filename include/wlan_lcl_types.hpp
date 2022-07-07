@@ -12,11 +12,6 @@ namespace ams::mitm::wlan
         u8 data[0x6];
     };
 
-    struct SpectatorModeData
-    {
-        u8 unknown[0x10];
-    };
-
     struct UnknownNetworkData
     {
         u8 data[0x84];
@@ -32,30 +27,15 @@ namespace ams::mitm::wlan
         u8 data[0x3C];
     };
 
-    struct SystemEventDataBuffer
-    {
-        u8 unknown[0x10];
-    };
+    // struct ClientStatusData
+    // {
+    //     u8 unknown[0x10];
+    // };
 
-    struct ClientStatusData
-    {
-        u8 unknown[0x10];
-    };
-
-    struct BssIndicationEventDataBuffer
-    {
-        u8 unknown[0x10];
-    };
-
-    struct StateDataBuffer
-    {
-        u8 unknown[0x10];
-    };
-
-    struct IeData
-    {
-        u8 unknown[0x10];
-    };
+    // struct IeData
+    // {
+    //     u8 unknown[0x10];
+    // };
 
     struct DeleteEthertypeFromRxEntryData
     {

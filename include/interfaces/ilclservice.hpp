@@ -18,7 +18,7 @@
     AMS_SF_METHOD_INFO(C, H, 2, Result, OpenClientMode, (ams::sf::Out<ams::mitm::wlan::OpenClientModeData> out), (out))                                                               \
     AMS_SF_METHOD_INFO(C, H, 3, Result, CloseClientMode, (ams::mitm::wlan::UnknownNetworkData in), (in))                                                                              \
     AMS_SF_METHOD_INFO(C, H, 4, Result, OpenSpectatorMode, (), ())                                                                                                                    \
-    AMS_SF_METHOD_INFO(C, H, 5, Result, CloseSpectatorMode, (const ams::sf::InMapAliasArray<ams::mitm::wlan::SpectatorModeData> &data), (data))                                       \
+    AMS_SF_METHOD_INFO(C, H, 5, Result, CloseSpectatorMode, (const ams::sf::InMapAliasArray<u8> &data), (data))                                                                       \
     AMS_SF_METHOD_INFO(C, H, 6, Result, GetMacAddress, (), ())                                                                                                                        \
     AMS_SF_METHOD_INFO(C, H, 7, Result, CreateBss, (ams::mitm::wlan::UnknownNetworkData in), (in))                                                                                    \
     AMS_SF_METHOD_INFO(C, H, 8, Result, DestroyBss, (), ())                                                                                                                           \
@@ -32,12 +32,12 @@
     AMS_SF_METHOD_INFO(C, H, 16, Result, SetBeaconLostCount, (ams::sf::Out<ams::sf::CopyHandle> handle), (handle))                                                                    \
     AMS_SF_METHOD_INFO(C, H, 17, Result, GetSystemEvent, (ams::sf::OutMapAliasBuffer data), (data))                                                                                   \
     AMS_SF_METHOD_INFO(C, H, 18, Result, GetConnectionStatus, (ams::sf::Out<u32> out), (out))                                                                                         \
-    AMS_SF_METHOD_INFO(C, H, 19, Result, GetClientStatus, (ams::sf::Out<u32> out, ams::sf::OutPointerArray<ams::mitm::wlan::ClientStatusData> out_data), (out, out_data))             \
+    AMS_SF_METHOD_INFO(C, H, 19, Result, GetClientStatus, (ams::sf::Out<u32> out, ams::sf::OutPointerBuffer out_data), (out, out_data))                                               \
     AMS_SF_METHOD_INFO(C, H, 20, Result, GetBssIndicationEvent, (u32 in, ams::sf::Out<u32> out, const ams::sf::InBuffer &in_buffer), (in, out, in_buffer))                            \
     AMS_SF_METHOD_INFO(C, H, 21, Result, GetBssIndicationInfo, (u32 in), (in))                                                                                                        \
     AMS_SF_METHOD_INFO(C, H, 22, Result, GetState, (const ams::sf::InBuffer &in_buffer), (in_buffer))                                                                                 \
     AMS_SF_METHOD_INFO(C, H, 23, Result, GetAllowedChannels, (u32 in), (in))                                                                                                          \
-    AMS_SF_METHOD_INFO(C, H, 24, Result, AddIe, (u32 in, ams::sf::Out<u32> out, const ams::sf::InPointerArray<ams::mitm::wlan::IeData> &in_array), (in, out, in_array))               \
+    AMS_SF_METHOD_INFO(C, H, 24, Result, AddIe, (u32 in, ams::sf::Out<u32> out, const ams::sf::InPointerBuffer &in_array), (in, out, in_array))                                       \
     AMS_SF_METHOD_INFO(C, H, 25, Result, DeleteIe, (u32 in), (in))                                                                                                                    \
     AMS_SF_METHOD_INFO(C, H, 26, Result, PutFrameRaw, (u64 in), (in))                                                                                                                 \
     AMS_SF_METHOD_INFO(C, H, 27, Result, CancelGetFrame, (u16 in, ams::sf::Out<u32> out), (in, out))                                                                                  \
