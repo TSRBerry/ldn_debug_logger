@@ -9,3 +9,6 @@ build/
 *.npdm
 *.nso
 *.nsp
+
+out/
+dist/
