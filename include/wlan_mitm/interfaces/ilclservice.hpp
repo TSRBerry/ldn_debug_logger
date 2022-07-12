@@ -4,7 +4,7 @@
 
 #include <stratosphere.hpp>
 
-#include "wlan_lcl_types.hpp"
+#include "../wlan_lcl_types.hpp"
 
 // https://switchbrew.org/wiki/WLAN_services#wlan:lcl
 // Labels could be wrong since they moved around?

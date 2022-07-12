@@ -20,7 +20,7 @@
 #include <switch.h>
 
 #include "logging.hpp"
-#include "wlan_lcl_service.hpp"
+#include "wlan_mitm/wlan_lcl_service.hpp"
 
 namespace ams::mitm::wlan
 {
