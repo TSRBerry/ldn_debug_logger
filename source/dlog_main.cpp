@@ -1,7 +1,5 @@
 /*
  * Copyright (c) TSRBerry
- *  -> removed socket initialization
- *  -> adapted for wlan sysmodule
  * Copyright (c) Atmosphère-NX
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -18,7 +16,8 @@
  */
 #include <stratosphere.hpp>
 
-#include "wlan_lcl_service.hpp"
+#include "logging.hpp"
+#include "dlog_init.hpp"
 
 namespace ams
 {
@@ -32,83 +31,6 @@ namespace ams
     {
         namespace
         {
-            struct ServerOptions
-            {
-                static constexpr size_t PointerBufferSize = 0x1000;
-                static constexpr size_t MaxDomains = 0x10;
-                static constexpr size_t MaxDomainObjects = 0x100;
-                static constexpr bool CanDeferInvokeRequest = false;
-                static constexpr bool CanManageMitmServers = true;
-            };
-
-            constexpr size_t MaxSessions = 61;
-
-            class ServerManager final : public sf::hipc::ServerManager<1, ServerOptions, MaxSessions>
-            {
-            private:
-                virtual ams::Result OnNeedsToAccept(int port_index, Server *server) override;
-            };
-
-            ServerManager g_server_manager;
-
-            Result ServerManager::OnNeedsToAccept(int port_index, Server *server)
-            {
-                AMS_UNUSED(port_index);
-                /* Acknowledge the mitm session. */
-                std::shared_ptr<::Service> fsrv;
-                sm::MitmProcessInfo client_info;
-                server->AcknowledgeMitmSession(std::addressof(fsrv), std::addressof(client_info));
-                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitmInterface, mitm::wlan::WlanLclMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
-            }
-
-            const s32 ThreadPriority = 3;
-            const size_t TotalThreads = 4;
-            const size_t NumExtraThreads = TotalThreads - 1;
-            const size_t ThreadStackSize = 0x4000;
-
-            alignas(os::MemoryPageSize) u8 g_extra_thread_stacks[NumExtraThreads][ThreadStackSize];
-            os::ThreadType g_extra_threads[NumExtraThreads];
-
-            void LoopServerThread(void *)
-            {
-                g_server_manager.LoopProcess();
-            }
-
-            void ProcessForServerOnAllThreads()
-            {
-                /* Initialize threads. */
-                if constexpr (NumExtraThreads > 0)
-                {
-                    const s32 priority = os::GetThreadCurrentPriority(os::GetCurrentThread());
-                    for (size_t i = 0; i < NumExtraThreads; i++)
-                    {
-                        R_ABORT_UNLESS(os::CreateThread(g_extra_threads + i, LoopServerThread, nullptr, g_extra_thread_stacks[i], ThreadStackSize, priority));
-                        os::SetThreadNamePointer(g_extra_threads + i, "wlan::LclMitmThread");
-                    }
-                }
-
-                /* Start extra threads. */
-                if constexpr (NumExtraThreads > 0)
-                {
-                    for (size_t i = 0; i < NumExtraThreads; i++)
-                    {
-                        os::StartThread(g_extra_threads + i);
-                    }
-                }
-
-                /* Loop this thread. */
-                LoopServerThread(nullptr);
-
-                /* Wait for extra threads to finish. */
-                if constexpr (NumExtraThreads > 0)
-                {
-                    for (size_t i = 0; i < NumExtraThreads; i++)
-                    {
-                        os::WaitThread(g_extra_threads + i);
-                    }
-                }
-            }
-
             alignas(0x40) constinit u8 g_heap_memory[128_KB];
             constinit lmem::HeapHandle g_heap_handle;
             constinit bool g_heap_initialized;
@@ -171,7 +93,6 @@ namespace ams
             /* Initialize the global malloc allocator. */
             init::InitializeAllocator(g_malloc_buffer, sizeof(g_malloc_buffer));
         }
-
     }
 
     void NORETURN Exit(int rc)
@@ -184,11 +105,10 @@ namespace ams
     {
         R_ABORT_UNLESS(log::Initialize());
         log::DEBUG_LOG("Main");
-        constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("wlan:lcl");
-        R_ABORT_UNLESS((mitm::g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
-        log::DEBUG_LOG("Registered");
+        mitm::LaunchModules();
+        log::DEBUG_LOG("Launched modules");
 
-        mitm::ProcessForServerOnAllThreads();
+        mitm::WaitModules();
     }
 }
 

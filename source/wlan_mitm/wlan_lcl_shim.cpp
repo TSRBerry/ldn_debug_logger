@@ -19,7 +19,7 @@
 #include <string.h>
 #include <stratosphere/sf/sf_mitm_dispatch.h>
 #include <switch.h>
-#include "wlan_lcl_shim.hpp"
+#include "wlan_mitm/wlan_lcl_shim.hpp"
 
 /* Command forwarders. */
 Result wlanLocalManagerOpenMasterMode(Service *s, u32 in)

@@ -2,10 +2,9 @@
 #include <stratosphere.hpp>
 #include <switch.h>
 
-#include "../debug.hpp"
 #include "../ldn_types.hpp"
 
-#define AMS_LDN_IUSERLOCALCOMMUNICATION(C, H)                                                                                                                                                                              \
+#define AMS_LDN_USERLOCALCOMMUNICATION_INTERFACE_INFO(C, H)                                                                                                                                                                \
        AMS_SF_METHOD_INFO(C, H, 0, Result, GetState, (ams::sf::Out<u32> state), (state))                                                                                                                                   \
        AMS_SF_METHOD_INFO(C, H, 1, Result, GetNetworkInfo, (ams::sf::Out<ams::mitm::ldn::NetworkInfo> buffer), (buffer))                                                                                                   \
        AMS_SF_METHOD_INFO(C, H, 2, Result, GetIpv4Address, (ams::sf::Out<ams::mitm::ldn::Ipv4Address> address, ams::sf::Out<ams::mitm::ldn::SubnetMask> mask), (address, mask))                                            \
@@ -36,4 +35,4 @@
        AMS_SF_METHOD_INFO(C, H, 401, Result, Finalize, (), ())                                                                                                                                                             \
        AMS_SF_METHOD_INFO(C, H, 402, Result, Initialize2, (u32 unk, const ams::sf::ClientProcessId &client_process_id), (unk, client_process_id))
 
-AMS_SF_DEFINE_INTERFACE(ams::mitm::ldn, IUserLocalCommunicationInterface, AMS_LDN_IUSERLOCALCOMMUNICATION, 0x85280DC3)
+AMS_SF_DEFINE_INTERFACE(ams::mitm::ldn, IUserLocalCommunicationInterface, AMS_LDN_USERLOCALCOMMUNICATION_INTERFACE_INFO, 0x85280DC3)

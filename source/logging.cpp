@@ -6,7 +6,7 @@ namespace ams::log
     namespace
     {
 
-        constexpr const char LogFilePath[] = "sdmc:/wlan.log";
+        constexpr const char LogFilePath[] = "sdmc:/ldn_debug.log";
         fs::FileHandle LogFile;
         s64 LogOffset;
 

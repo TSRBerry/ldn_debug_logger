@@ -1,6 +1,6 @@
 #pragma once
 #include <switch.h>
-#include <wlan_lcl_types.hpp>
+#include "wlan_lcl_types.hpp"
 
 /* Command forwarders. */
 Result wlanLocalManagerOpenMasterMode(Service *s, u32 in);

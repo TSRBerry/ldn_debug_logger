@@ -19,10 +19,10 @@
 #include <string.h>
 #include <stratosphere/sf/sf_mitm_dispatch.h>
 #include <switch.h>
-#include "ldn_shim.hpp"
+#include "ldn_mitm/ldn_shim.hpp"
 
 /* Command forwarders. */
-Result ldnGetIUserLocalCommunicationInterfaceFwd(Service *s, LdnIUserLocalCommunicationInterface *out)
+Result ldnGetUserLocalCommunicationInterfaceFwd(Service *s, LdnUserLocalCommunicationInterface *out)
 {
     return serviceMitmDispatch(s, 0,
                                .out_num_objects = 1,
@@ -242,157 +242,157 @@ static Result _ldnUserCommunicationInitialize2(Service *s, u32 unk, u64 pid)
     return serviceMitmDispatchIn(s, 402, in, .in_send_pid = true, .override_pid = pid, );
 }
 
-Result ldnUserCommunicationGetState(LdnIUserLocalCommunicationInterface *doc, u32 *state)
+Result ldnUserCommunicationGetState(LdnUserLocalCommunicationInterface *doc, u32 *state)
 {
     return _ldnUserCommunicationGetState(&doc->s, state);
 }
 
-Result ldnUserCommunicationGetNetworkInfo(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out)
+Result ldnUserCommunicationGetNetworkInfo(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out)
 {
     return _ldnUserCommunicationGetNetworkInfo(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetIpv4Address(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *netmask)
+Result ldnUserCommunicationGetIpv4Address(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *netmask)
 {
     return _ldnUserCommunicationGetIpv4Address(&doc->s, addr, netmask);
 }
 
-Result ldnUserCommunicationGetDisconnectReason(LdnIUserLocalCommunicationInterface *doc, s16 *reason)
+Result ldnUserCommunicationGetDisconnectReason(LdnUserLocalCommunicationInterface *doc, s16 *reason)
 {
     return _ldnUserCommunicationGetDisconnectReason(&doc->s, reason);
 }
 
-Result ldnUserCommunicationGetSecurityParameter(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::SecurityParameter *out)
+Result ldnUserCommunicationGetSecurityParameter(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::SecurityParameter *out)
 {
     return _ldnUserCommunicationGetSecurityParameter(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetNetworkConfig(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out)
+Result ldnUserCommunicationGetNetworkConfig(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out)
 {
     return _ldnUserCommunicationGetNetworkConfig(&doc->s, out);
 }
 
-Result ldnUserCommunicationAttachStateChangeEvent(LdnIUserLocalCommunicationInterface *doc, Handle *handle)
+Result ldnUserCommunicationAttachStateChangeEvent(LdnUserLocalCommunicationInterface *doc, Handle *handle)
 {
     return _ldnUserCommunicationAttachStateChangeEvent(&doc->s, handle);
 }
 
-Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
+Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
 {
     return _ldnUserCommunicationGetNetworkInfoLatestUpdate(&doc->s, out, out_buffer, out_buffer_size);
 }
 
-Result ldnUserCommunicationScan(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
+Result ldnUserCommunicationScan(LdnUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     return _ldnUserCommunicationScan(&doc->s, total_out, out_buffer, out_buffer_size, channel, filter);
 }
 
-Result ldnUserCommunicationScanPrivate(LdnIUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
+Result ldnUserCommunicationScanPrivate(LdnUserLocalCommunicationInterface *doc, s16 *total_out, ams::mitm::ldn::NetworkInfo *out_buffer, size_t out_buffer_size, s16 channel, LdnScanFilter filter)
 {
     return _ldnUserCommunicationScanPrivate(&doc->s, total_out, out_buffer, out_buffer_size, channel, filter);
 }
 
-Result ldnUserCommunicationSetWirelessControllerRestriction(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::WirelessControllerRestriction in)
+Result ldnUserCommunicationSetWirelessControllerRestriction(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::WirelessControllerRestriction in)
 {
     return _ldnUserCommunicationSetWirelessControllerRestriction(&doc->s, in);
 }
 
-Result ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(LdnIUserLocalCommunicationInterface *doc, u32 in)
+Result ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(LdnUserLocalCommunicationInterface *doc, u32 in)
 {
     return _ldnUserCommunicationSetBluetoothAudioDeviceConnectableMode(&doc->s, in);
 }
 
-Result ldnUserCommunicationOpenAccessPoint(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationOpenAccessPoint(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationOpenAccessPoint(&doc->s);
 }
 
-Result ldnUserCommunicationCloseAccessPoint(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationCloseAccessPoint(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationCloseAccessPoint(&doc->s);
 }
 
-Result ldnUserCommunicationCreateNetwork(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data)
+Result ldnUserCommunicationCreateNetwork(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkConfig data)
 {
     return _ldnUserCommunicationCreateNetwork(&doc->s, data);
 }
 
-Result ldnUserCommunicationCreateNetworkPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
+Result ldnUserCommunicationCreateNetworkPrivate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
 {
     return _ldnUserCommunicationCreateNetworkPrivate(&doc->s, data, entries, entries_size);
 }
 
-Result ldnUserCommunicationDestroyNetwork(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationDestroyNetwork(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationDestroyNetwork(&doc->s);
 }
 
-Result ldnUserCommunicationReject(LdnIUserLocalCommunicationInterface *doc, LdnIpv4Address *addr)
+Result ldnUserCommunicationReject(LdnUserLocalCommunicationInterface *doc, LdnIpv4Address *addr)
 {
     return _ldnUserCommunicationReject(&doc->s, addr);
 }
 
-Result ldnUserCommunicationSetAdvertiseData(LdnIUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size)
+Result ldnUserCommunicationSetAdvertiseData(LdnUserLocalCommunicationInterface *doc, const void *advertiseData, size_t advertiseData_size)
 {
     return _ldnUserCommunicationSetAdvertiseData(&doc->s, advertiseData, advertiseData_size);
 }
 
-Result ldnUserCommunicationSetStationAcceptPolicy(LdnIUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy)
+Result ldnUserCommunicationSetStationAcceptPolicy(LdnUserLocalCommunicationInterface *doc, LdnAcceptPolicy *policy)
 {
     return _ldnUserCommunicationSetStationAcceptPolicy(&doc->s, policy);
 }
 
-Result ldnUserCommunicationAddAcceptFilterEntry(LdnIUserLocalCommunicationInterface *doc, LdnMacAddress *mac)
+Result ldnUserCommunicationAddAcceptFilterEntry(LdnUserLocalCommunicationInterface *doc, LdnMacAddress *mac)
 {
     return _ldnUserCommunicationAddAcceptFilterEntry(&doc->s, mac);
 }
 
-Result ldnUserCommunicationClearAcceptFilter(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationClearAcceptFilter(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationClearAcceptFilter(&doc->s);
 }
 
-Result ldnUserCommunicationOpenStation(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationOpenStation(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationOpenStation(&doc->s);
 }
 
-Result ldnUserCommunicationCloseStation(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationCloseStation(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationCloseStation(&doc->s);
 }
 
-Result ldnUserCommunicationConnect(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const LdnNetworkInfo *data)
+Result ldnUserCommunicationConnect(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkData *dat, const LdnNetworkInfo *data)
 {
     return _ldnUserCommunicationConnect(&doc->s, dat, data);
 }
 
-Result ldnUserCommunicationConnectPrivate(LdnIUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat)
+Result ldnUserCommunicationConnectPrivate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::ConnectNetworkPrivateData *dat)
 {
     return _ldnUserCommunicationConnectPrivate(&doc->s, dat);
 }
 
-Result ldnUserCommunicationDisconnect(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationDisconnect(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationDisconnect(&doc->s);
 }
 
-Result ldnUserCommunicationInitialize(LdnIUserLocalCommunicationInterface *doc, u64 pid)
+Result ldnUserCommunicationInitialize(LdnUserLocalCommunicationInterface *doc, u64 pid)
 {
     return _ldnUserCommunicationInitialize(&doc->s, pid);
 }
 
-Result ldnUserCommunicationFinalize(LdnIUserLocalCommunicationInterface *doc)
+Result ldnUserCommunicationFinalize(LdnUserLocalCommunicationInterface *doc)
 {
     return _ldnUserCommunicationFinalize(&doc->s);
 }
 
-Result ldnUserCommunicationInitialize2(LdnIUserLocalCommunicationInterface *doc, u32 unk, u64 pid)
+Result ldnUserCommunicationInitialize2(LdnUserLocalCommunicationInterface *doc, u32 unk, u64 pid)
 {
     return _ldnUserCommunicationInitialize2(&doc->s, unk, pid);
 }
 
-void ldnIUserLocalCommunicationInterfaceClose(LdnIUserLocalCommunicationInterface *doc)
+void ldnUserLocalCommunicationInterfaceClose(LdnUserLocalCommunicationInterface *doc)
 {
     serviceClose(&doc->s);
 }

@@ -21,29 +21,29 @@
 #include <stratosphere.hpp>
 #include <switch.h>
 
-#include "debug.hpp"
+#include "logging.hpp"
 #include "ldn_types.hpp"
 #include "interfaces/icommunication.hpp"
 #include "ldn_shim.hpp"
 
 namespace ams::mitm::ldn
 {
-    class IUserLocalCommunicationService
+    class UserLocalCommunicationService
     {
     private:
-        std::unique_ptr<::LdnIUserLocalCommunicationInterface> m_srv;
+        std::unique_ptr<LdnUserLocalCommunicationInterface> m_srv;
 
     public:
-        IUserLocalCommunicationService(std::unique_ptr<::LdnIUserLocalCommunicationInterface> s) : m_srv(std::move(s))
+        UserLocalCommunicationService(std::unique_ptr<LdnUserLocalCommunicationInterface> s) : m_srv(std::move(s))
         {
-            LogFormat("IUserLocalCommunicationService");
+            log::DEBUG_LOG("UserLocalCommunicationService");
             /* ... */
         };
 
-        ~IUserLocalCommunicationService()
+        ~UserLocalCommunicationService()
         {
-            LogFormat("~IUserLocalCommunicationService");
-            ldnIUserLocalCommunicationInterfaceClose(m_srv.get());
+            log::DEBUG_LOG("~UserLocalCommunicationService");
+            ldnUserLocalCommunicationInterfaceClose(m_srv.get());
         };
 
     public:
@@ -78,5 +78,5 @@ namespace ams::mitm::ldn
         Result Finalize();
         Result Initialize2(u32 unk, const sf::ClientProcessId &client_process_id);
     };
-    static_assert(ams::mitm::ldn::IsIUserLocalCommunicationInterface<IUserLocalCommunicationService>);
+    static_assert(ams::mitm::ldn::IsIUserLocalCommunicationInterface<UserLocalCommunicationService>);
 }
