@@ -20,13 +20,13 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result UserLocalCommunicationService::GetIpv4Address(sf::Out<Ipv4Address> address, sf::Out<SubnetMask> netmask)
+    Result UserLocalCommunicationService::GetIpv4Address(sf::Out<LdnIpv4Address> address, sf::Out<LdnSubnetMask> netmask)
     {
         log::DEBUG_LOG("UserLocalCommunicationService::GetIpv4Address addr ptr: %p netmask ptr: %p", address.GetPointer(), netmask.GetPointer());
         Result rc = ldnUserCommunicationGetIpv4Address(m_srv.get(), address.GetPointer(), netmask.GetPointer());
         log::DEBUG_LOG("UserLocalCommunicationService::GetIpv4Address rc: %#x", rc);
-        log::DEBUG_DATA_DUMP(address.GetPointer(), sizeof(Ipv4Address), "UserLocalCommunicationService::GetIpv4Address addr");
-        log::DEBUG_DATA_DUMP(netmask.GetPointer(), sizeof(SubnetMask), "UserLocalCommunicationService::GetIpv4Address netmask");
+        log::DEBUG_DATA_DUMP(address.GetPointer(), sizeof(LdnIpv4Address), "UserLocalCommunicationService::GetIpv4Address addr");
+        log::DEBUG_DATA_DUMP(netmask.GetPointer(), sizeof(LdnSubnetMask), "UserLocalCommunicationService::GetIpv4Address netmask");
         return rc;
     }
 
@@ -39,16 +39,16 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result UserLocalCommunicationService::GetSecurityParameter(sf::Out<SecurityParameter> out)
+    Result UserLocalCommunicationService::GetSecurityParameter(sf::Out<LdnSecurityParameter> out)
     {
         log::DEBUG_LOG("UserLocalCommunicationService::GetSecurityParameter ptr: %p", out.GetPointer());
         Result rc = ldnUserCommunicationGetSecurityParameter(m_srv.get(), out.GetPointer());
         log::DEBUG_LOG("UserLocalCommunicationService::GetSecurityParameter rc: %#x", rc);
-        log::DEBUG_DATA_DUMP(out.GetPointer(), sizeof(SecurityParameter), "UserLocalCommunicationService::GetSecurityParame1ter SecurityParameter");
+        log::DEBUG_DATA_DUMP(out.GetPointer(), sizeof(LdnSecurityParameter), "UserLocalCommunicationService::GetSecurityParameter SecurityParameter");
         return rc;
     }
 
-    Result UserLocalCommunicationService::GetNetworkConfig(sf::Out<NetworkConfig> out)
+    Result UserLocalCommunicationService::GetNetworkConfig(sf::Out<LdnNetworkConfig> out)
     {
         log::DEBUG_LOG("UserLocalCommunicationService::GetNetworkConfig ptr: %p", out.GetPointer());
         Result rc = ldnUserCommunicationGetNetworkConfig(m_srv.get(), out.GetPointer());
@@ -67,7 +67,7 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result UserLocalCommunicationService::GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<NodeLatestUpdate> pUpdates)
+    Result UserLocalCommunicationService::GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<LdnNodeLatestUpdate> pUpdates)
     {
         log::DEBUG_LOG("UserLocalCommunicationService::GetNetworkInfoLatestUpdate buffer ptr: %p", buffer.GetPointer());
         log::DEBUG_LOG("UserLocalCommunicationService::GetNetworkInfoLatestUpdate pUpdates ptr: %p size: %" PRIu64, pUpdates.GetPointer(), pUpdates.GetSize());
@@ -143,7 +143,7 @@ namespace ams::mitm::ldn
         return rc;
     }
 
-    Result UserLocalCommunicationService::CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries)
+    Result UserLocalCommunicationService::CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<LdnAddressEntry> &entries)
     {
         log::DEBUG_LOG("UserLocalCommunicationService::CreateNetworkPrivate config ptr: %p size: %d", &data, sizeof(CreateNetworkPrivateConfig));
         log::DEBUG_DATA_DUMP(&data, sizeof(CreateNetworkConfig), "UserLocalCommunicationService::CreateNetworkPrivate config");

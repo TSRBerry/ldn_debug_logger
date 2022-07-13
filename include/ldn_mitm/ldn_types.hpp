@@ -7,7 +7,6 @@
 
 namespace ams::mitm::ldn
 {
-
     enum WirelessControllerRestriction : u32
     {
         Unknown = 0,
@@ -31,11 +30,6 @@ namespace ams::mitm::ldn
         Station,
         StationConnected,
         Error
-    };
-
-    struct AddressEntry : sf::LargeData
-    {
-        LdnAddressEntry entry;
     };
 
     struct CreateNetworkConfig
@@ -71,33 +65,8 @@ namespace ams::mitm::ldn
         LdnNetworkConfig networkConfig;
     };
 
-    struct Ipv4Address : sf::LargeData
-    {
-        LdnIpv4Address addr;
-    };
-
-    struct SubnetMask : sf::LargeData
-    {
-        LdnSubnetMask netmask;
-    };
-
     struct NetworkInfo : sf::LargeData
     {
         LdnNetworkInfo networkInfo;
-    };
-
-    struct NetworkConfig : sf::LargeData
-    {
-        LdnNetworkConfig networkConfig;
-    };
-
-    struct NodeLatestUpdate : sf::LargeData
-    {
-        LdnNodeLatestUpdate latestUpdate;
-    };
-
-    struct SecurityParameter : sf::LargeData
-    {
-        LdnSecurityParameter securityParam;
     };
 }
