@@ -49,12 +49,12 @@ namespace ams::mitm::ldn
     public:
         Result GetState(sf::Out<u32> state);
         Result GetNetworkInfo(sf::Out<NetworkInfo> buffer);
-        Result GetIpv4Address(sf::Out<Ipv4Address> address, sf::Out<SubnetMask> mask);
+        Result GetIpv4Address(sf::Out<LdnIpv4Address> address, sf::Out<LdnSubnetMask> mask);
         Result GetDisconnectReason(sf::Out<s16> reason);
-        Result GetSecurityParameter(sf::Out<SecurityParameter> out);
-        Result GetNetworkConfig(sf::Out<NetworkConfig> out);
+        Result GetSecurityParameter(sf::Out<LdnSecurityParameter> out);
+        Result GetNetworkConfig(sf::Out<LdnNetworkConfig> out);
         Result AttachStateChangeEvent(sf::Out<sf::CopyHandle> handle);
-        Result GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<NodeLatestUpdate> pUpdates);
+        Result GetNetworkInfoLatestUpdate(sf::Out<NetworkInfo> buffer, sf::OutArray<LdnNodeLatestUpdate> pUpdates);
         Result Scan(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> count, LdnScanFilter filter, s16 channel);
         Result ScanPrivate(sf::OutAutoSelectArray<NetworkInfo> buffer, sf::Out<s16> outCount, LdnScanFilter filter, s16 channel);
         Result SetWirelessControllerRestriction(WirelessControllerRestriction in);
@@ -62,7 +62,7 @@ namespace ams::mitm::ldn
         Result OpenAccessPoint();
         Result CloseAccessPoint();
         Result CreateNetwork(CreateNetworkConfig data);
-        Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<AddressEntry> &entries);
+        Result CreateNetworkPrivate(CreateNetworkPrivateConfig data, const sf::InPointerArray<LdnAddressEntry> &entries);
         Result DestroyNetwork();
         Result Reject(LdnIpv4Address addr);
         Result SetAdvertiseData(sf::InAutoSelectBuffer data);

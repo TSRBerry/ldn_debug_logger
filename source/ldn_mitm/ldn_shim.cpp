@@ -43,7 +43,7 @@ static Result _ldnUserCommunicationGetNetworkInfo(Service *s, ams::mitm::ldn::Ne
                                }, );
 }
 
-static Result _ldnUserCommunicationGetIpv4Address(Service *s, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *subnetMask)
+static Result _ldnUserCommunicationGetIpv4Address(Service *s, LdnIpv4Address *addr, LdnSubnetMask *subnetMask)
 {
     struct
     {
@@ -51,8 +51,8 @@ static Result _ldnUserCommunicationGetIpv4Address(Service *s, ams::mitm::ldn::Ip
         u32 netmask;
     } out;
     Result rc = serviceMitmDispatchOut(s, 2, out);
-    addr->addr.addr = out.addr;
-    subnetMask->netmask.mask = out.netmask;
+    addr->addr = out.addr;
+    subnetMask->mask = out.netmask;
     return rc;
 }
 
@@ -61,12 +61,12 @@ static Result _ldnUserCommunicationGetDisconnectReason(Service *s, s16 *reason)
     return serviceMitmDispatchOut(s, 3, reason);
 }
 
-static Result _ldnUserCommunicationGetSecurityParameter(Service *s, ams::mitm::ldn::SecurityParameter *out)
+static Result _ldnUserCommunicationGetSecurityParameter(Service *s, LdnSecurityParameter *out)
 {
     return serviceMitmDispatchOut(s, 4, out);
 }
 
-static Result _ldnUserCommunicationGetNetworkConfig(Service *s, ams::mitm::ldn::NetworkConfig *out)
+static Result _ldnUserCommunicationGetNetworkConfig(Service *s, LdnNetworkConfig *out)
 {
     return serviceMitmDispatchOut(s, 5, out);
 }
@@ -78,7 +78,7 @@ static Result _ldnUserCommunicationAttachStateChangeEvent(Service *s, Handle *ha
                                .out_handles = handle, );
 }
 
-static Result _ldnUserCommunicationGetNetworkInfoLatestUpdate(Service *s, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
+static Result _ldnUserCommunicationGetNetworkInfoLatestUpdate(Service *s, ams::mitm::ldn::NetworkInfo *out, LdnNodeLatestUpdate *out_buffer, size_t out_buffer_size)
 {
     return serviceMitmDispatch(s, 101,
                                .buffer_attrs = {SfBufferAttr_HipcPointer | SfBufferAttr_Out},
@@ -92,13 +92,13 @@ static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::l
 {
     const struct
     {
-        // 0x60
-        LdnScanFilter filter;
-        // 0x06
-        u8 _pad[6];
         // 0x02
         s16 channel;
-    } in = {.filter = filter, .channel = channel};
+        // 0x06
+        u8 _pad[6];
+        // 0x60
+        LdnScanFilter filter;
+    } in = {channel, {0}, filter};
     return serviceMitmDispatchInOut(s, 102, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
@@ -110,13 +110,13 @@ static Result _ldnUserCommunicationScanPrivate(Service *s, s16 *total_out, ams::
 {
     const struct
     {
-        // 0x60
-        LdnScanFilter filter;
-        // 0x06
-        u8 _pad[6];
         // 0x02
         s16 channel;
-    } in = {.filter = filter, .channel = channel};
+        // 0x06
+        u8 _pad[6];
+        // 0x60
+        LdnScanFilter filter;
+    } in = {channel, {0}, filter};
     return serviceMitmDispatchInOut(s, 103, in, total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
@@ -149,7 +149,7 @@ static Result _ldnUserCommunicationCreateNetwork(Service *s, ams::mitm::ldn::Cre
     return serviceMitmDispatchIn(s, 202, data);
 }
 
-static Result _ldnUserCommunicationCreateNetworkPrivate(Service *s, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
+static Result _ldnUserCommunicationCreateNetworkPrivate(Service *s, ams::mitm::ldn::CreateNetworkPrivateConfig data, const LdnAddressEntry *entries, size_t entries_size)
 {
     return serviceMitmDispatchIn(s, 203, data,
                                  .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer},
@@ -252,7 +252,7 @@ Result ldnUserCommunicationGetNetworkInfo(LdnUserLocalCommunicationInterface *do
     return _ldnUserCommunicationGetNetworkInfo(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetIpv4Address(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::Ipv4Address *addr, ams::mitm::ldn::SubnetMask *netmask)
+Result ldnUserCommunicationGetIpv4Address(LdnUserLocalCommunicationInterface *doc, LdnIpv4Address *addr, LdnSubnetMask *netmask)
 {
     return _ldnUserCommunicationGetIpv4Address(&doc->s, addr, netmask);
 }
@@ -262,12 +262,12 @@ Result ldnUserCommunicationGetDisconnectReason(LdnUserLocalCommunicationInterfac
     return _ldnUserCommunicationGetDisconnectReason(&doc->s, reason);
 }
 
-Result ldnUserCommunicationGetSecurityParameter(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::SecurityParameter *out)
+Result ldnUserCommunicationGetSecurityParameter(LdnUserLocalCommunicationInterface *doc, LdnSecurityParameter *out)
 {
     return _ldnUserCommunicationGetSecurityParameter(&doc->s, out);
 }
 
-Result ldnUserCommunicationGetNetworkConfig(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkConfig *out)
+Result ldnUserCommunicationGetNetworkConfig(LdnUserLocalCommunicationInterface *doc, LdnNetworkConfig *out)
 {
     return _ldnUserCommunicationGetNetworkConfig(&doc->s, out);
 }
@@ -277,7 +277,7 @@ Result ldnUserCommunicationAttachStateChangeEvent(LdnUserLocalCommunicationInter
     return _ldnUserCommunicationAttachStateChangeEvent(&doc->s, handle);
 }
 
-Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, ams::mitm::ldn::NodeLatestUpdate *out_buffer, size_t out_buffer_size)
+Result ldnUserCommunicationGetNetworkInfoLatestUpdate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::NetworkInfo *out, LdnNodeLatestUpdate *out_buffer, size_t out_buffer_size)
 {
     return _ldnUserCommunicationGetNetworkInfoLatestUpdate(&doc->s, out, out_buffer, out_buffer_size);
 }
@@ -317,7 +317,7 @@ Result ldnUserCommunicationCreateNetwork(LdnUserLocalCommunicationInterface *doc
     return _ldnUserCommunicationCreateNetwork(&doc->s, data);
 }
 
-Result ldnUserCommunicationCreateNetworkPrivate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const ams::mitm::ldn::AddressEntry *entries, size_t entries_size)
+Result ldnUserCommunicationCreateNetworkPrivate(LdnUserLocalCommunicationInterface *doc, ams::mitm::ldn::CreateNetworkPrivateConfig data, const LdnAddressEntry *entries, size_t entries_size)
 {
     return _ldnUserCommunicationCreateNetworkPrivate(&doc->s, data, entries, entries_size);
 }
