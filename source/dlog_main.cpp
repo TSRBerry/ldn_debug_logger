@@ -21,12 +21,6 @@
 
 namespace ams
 {
-    namespace
-    {
-        constexpr size_t MallocBufferSize = 32_KB;
-        alignas(os::MemoryPageSize) constinit u8 g_malloc_buffer[MallocBufferSize];
-    }
-
     namespace mitm
     {
         namespace
@@ -90,8 +84,7 @@ namespace ams
 
         void Startup()
         {
-            /* Initialize the global malloc allocator. */
-            init::InitializeAllocator(g_malloc_buffer, sizeof(g_malloc_buffer));
+            /* ... */
         }
     }
 
