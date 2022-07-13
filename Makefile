@@ -10,18 +10,7 @@ BUILD_VERSION := $(GIT_BRANCH)-$(GIT_HASH)
 
 TARGETS := dlog_module
 
-all: $(TARGETS)
-
-dlog_module:
-	$(MAKE) -f system_module.mk
-
-clean:
-	$(MAKE) -f system_module.mk clean
-	$(MAKE) -C Atmosphere-libs clean
-	rm -rf dist build out
-
 dist: all
-	echo testme - $(PROJECT_NAME)
 	rm -rf dist
 
 	mkdir -p dist/atmosphere/contents/$(DLOG_TID)
@@ -32,6 +21,17 @@ dist: all
 	mkdir -p dist/atmosphere/contents/$(DLOG_TID)/flags
 	touch dist/atmosphere/contents/$(DLOG_TID)/flags/boot2.flag
 
+release: dist
 	cd dist; zip -r $(PROJECT_NAME)-$(BUILD_VERSION).zip ./*; cd ../;
 
-.PHONY: all clean dist $(TARGETS)
+all: $(TARGETS)
+
+dlog_module:
+	$(MAKE) -f system_module.mk
+
+clean:
+	$(MAKE) -f system_module.mk clean
+	$(MAKE) -C Atmosphere-libs clean
+	rm -rf dist build out
+
+.PHONY: dist release all $(TARGETS) clean
