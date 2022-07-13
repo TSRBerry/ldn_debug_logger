@@ -29,7 +29,7 @@ namespace ams::log
         R_TRY(GetFileSize(&LogOffset, LogFile));
 
         char buff[0x100];
-        int len = util::TSNPrintf(buff, sizeof(buff), "\n======================== LOG STARTED ========================\n");
+        int len = util::TSNPrintf(buff, sizeof(buff), "======================== LOG STARTED ========================\n");
         R_ABORT_UNLESS(fs::WriteFile(LogFile, LogOffset, buff, len, fs::WriteOption::Flush));
         LogOffset += len;
 
