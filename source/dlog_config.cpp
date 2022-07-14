@@ -24,7 +24,7 @@ namespace ams::mitm
             if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
             {
                 LogDisabledCommand(service, cmds[i]);
-                *(bool *)(config + 1 + i) = true;
+                *((bool *)(&config->ldn_u.commands) + i) = true;
             }
         }
     }
@@ -39,7 +39,7 @@ namespace ams::mitm
             if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
             {
                 LogDisabledCommand(service, cmds[i]);
-                *(bool *)(config + 31 + i) = true;
+                *((bool *)(&config->wlan_lcl.commands) + i) = true;
             }
         }
     }
