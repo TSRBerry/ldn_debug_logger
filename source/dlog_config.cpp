@@ -11,7 +11,7 @@ namespace ams::mitm
 
     void LogDisabledCommand(const char *service, const char *cmd)
     {
-        log::DEBUG_LOG("CONFIG> [%s] Disabled cmd: '%s'", service, cmd);
+        DEBUG_LOG("CONFIG> [%s] Disabled cmd: '%s'", service, cmd);
     }
 
     void HandleLdnUCmdsConfig(const char *cmd, const char *value, DLogConfig *config)
@@ -55,7 +55,7 @@ namespace ams::mitm
                 if (strcasecmp(value, "0") == 0)
                 {
                     config->ldn_u.enable_mitm = false;
-                    log::DEBUG_LOG("CONFIG> Disabled mitm for: 'ldn:u'");
+                    DEBUG_LOG("CONFIG> Disabled mitm for: 'ldn:u'");
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace ams::mitm
                 if (strcasecmp(value, "0") == 0)
                 {
                     config->wlan_lcl.enable_mitm = false;
-                    log::DEBUG_LOG("CONFIG> Disabled mitm for: 'wlan:lcl'");
+                    DEBUG_LOG("CONFIG> Disabled mitm for: 'wlan:lcl'");
                 }
             }
         }
@@ -97,13 +97,13 @@ namespace ams::mitm
             fs::CloseFile(file);
             if (rc < 0)
             {
-                log::DEBUG_LOG("CONFIG> Couldn't load config. Code: %d", rc);
+                DEBUG_LOG("CONFIG> Couldn't load config. Code: %d", rc);
                 R_RETURN(rc);
             }
         }
         else
         {
-            log::DEBUG_LOG("CONFIG> No config file found. Skipping.");
+            DEBUG_LOG("CONFIG> No config file found. Skipping.");
         }
 
         R_SUCCEED();

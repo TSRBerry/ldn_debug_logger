@@ -38,13 +38,13 @@ namespace ams::mitm::ldn
     public:
         UserLocalCommunicationService(std::unique_ptr<LdnUserLocalCommunicationInterface> s) : m_srv(std::move(s))
         {
-            log::DEBUG_LOG("UserLocalCommunicationService");
+            DEBUG_LOG("UserLocalCommunicationService");
             /* ... */
         };
 
         ~UserLocalCommunicationService()
         {
-            log::DEBUG_LOG("~UserLocalCommunicationService");
+            DEBUG_LOG("~UserLocalCommunicationService");
             ldnUserLocalCommunicationInterfaceClose(m_srv.get());
         };
 

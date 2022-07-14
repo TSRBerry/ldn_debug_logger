@@ -108,7 +108,7 @@ namespace ams::mitm::wlan
     {
         constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("wlan:lcl");
         R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
-        log::DEBUG_LOG("Registered mitm server");
+        DEBUG_LOG("Registered mitm server");
 
         R_TRY(os::CreateThread(
             &g_thread,
