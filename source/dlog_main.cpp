@@ -98,10 +98,10 @@ namespace ams
     void Main()
     {
         R_ABORT_UNLESS(log::Initialize());
-        log::DEBUG_LOG("Main");
+        DEBUG_LOG("Main");
         R_ABORT_UNLESS(ams::mitm::ReadConfig());
         mitm::LaunchModules();
-        log::DEBUG_LOG("Launched modules");
+        DEBUG_LOG("Launched modules");
 
         mitm::WaitModules();
     }

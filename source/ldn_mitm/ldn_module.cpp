@@ -110,7 +110,7 @@ namespace ams::mitm::ldn
     {
         constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("ldn:u");
         R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::ldn::LdnUMitmService>(0, MitmServiceName)));
-        log::DEBUG_LOG("Registered mitm server");
+        DEBUG_LOG("Registered mitm server");
 
         R_TRY(os::CreateThread(
             &g_thread,

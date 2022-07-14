@@ -27,7 +27,7 @@ namespace ams::mitm::ldn
 {
     Result LdnUMitmService::CreateUserLocalCommunicationService(sf::Out<sf::SharedPointer<IUserLocalCommunicationInterface>> out)
     {
-        log::DEBUG_LOG("CreateUserLocalCommunicationService: enabled out_service ptr: %p", &out);
+        DEBUG_LOG("CreateUserLocalCommunicationService: enabled out_service ptr: %p", &out);
         LdnUserLocalCommunicationInterface doc;
         R_TRY(ldnGetUserLocalCommunicationInterfaceFwd(m_forward_service.get(), std::addressof(doc)));
         const sf::cmif::DomainObjectId target_object_id{serviceGetObjectId(std::addressof(doc.s))};
