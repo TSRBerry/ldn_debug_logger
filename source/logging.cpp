@@ -1,11 +1,15 @@
 #include "logging.hpp"
 
+const size_t TlsBackupSize = 0x100;
+#define BACKUP_TLS()               \
+    u8 _tls_backup[TlsBackupSize]; \
+    memcpy(_tls_backup, armGetTls(), TlsBackupSize);
+#define RESTORE_TLS() memcpy(armGetTls(), _tls_backup, TlsBackupSize);
+
 namespace ams::log
 {
-
     namespace
     {
-
         constexpr const char LogFilePath[] = "sdmc:/ldn_debug.log";
         fs::FileHandle LogFile;
         s64 LogOffset;
@@ -46,6 +50,7 @@ namespace ams::log
 
     void DebugLogImpl(const char *fmt, std::va_list args)
     {
+        BACKUP_TLS();
         R_ABORT_UNLESS(fs::OpenFile(&LogFile, LogFilePath, fs::OpenMode_Write | fs::OpenMode_AllowAppend));
 
         char buff[0x100];
@@ -68,6 +73,7 @@ namespace ams::log
         LogOffset += len;
 
         fs::CloseFile(LogFile);
+        RESTORE_TLS();
     }
 
     void DebugLog(const char *fmt, ...)
@@ -82,6 +88,8 @@ namespace ams::log
 
     void DebugDataDumpImpl(const void *data, size_t size)
     {
+        BACKUP_TLS();
+
         size_t buff_size = 4 * size + 1;
         std::unique_ptr<char[]> buff(new char[buff_size]);
 
@@ -105,6 +113,7 @@ namespace ams::log
         LogOffset += len;
 
         fs::CloseFile(LogFile);
+        RESTORE_TLS();
     }
 
     void DebugDataDump(const void *data, size_t size, const char *fmt, ...)
