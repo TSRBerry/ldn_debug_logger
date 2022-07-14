@@ -17,6 +17,8 @@ dist: all
 	cp out/nintendo_nx_arm64_armv8a/release/$(PROJECT_NAME).nsp dist/atmosphere/contents/$(DLOG_TID)/exefs.nsp
 
 	cp mitm.lst dist/atmosphere/contents/$(DLOG_TID)/mitm.lst
+	mkdir -p dist/config/ldn_debug_logger
+	cp config_template.ini dist/config/ldn_debug_logger/dlog.ini
 
 	mkdir -p dist/atmosphere/contents/$(DLOG_TID)/flags
 	touch dist/atmosphere/contents/$(DLOG_TID)/flags/boot2.flag

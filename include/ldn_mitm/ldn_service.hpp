@@ -6,6 +6,7 @@
 #include <switch.h>
 
 #include "logging.hpp"
+#include "dlog_config.hpp"
 #include "interfaces/iuservice.hpp"
 #include "ldn_userlocalcommunication.hpp"
 #include "ldn_shim.hpp"
@@ -21,7 +22,9 @@ namespace ams::mitm::ldn
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
             log::DEBUG_LOG("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
-            return true;
+            bool enabled = ams::mitm::GetConfigInstance()->ldn_u.enable_mitm;
+            log::DEBUG_LOG("ldn:u enabled: %x", enabled);
+            return enabled;
         }
 
     public:

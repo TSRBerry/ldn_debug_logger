@@ -22,6 +22,7 @@
 #include <switch.h>
 
 #include "logging.hpp"
+#include "dlog_config.hpp"
 #include "ldn_types.hpp"
 #include "interfaces/icommunication.hpp"
 #include "ldn_shim.hpp"
@@ -32,6 +33,7 @@ namespace ams::mitm::ldn
     {
     private:
         std::unique_ptr<LdnUserLocalCommunicationInterface> m_srv;
+        DLogConfig *m_config = ams::mitm::GetConfigInstance();
 
     public:
         UserLocalCommunicationService(std::unique_ptr<LdnUserLocalCommunicationInterface> s) : m_srv(std::move(s))

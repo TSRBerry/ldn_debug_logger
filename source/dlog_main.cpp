@@ -17,6 +17,7 @@
 #include <stratosphere.hpp>
 
 #include "logging.hpp"
+#include "dlog_config.hpp"
 #include "dlog_init.hpp"
 
 namespace ams
@@ -98,6 +99,7 @@ namespace ams
     {
         R_ABORT_UNLESS(log::Initialize());
         log::DEBUG_LOG("Main");
+        R_ABORT_UNLESS(ams::mitm::ReadConfig());
         mitm::LaunchModules();
         log::DEBUG_LOG("Launched modules");
 

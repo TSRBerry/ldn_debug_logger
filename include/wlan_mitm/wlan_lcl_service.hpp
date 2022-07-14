@@ -6,6 +6,7 @@
 #include <switch.h>
 
 #include "logging.hpp"
+#include "dlog_config.hpp"
 #include "interfaces/ilclservice.hpp"
 #include "wlan_lcl_shim.hpp"
 
@@ -14,6 +15,9 @@ namespace ams::mitm::wlan
 
     class WlanLclMitmService : public sf::MitmServiceImplBase
     {
+    private:
+        DLogConfig *m_config = ams::mitm::GetConfigInstance();
+
     public:
         using MitmServiceImplBase::MitmServiceImplBase;
 
@@ -21,6 +25,11 @@ namespace ams::mitm::wlan
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
             log::DEBUG_LOG("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
+            if (!ams::mitm::GetConfigInstance()->wlan_lcl.enable_mitm)
+            {
+                log::DEBUG_LOG("wlan:lcl disabled");
+                return false;
+            }
             return client_info.program_id == ncm::SystemProgramId::Ldn;
         }
 
