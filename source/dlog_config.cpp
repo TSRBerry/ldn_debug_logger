@@ -18,8 +18,9 @@ namespace ams::mitm
     {
         constexpr const char *service = "ldn:u";
         constexpr const char *cmds[] = {"disable_getstate", "disable_getnetworkinfo", "disable_getipv4address", "disable_getdisconnectreason", "disable_getsecurityparameter", "disable_getnetworkconfig", "disable_attachstatechangeevent", "disable_getnetworkinfolatestupdate", "disable_scan", "disable_scanprivate", "disable_setwirelesscontrollerrestriction", "disable_setbluetoothaudiodeviceconnectablemode", "disable_openaccesspoint", "disable_closeaccesspoint", "disable_createnetwork", "disable_createnetworkprivate", "disable_destroynetwork", "disable_reject", "disable_setadvertisedata", "disable_setstationacceptpolicy", "disable_addacceptfilterentry", "disable_clearacceptfilter", "disable_openstation", "disable_closestation", "disable_connect", "disable_connectprivate", "disable_disconnect", "disable_initialize", "disable_finalize", "disable_initialize2"};
+        static_assert(sizeof(config->ldn_u.commands) == sizeof(cmds) / sizeof(char *));
 
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < (int)(sizeof(cmds) / sizeof(char *)); i++)
         {
             if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
             {
@@ -33,8 +34,9 @@ namespace ams::mitm
     {
         constexpr const char *service = "wlan:lcl";
         constexpr const char *cmds[] = {"disable_openmastermode", "disable_closemastermode", "disable_openclientmode", "disable_closeclientmode", "disable_openspectatormode", "disable_closespectatormode", "disable_getmacaddress", "disable_createbss", "disable_destroybss", "disable_startscan", "disable_stopscan", "disable_connect", "disable_cancelconnect", "disable_join", "disable_canceljoin", "disable_disconnect", "disable_setbeaconlostcount", "disable_getsystemevent", "disable_getconnectionstatus", "disable_getclientstatus", "disable_getbssindicationevent", "disable_getbssindicationinfo", "disable_getstate", "disable_getallowedchannels", "disable_addie", "disable_deleteie", "disable_putframeraw", "disable_cancelgetframe", "disable_createrxentry", "disable_deleterxentry", "disable_addethertypetorxentry", "disable_deleteethertypefromrxentry", "disable_addmatchingdatatorxentry", "disable_removematchingdatafromrxentry", "disable_getscanresult", "disable_putactionframeoneshot", "disable_setactionframewithbeacon", "disable_cancelactionframewithbeacon", "disable_createrxentryforactionframe", "disable_deleterxentryforactionframe", "disable_addsubtypetorxentryforactionframe", "disable_deletesubtypefromrxentryforactionframe", "disable_cancelgetactionframe", "disable_getrssi", "disable_setmaxassociationnumber", "disable_cmd45", "disable_cmd46", "disable_cmd47", "disable_cmd48", "disable_cmd49", "disable_cmd50", "disable_cmd51"};
+        static_assert(sizeof(config->wlan_lcl.commands) == sizeof(cmds) / sizeof(char *));
 
-        for (int i = 0; i < 52; i++)
+        for (int i = 0; i < (int)(sizeof(cmds) / sizeof(char *)); i++)
         {
             if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
             {
