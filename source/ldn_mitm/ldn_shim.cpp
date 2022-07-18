@@ -63,12 +63,12 @@ static Result _ldnUserCommunicationGetDisconnectReason(Service *s, s16 *reason)
 
 static Result _ldnUserCommunicationGetSecurityParameter(Service *s, LdnSecurityParameter *out)
 {
-    return serviceMitmDispatchOut(s, 4, out);
+    return serviceMitmDispatchOut(s, 4, *out);
 }
 
 static Result _ldnUserCommunicationGetNetworkConfig(Service *s, LdnNetworkConfig *out)
 {
-    return serviceMitmDispatchOut(s, 5, out);
+    return serviceMitmDispatchOut(s, 5, *out);
 }
 
 static Result _ldnUserCommunicationAttachStateChangeEvent(Service *s, Handle *handle)
@@ -99,7 +99,7 @@ static Result _ldnUserCommunicationScan(Service *s, s16 *total_out, ams::mitm::l
         // 0x60
         LdnScanFilter filter;
     } in = {channel, {0}, filter};
-    return serviceMitmDispatchInOut(s, 102, in, total_out,
+    return serviceMitmDispatchInOut(s, 102, in, *total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
                                         {out_buffer, out_buffer_size * sizeof(ams::mitm::ldn::NetworkInfo)},
@@ -117,7 +117,7 @@ static Result _ldnUserCommunicationScanPrivate(Service *s, s16 *total_out, ams::
         // 0x60
         LdnScanFilter filter;
     } in = {channel, {0}, filter};
-    return serviceMitmDispatchInOut(s, 103, in, total_out,
+    return serviceMitmDispatchInOut(s, 103, in, *total_out,
                                     .buffer_attrs = {SfBufferAttr_HipcAutoSelect | SfBufferAttr_Out},
                                     .buffers = {
                                         {out_buffer, out_buffer_size * sizeof(ams::mitm::ldn::NetworkInfo)},

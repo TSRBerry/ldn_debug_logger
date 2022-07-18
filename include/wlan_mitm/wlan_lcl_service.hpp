@@ -24,7 +24,7 @@ namespace ams::mitm::wlan
     public:
         static bool ShouldMitm(const sm::MitmProcessInfo &client_info)
         {
-            DEBUG_LOG("should_mitm pid: %" PRIu64 " tid: %" PRIx64, client_info.process_id, client_info.program_id);
+            DEBUG_LOG("should_mitm pid: %" PRIu64 " tid: 0%" PRIx64, client_info.process_id, client_info.program_id);
             if (!ams::mitm::GetConfigInstance()->wlan_lcl.enable_mitm)
             {
                 return false;
