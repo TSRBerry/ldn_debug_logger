@@ -7,7 +7,7 @@
 
 namespace ams::mitm::wlan
 {
-    struct OpenClientModeData
+    struct GetMacAddressData
     {
         u8 data[0x6];
     };
@@ -17,12 +17,12 @@ namespace ams::mitm::wlan
         u8 data[0x84];
     };
 
-    struct ConnectData
+    struct DisconnectData
     {
         u8 data[0x10];
     };
 
-    struct CancelJoinData
+    struct GetConnectionStatusData
     {
         u8 data[0x3C];
     };
@@ -37,12 +37,12 @@ namespace ams::mitm::wlan
     //     u8 unknown[0x10];
     // };
 
-    struct DeleteEthertypeFromRxEntryData
+    struct PutActionFrameOneShotData
     {
         u8 data[0x10];
     };
 
-    struct GetRssiData
+    struct Cmd43Data
     {
         u8 data[0x6];
     };
