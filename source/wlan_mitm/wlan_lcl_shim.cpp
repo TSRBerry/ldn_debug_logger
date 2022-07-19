@@ -22,32 +22,32 @@
 #include "wlan_mitm/wlan_lcl_shim.hpp"
 
 /* Command forwarders. */
-Result wlanLocalManagerOpenMasterMode(Service *s, u32 in)
+Result wlanLocalManagerOpenMode(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 0, in);
 }
 
-Result wlanLocalManagerCloseMasterMode(Service *s, u32 in)
+Result wlanLocalManagerCloseMode(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 1, in);
 }
 
-Result wlanLocalManagerOpenClientMode(Service *s, ams::mitm::wlan::OpenClientModeData *out)
+Result wlanLocalManagerGetMacAddress(Service *s, ams::mitm::wlan::GetMacAddressData *out)
 {
     return serviceMitmDispatchOut(s, 2, *out);
 }
 
-Result wlanLocalManagerCloseClientMode(Service *s, ams::mitm::wlan::UnknownNetworkData in)
+Result wlanLocalManagerCreateBss(Service *s, ams::mitm::wlan::UnknownNetworkData in)
 {
     return serviceMitmDispatchIn(s, 3, in);
 }
 
-Result wlanLocalManagerOpenSpectatorMode(Service *s)
+Result wlanLocalManagerDestroyBss(Service *s)
 {
     return serviceMitmDispatch(s, 4);
 }
 
-Result wlanLocalManagerCloseSpectatorMode(Service *s, const u8 *data, size_t data_size)
+Result wlanLocalManagerStartScan(Service *s, const u8 *data, size_t data_size)
 {
     return serviceMitmDispatch(s, 5,
                                .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias | SfBufferAttr_FixedSize},
@@ -56,54 +56,54 @@ Result wlanLocalManagerCloseSpectatorMode(Service *s, const u8 *data, size_t dat
                                }, );
 }
 
-Result wlanLocalManagerGetMacAddress(Service *s)
+Result wlanLocalManagerStopScan(Service *s)
 {
     return serviceMitmDispatch(s, 6);
 }
 
-Result wlanLocalManagerCreateBss(Service *s, ams::mitm::wlan::UnknownNetworkData in)
+Result wlanLocalManagerConnect(Service *s, ams::mitm::wlan::UnknownNetworkData in)
 {
     return serviceMitmDispatchIn(s, 7, in);
 }
 
-Result wlanLocalManagerDestroyBss(Service *s)
+Result wlanLocalManagerCancelConnect(Service *s)
 {
     return serviceMitmDispatch(s, 8);
 }
 
-Result wlanLocalManagerStartScan(Service *s, ams::mitm::wlan::UnknownNetworkData in)
+Result wlanLocalManagerJoin(Service *s, ams::mitm::wlan::UnknownNetworkData in)
 {
     return serviceMitmDispatchIn(s, 9, in);
 }
 
-Result wlanLocalManagerStopScan(Service *s)
+Result wlanLocalManagerCancelJoin(Service *s)
 {
     return serviceMitmDispatch(s, 10);
 }
 
-Result wlanLocalManagerConnect(Service *s, ams::mitm::wlan::ConnectData in)
+Result wlanLocalManagerDisconnect(Service *s, ams::mitm::wlan::DisconnectData in)
 {
     return serviceMitmDispatchIn(s, 11, in);
 }
 
-Result wlanLocalManagerCancelConnect(Service *s, u32 in)
+Result wlanLocalManagerSetBeaconLostCount(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 12, in);
 }
 
-Result wlanLocalManagerJoin(Service *s, u32 in, Handle *handle)
+Result wlanLocalManagerGetSystemEvent(Service *s, u32 in, Handle *handle)
 {
     return serviceMitmDispatchIn(s, 13, in,
                                  .out_handle_attrs = {SfOutHandleAttr_HipcCopy},
                                  .out_handles = handle, );
 }
 
-Result wlanLocalManagerCancelJoin(Service *s, ams::mitm::wlan::CancelJoinData *out)
+Result wlanLocalManagerGetConnectionStatus(Service *s, ams::mitm::wlan::GetConnectionStatusData *out)
 {
     return serviceMitmDispatchOut(s, 14, *out);
 }
 
-Result wlanLocalManagerDisconnect(Service *s, void *data, size_t data_size)
+Result wlanLocalManagerGetClientStatus(Service *s, void *data, size_t data_size)
 {
     return serviceMitmDispatch(s, 15,
                                .buffer_attrs = {SfBufferAttr_Out | SfBufferAttr_HipcMapAlias | SfBufferAttr_FixedSize},
@@ -112,14 +112,14 @@ Result wlanLocalManagerDisconnect(Service *s, void *data, size_t data_size)
                                }, );
 }
 
-Result wlanLocalManagerSetBeaconLostCount(Service *s, Handle *handle)
+Result wlanLocalManagerGetBssIndicationEvent(Service *s, Handle *handle)
 {
     return serviceMitmDispatch(s, 16,
                                .out_handle_attrs = {SfOutHandleAttr_HipcCopy},
                                .out_handles = handle, );
 }
 
-Result wlanLocalManagerGetSystemEvent(Service *s, void *data, size_t data_size)
+Result wlanLocalManagerGetBssIndicationInfo(Service *s, void *data, size_t data_size)
 {
     return serviceMitmDispatch(s, 17,
                                .buffer_attrs = {SfBufferAttr_Out | SfBufferAttr_HipcMapAlias | SfBufferAttr_FixedSize},
@@ -128,12 +128,12 @@ Result wlanLocalManagerGetSystemEvent(Service *s, void *data, size_t data_size)
                                }, );
 }
 
-Result wlanLocalManagerGetConnectionStatus(Service *s, u32 *out)
+Result wlanLocalManagerGetState(Service *s, u32 *out)
 {
     return serviceMitmDispatchOut(s, 18, *out);
 }
 
-Result wlanLocalManagerGetClientStatus(Service *s, u32 *out, void *out_data, size_t out_data_size)
+Result wlanLocalManagerGetAllowedChannels(Service *s, u32 *out, void *out_data, size_t out_data_size)
 {
     return serviceMitmDispatchOut(s, 19, *out,
                                   .buffer_attrs = {SfBufferAttr_Out | SfBufferAttr_HipcPointer},
@@ -142,7 +142,7 @@ Result wlanLocalManagerGetClientStatus(Service *s, u32 *out, void *out_data, siz
                                   }, );
 }
 
-Result wlanLocalManagerGetBssIndicationEvent(Service *s, u32 in, u32 *out, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerAddIe(Service *s, u32 in, u32 *out, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatchInOut(s, 20, in, *out,
                                     .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias},
@@ -151,12 +151,12 @@ Result wlanLocalManagerGetBssIndicationEvent(Service *s, u32 in, u32 *out, const
                                     }, );
 }
 
-Result wlanLocalManagerGetBssIndicationInfo(Service *s, u32 in)
+Result wlanLocalManagerDeleteIe(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 21, in);
 }
 
-Result wlanLocalManagerGetState(Service *s, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerPutFrameRaw(Service *s, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatch(s, 22,
                                .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias},
@@ -165,12 +165,12 @@ Result wlanLocalManagerGetState(Service *s, const void *in_buffer, size_t in_buf
                                }, );
 }
 
-Result wlanLocalManagerGetAllowedChannels(Service *s, u32 in)
+Result wlanLocalManagerCancelGetFrame(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 23, in);
 }
 
-Result wlanLocalManagerAddIe(Service *s, u32 in, u32 *out, const void *in_array, size_t in_array_size)
+Result wlanLocalManagerCreateRxEntry(Service *s, u32 in, u32 *out, const void *in_array, size_t in_array_size)
 {
     return serviceMitmDispatchInOut(s, 24, in, *out,
                                     .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer},
@@ -179,22 +179,22 @@ Result wlanLocalManagerAddIe(Service *s, u32 in, u32 *out, const void *in_array,
                                     }, );
 }
 
-Result wlanLocalManagerDeleteIe(Service *s, u32 in)
+Result wlanLocalManagerDeleteRxEntry(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 25, in);
 }
 
-Result wlanLocalManagerPutFrameRaw(Service *s, u64 in)
+Result wlanLocalManagerAddEthertypeToRxEntry(Service *s, u64 in)
 {
     return serviceMitmDispatchIn(s, 26, in);
 }
 
-Result wlanLocalManagerCancelGetFrame(Service *s, u16 in, u32 *out)
+Result wlanLocalManagerDeleteEthertypeFromRxEntry(Service *s, u16 in, u32 *out)
 {
     return serviceMitmDispatchInOut(s, 27, in, *out);
 }
 
-Result wlanLocalManagerCreateRxEntry(Service *s, u32 in, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerAddMatchingDataToRxEntry(Service *s, u32 in, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatchIn(s, 28, in,
                                  .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer | SfBufferAttr_FixedSize},
@@ -203,7 +203,7 @@ Result wlanLocalManagerCreateRxEntry(Service *s, u32 in, const void *in_buffer, 
                                  }, );
 }
 
-Result wlanLocalManagerDeleteRxEntry(Service *s, u32 in, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerRemoveMatchingDataFromRxEntry(Service *s, u32 in, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatchIn(s, 29, in,
                                  .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer | SfBufferAttr_FixedSize},
@@ -212,7 +212,7 @@ Result wlanLocalManagerDeleteRxEntry(Service *s, u32 in, const void *in_buffer, 
                                  }, );
 }
 
-Result wlanLocalManagerAddEthertypeToRxEntry(Service *s, const void *in_buffer, size_t in_buffer_size, void *out_buffer, size_t out_buffer_size)
+Result wlanLocalManagerGetScanResult(Service *s, const void *in_buffer, size_t in_buffer_size, void *out_buffer, size_t out_buffer_size)
 {
     return serviceMitmDispatch(s, 30,
                                .buffer_attrs = {
@@ -224,7 +224,7 @@ Result wlanLocalManagerAddEthertypeToRxEntry(Service *s, const void *in_buffer, 
                                }, );
 }
 
-Result wlanLocalManagerDeleteEthertypeFromRxEntry(Service *s, ams::mitm::wlan::DeleteEthertypeFromRxEntryData in, const void *in_array, size_t in_array_size)
+Result wlanLocalManagerPutActionFrameOneShot(Service *s, ams::mitm::wlan::PutActionFrameOneShotData in, const void *in_array, size_t in_array_size)
 {
     return serviceMitmDispatchIn(s, 31, in,
                                  .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias},
@@ -233,7 +233,7 @@ Result wlanLocalManagerDeleteEthertypeFromRxEntry(Service *s, ams::mitm::wlan::D
                                  }, );
 }
 
-Result wlanLocalManagerAddMatchingDataToRxEntry(Service *s, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerSetActionFrameWithBeacon(Service *s, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatch(s, 32,
                                .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcMapAlias},
@@ -242,12 +242,12 @@ Result wlanLocalManagerAddMatchingDataToRxEntry(Service *s, const void *in_buffe
                                }, );
 }
 
-Result wlanLocalManagerRemoveMatchingDataFromRxEntry(Service *s)
+Result wlanLocalManagerCancelActionFrameWithBeacon(Service *s)
 {
     return serviceMitmDispatch(s, 33);
 }
 
-Result wlanLocalManagerGetScanResult(Service *s, u32 in, u32 *out, const void *in_buffer, size_t in_buffer_size)
+Result wlanLocalManagerCreateRxEntryForActionFrame(Service *s, u32 in, u32 *out, const void *in_buffer, size_t in_buffer_size)
 {
     return serviceMitmDispatchInOut(s, 34, in, *out,
                                     .buffer_attrs = {SfBufferAttr_In | SfBufferAttr_HipcPointer},
@@ -256,37 +256,37 @@ Result wlanLocalManagerGetScanResult(Service *s, u32 in, u32 *out, const void *i
                                     }, );
 }
 
-Result wlanLocalManagerPutActionFrameOneShot(Service *s, u32 in)
+Result wlanLocalManagerDeleteRxEntryForActionFrame(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 35, in);
 }
 
-Result wlanLocalManagerSetActionFrameWithBeacon(Service *s, u64 in)
+Result wlanLocalManagerAddSubtypeToRxEntryForActionFrame(Service *s, u64 in)
 {
     return serviceMitmDispatchIn(s, 36, in);
 }
 
-Result wlanLocalManagerCancelActionFrameWithBeacon(Service *s, u32 in, u32 *out)
+Result wlanLocalManagerDeleteSubtypeFromRxEntryForActionFrame(Service *s, u32 in, u32 *out)
 {
     return serviceMitmDispatchInOut(s, 37, in, *out);
 }
 
-Result wlanLocalManagerCreateRxEntryForActionFrame(Service *s, u32 in)
+Result wlanLocalManagerCancelGetActionFrame(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 38, in);
 }
 
-Result wlanLocalManagerDeleteRxEntryForActionFrame(Service *s, u32 *out)
+Result wlanLocalManagerGetRssi(Service *s, u32 *out)
 {
     return serviceMitmDispatchOut(s, 39, *out);
 }
 
-Result wlanLocalManagerAddSubtypeToRxEntryForActionFrame(Service *s, u32 in)
+Result wlanLocalManagerSetMaxAssociationNumber(Service *s, u32 in)
 {
     return serviceMitmDispatchIn(s, 40, in);
 }
 
-Result wlanLocalManagerDeleteSubtypeFromRxEntryForActionFrame(Service *s, u32 *out, void *out_buffer, size_t out_buffer_size)
+Result wlanLocalManagerCmd41(Service *s, u32 *out, void *out_buffer, size_t out_buffer_size)
 {
     return serviceMitmDispatchOut(s, 41, *out,
                                   .buffer_attrs = {SfBufferAttr_Out | SfBufferAttr_HipcPointer},
@@ -295,17 +295,17 @@ Result wlanLocalManagerDeleteSubtypeFromRxEntryForActionFrame(Service *s, u32 *o
                                   }, );
 }
 
-Result wlanLocalManagerCancelGetActionFrame(Service *s, u8 in)
+Result wlanLocalManagerCmd42(Service *s, u8 in)
 {
     return serviceMitmDispatchIn(s, 42, in);
 }
 
-Result wlanLocalManagerGetRssi(Service *s, ams::mitm::wlan::GetRssiData in)
+Result wlanLocalManagerCmd43(Service *s, ams::mitm::wlan::Cmd43Data in)
 {
     return serviceMitmDispatchIn(s, 43, in);
 }
 
-Result wlanLocalManagerSetMaxAssociationNumber(Service *s, ams::mitm::wlan::UnknownNetworkData in)
+Result wlanLocalManagerCmd44(Service *s, ams::mitm::wlan::UnknownNetworkData in)
 {
     return serviceMitmDispatchIn(s, 44, in);
 }

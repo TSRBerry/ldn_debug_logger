@@ -24,88 +24,39 @@
 
 namespace ams::mitm::wlan
 {
-    Result WlanLclMitmService::OpenMasterMode(u32 in)
+    Result WlanLclMitmService::OpenMode(u32 in)
     {
-        DEBUG_LOG("OpenMasterMode in value: %x", in);
-        if (m_config->wlan_lcl.commands.disable_openmastermode)
+        DEBUG_LOG("OpenMode in value: %x", in);
+        if (m_config->wlan_lcl.commands.disable_openmode)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerOpenMasterMode(m_forward_service.get(), in);
-        DEBUG_LOG("OpenMasterMode rc: %#x", rc);
+        Result rc = wlanLocalManagerOpenMode(m_forward_service.get(), in);
+        DEBUG_LOG("OpenMode rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::CloseMasterMode(u32 in)
+    Result WlanLclMitmService::CloseMode(u32 in)
     {
-        DEBUG_LOG("CloseMasterMode in value: %x", in);
-        if (m_config->wlan_lcl.commands.disable_closemastermode)
+        DEBUG_LOG("CloseMode in value: %x", in);
+        if (m_config->wlan_lcl.commands.disable_closemode)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCloseMasterMode(m_forward_service.get(), in);
-        DEBUG_LOG("CloseMasterMode rc: %#x", rc);
+        Result rc = wlanLocalManagerCloseMode(m_forward_service.get(), in);
+        DEBUG_LOG("CloseMode rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::OpenClientMode(sf::Out<OpenClientModeData> out)
+    Result WlanLclMitmService::GetMacAddress(sf::Out<GetMacAddressData> out)
     {
-        DEBUG_LOG("OpenClientMode OpenClientModeData ptr: %p", out.GetPointer());
-        if (m_config->wlan_lcl.commands.disable_openclientmode)
-        {
-            return sm::mitm::ResultShouldForwardToSession();
-        }
-        Result rc = wlanLocalManagerOpenClientMode(m_forward_service.get(), out.GetPointer());
-        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(OpenClientModeData), "OpenClientMode OpenClientModeData");
-        DEBUG_LOG("OpenClientMode rc: %#x", rc);
-        return rc;
-    }
-
-    Result WlanLclMitmService::CloseClientMode(UnknownNetworkData in)
-    {
-        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "CloseClientMode UnknownNetworkData");
-        if (m_config->wlan_lcl.commands.disable_closeclientmode)
-        {
-            return sm::mitm::ResultShouldForwardToSession();
-        }
-        Result rc = wlanLocalManagerCloseClientMode(m_forward_service.get(), in);
-        DEBUG_LOG("CloseClientMode rc: %#x", rc);
-        return rc;
-    }
-
-    Result WlanLclMitmService::OpenSpectatorMode()
-    {
-        DEBUG_LOG("OpenSpectatorMode");
-        if (m_config->wlan_lcl.commands.disable_openspectatormode)
-        {
-            return sm::mitm::ResultShouldForwardToSession();
-        }
-        Result rc = wlanLocalManagerOpenSpectatorMode(m_forward_service.get());
-        DEBUG_LOG("OpenSpectatorMode rc: %#x", rc);
-        return rc;
-    }
-
-    Result WlanLclMitmService::CloseSpectatorMode(const sf::InMapAliasArray<u8> &data)
-    {
-        DEBUG_LOG("CloseSpectatorMode SpectatorModeData ptr: %p", data.GetPointer());
-        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "CloseSpectatorMode SpectatorModeData");
-        if (m_config->wlan_lcl.commands.disable_closespectatormode)
-        {
-            return sm::mitm::ResultShouldForwardToSession();
-        }
-        Result rc = wlanLocalManagerCloseSpectatorMode(m_forward_service.get(), data.GetPointer(), data.GetSize());
-        DEBUG_LOG("CloseSpectatorMode rc: %#x", rc);
-        return rc;
-    }
-
-    Result WlanLclMitmService::GetMacAddress()
-    {
-        DEBUG_LOG("GetMacAddress");
+        DEBUG_LOG("GetMacAddress GetMacAddressData ptr: %p", out.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getmacaddress)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetMacAddress(m_forward_service.get());
+        Result rc = wlanLocalManagerGetMacAddress(m_forward_service.get(), out.GetPointer());
+        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(GetMacAddressData), "GetMacAddress GetMacAddressData");
         DEBUG_LOG("GetMacAddress rc: %#x", rc);
         return rc;
     }
@@ -134,14 +85,15 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::StartScan(UnknownNetworkData in)
+    Result WlanLclMitmService::StartScan(const sf::InMapAliasArray<u8> &data)
     {
-        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "StartScan UnknownNetworkData");
+        DEBUG_LOG("StartScan SpectatorModeData ptr: %p", data.GetPointer());
+        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "StartScan SpectatorModeData");
         if (m_config->wlan_lcl.commands.disable_startscan)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerStartScan(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerStartScan(m_forward_service.get(), data.GetPointer(), data.GetSize());
         DEBUG_LOG("StartScan rc: %#x", rc);
         return rc;
     }
@@ -158,9 +110,9 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::Connect(ConnectData in)
+    Result WlanLclMitmService::Connect(UnknownNetworkData in)
     {
-        DEBUG_DATA_DUMP(&in, sizeof(ConnectData), "Connect ConnectData");
+        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "Connect UnknownNetworkData");
         if (m_config->wlan_lcl.commands.disable_connect)
         {
             return sm::mitm::ResultShouldForwardToSession();
@@ -170,171 +122,169 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::CancelConnect(u32 in)
+    Result WlanLclMitmService::CancelConnect()
     {
-        DEBUG_LOG("CancelConnect in value: %x", in);
+        DEBUG_LOG("CancelConnect");
         if (m_config->wlan_lcl.commands.disable_cancelconnect)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCancelConnect(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerCancelConnect(m_forward_service.get());
         DEBUG_LOG("CancelConnect rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::Join(u32 in, sf::Out<sf::CopyHandle> out_handle)
+    Result WlanLclMitmService::Join(UnknownNetworkData in)
     {
-        os::NativeHandle handle;
-        DEBUG_LOG("Join in value: %x handle ptr: %p", in, &out_handle);
+        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "Join UnknownNetworkData");
         if (m_config->wlan_lcl.commands.disable_join)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerJoin(m_forward_service.get(), in, &handle);
+        Result rc = wlanLocalManagerJoin(m_forward_service.get(), in);
         DEBUG_LOG("Join rc: %#x", rc);
-        out_handle.SetValue(handle, false);
         return rc;
     }
 
-    Result WlanLclMitmService::CancelJoin(sf::Out<CancelJoinData> out)
+    Result WlanLclMitmService::CancelJoin()
     {
-        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(CancelJoinData), "CancelJoin CancelJoinData");
+        DEBUG_LOG("CancelJoin");
         if (m_config->wlan_lcl.commands.disable_canceljoin)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCancelJoin(m_forward_service.get(), out.GetPointer());
+        Result rc = wlanLocalManagerCancelJoin(m_forward_service.get());
         DEBUG_LOG("CancelJoin rc: %#x", rc);
-        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(CancelJoinData), "CancelJoin data");
         return rc;
     }
 
-    Result WlanLclMitmService::Disconnect(sf::OutMapAliasBuffer data)
+    Result WlanLclMitmService::Disconnect(DisconnectData in)
     {
-        DEBUG_LOG("Disconnect data ptr: %p", data.GetPointer());
+        DEBUG_DATA_DUMP(&in, sizeof(DisconnectData), "Disconnect DisconnectData");
         if (m_config->wlan_lcl.commands.disable_disconnect)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerDisconnect(m_forward_service.get(), data.GetPointer(), data.GetSize());
+        Result rc = wlanLocalManagerDisconnect(m_forward_service.get(), in);
         DEBUG_LOG("Disconnect rc: %#x", rc);
-        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "Disconnect data");
         return rc;
     }
 
-    Result WlanLclMitmService::SetBeaconLostCount(sf::Out<sf::CopyHandle> out_handle)
+    Result WlanLclMitmService::SetBeaconLostCount(u32 in)
     {
-        os::NativeHandle handle;
-        DEBUG_LOG("SetBeaconLostCount handle ptr: %p", &out_handle);
+        DEBUG_LOG("SetBeaconLostCount in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_setbeaconlostcount)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerSetBeaconLostCount(m_forward_service.get(), &handle);
+        Result rc = wlanLocalManagerSetBeaconLostCount(m_forward_service.get(), in);
         DEBUG_LOG("SetBeaconLostCount rc: %#x", rc);
-        out_handle.SetValue(handle, false);
         return rc;
     }
 
-    Result WlanLclMitmService::GetSystemEvent(sf::OutMapAliasBuffer data)
+    Result WlanLclMitmService::GetSystemEvent(u32 in, sf::Out<sf::CopyHandle> out_handle)
     {
-        DEBUG_LOG("GetSystemEvent data ptr: %p", data.GetPointer());
+        os::NativeHandle handle;
+        DEBUG_LOG("GetSystemEvent in value: %x handle ptr: %p", in, &out_handle);
         if (m_config->wlan_lcl.commands.disable_getsystemevent)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetSystemEvent(m_forward_service.get(), data.GetPointer(), data.GetSize());
+        Result rc = wlanLocalManagerGetSystemEvent(m_forward_service.get(), in, &handle);
         DEBUG_LOG("GetSystemEvent rc: %#x", rc);
-        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "GetSystemEvent data");
+        out_handle.SetValue(handle, false);
         return rc;
     }
 
-    Result WlanLclMitmService::GetConnectionStatus(sf::Out<u32> out)
+    Result WlanLclMitmService::GetConnectionStatus(sf::Out<GetConnectionStatusData> out)
     {
-        DEBUG_LOG("GetConnectionStatus out ptr: %p", out.GetPointer());
+        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(GetConnectionStatusData), "GetConnectionStatus GetConnectionStatusData");
         if (m_config->wlan_lcl.commands.disable_getconnectionstatus)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
         Result rc = wlanLocalManagerGetConnectionStatus(m_forward_service.get(), out.GetPointer());
         DEBUG_LOG("GetConnectionStatus rc: %#x", rc);
-        DEBUG_LOG("GetConnectionStatus out value: %x", out);
+        DEBUG_DATA_DUMP(out.GetPointer(), sizeof(GetConnectionStatusData), "GetConnectionStatus data");
         return rc;
     }
 
-    Result WlanLclMitmService::GetClientStatus(sf::Out<u32> out, sf::OutPointerBuffer out_data)
+    Result WlanLclMitmService::GetClientStatus(sf::OutMapAliasBuffer data)
     {
-        DEBUG_LOG("GetClientStatus out ptr: %p out_data ptr: %p", out.GetPointer(), out_data.GetPointer());
+        DEBUG_LOG("GetClientStatus data ptr: %p", data.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getclientstatus)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetClientStatus(m_forward_service.get(), out.GetPointer(), out_data.GetPointer(), out_data.GetSize());
+        Result rc = wlanLocalManagerGetClientStatus(m_forward_service.get(), data.GetPointer(), data.GetSize());
         DEBUG_LOG("GetClientStatus rc: %#x", rc);
-        DEBUG_LOG("GetClientStatus out value: %x", out);
-        DEBUG_DATA_DUMP(out_data.GetPointer(), out_data.GetSize(), "GetClientStatus out_data[%d]", out_data.GetSize());
+        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "GetClientStatus data");
         return rc;
     }
 
-    Result WlanLclMitmService::GetBssIndicationEvent(u32 in, sf::Out<u32> out, const sf::InBuffer &in_buffer)
+    Result WlanLclMitmService::GetBssIndicationEvent(sf::Out<sf::CopyHandle> out_handle)
     {
-        DEBUG_LOG("GetBssIndicationEvent in value: %x out ptr: %p", in, out.GetPointer());
-        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "GetBssIndicationEvent in_buffer");
+        os::NativeHandle handle;
+        DEBUG_LOG("GetBssIndicationEvent handle ptr: %p", &out_handle);
         if (m_config->wlan_lcl.commands.disable_getbssindicationevent)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetBssIndicationEvent(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerGetBssIndicationEvent(m_forward_service.get(), &handle);
         DEBUG_LOG("GetBssIndicationEvent rc: %#x", rc);
-        DEBUG_LOG("GetBssIndicationEvent out value: %x", out.GetValue());
+        out_handle.SetValue(handle, false);
         return rc;
     }
 
-    Result WlanLclMitmService::GetBssIndicationInfo(u32 in)
+    Result WlanLclMitmService::GetBssIndicationInfo(sf::OutMapAliasBuffer data)
     {
-        DEBUG_LOG("GetBssIndicationInfo in value: %x", in);
+        DEBUG_LOG("GetBssIndicationInfo data ptr: %p", data.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getbssindicationinfo)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetBssIndicationInfo(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerGetBssIndicationInfo(m_forward_service.get(), data.GetPointer(), data.GetSize());
         DEBUG_LOG("GetBssIndicationInfo rc: %#x", rc);
+        DEBUG_DATA_DUMP(data.GetPointer(), data.GetSize(), "GetBssIndicationInfo data");
         return rc;
     }
 
-    Result WlanLclMitmService::GetState(const sf::InBuffer &in_buffer)
+    Result WlanLclMitmService::GetState(sf::Out<u32> out)
     {
-        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "GetState in_buffer");
+        DEBUG_LOG("GetState out ptr: %p", out.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getstate)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetState(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerGetState(m_forward_service.get(), out.GetPointer());
         DEBUG_LOG("GetState rc: %#x", rc);
+        DEBUG_LOG("GetState out value: %x", out);
         return rc;
     }
 
-    Result WlanLclMitmService::GetAllowedChannels(u32 in)
+    Result WlanLclMitmService::GetAllowedChannels(sf::Out<u32> out, sf::OutPointerBuffer out_data)
     {
-        DEBUG_LOG("GetAllowedChannels in value: %x", in);
+        DEBUG_LOG("GetAllowedChannels out ptr: %p out_data ptr: %p", out.GetPointer(), out_data.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getallowedchannels)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetAllowedChannels(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerGetAllowedChannels(m_forward_service.get(), out.GetPointer(), out_data.GetPointer(), out_data.GetSize());
         DEBUG_LOG("GetAllowedChannels rc: %#x", rc);
+        DEBUG_LOG("GetAllowedChannels out value: %x", out);
+        DEBUG_DATA_DUMP(out_data.GetPointer(), out_data.GetSize(), "GetAllowedChannels out_data[%d]", out_data.GetSize());
         return rc;
     }
 
-    Result WlanLclMitmService::AddIe(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_array)
+    Result WlanLclMitmService::AddIe(u32 in, sf::Out<u32> out, const sf::InBuffer &in_buffer)
     {
         DEBUG_LOG("AddIe in value: %x out ptr: %p", in, out.GetPointer());
-        DEBUG_DATA_DUMP(in_array.GetPointer(), in_array.GetSize(), "AddIe in_array");
+        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "AddIe in_buffer");
         if (m_config->wlan_lcl.commands.disable_addie)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerAddIe(m_forward_service.get(), in, out.GetPointer(), in_array.GetPointer(), in_array.GetSize());
+        Result rc = wlanLocalManagerAddIe(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("AddIe rc: %#x", rc);
         DEBUG_LOG("AddIe out value: %x", out.GetValue());
         return rc;
@@ -352,186 +302,186 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::PutFrameRaw(u64 in)
+    Result WlanLclMitmService::PutFrameRaw(const sf::InBuffer &in_buffer)
     {
-        DEBUG_LOG("PutFrameRaw in value: %x", in);
+        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "PutFrameRaw in_buffer");
         if (m_config->wlan_lcl.commands.disable_putframeraw)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerPutFrameRaw(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerPutFrameRaw(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("PutFrameRaw rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::CancelGetFrame(u16 in, sf::Out<u32> out)
+    Result WlanLclMitmService::CancelGetFrame(u32 in)
     {
-        DEBUG_LOG("CancelGetFrame in value: %x out ptr: %p", in, out.GetPointer());
+        DEBUG_LOG("CancelGetFrame in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_cancelgetframe)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCancelGetFrame(m_forward_service.get(), in, out.GetPointer());
+        Result rc = wlanLocalManagerCancelGetFrame(m_forward_service.get(), in);
         DEBUG_LOG("CancelGetFrame rc: %#x", rc);
-        DEBUG_LOG("CancelGetFrame out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::CreateRxEntry(u32 in, const sf::InPointerBuffer &in_buffer)
+    Result WlanLclMitmService::CreateRxEntry(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_array)
     {
-        DEBUG_LOG("CreateRxEntry in value: %x", in);
-        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "CreateRxEntry in_buffer");
+        DEBUG_LOG("CreateRxEntry in value: %x out ptr: %p", in, out.GetPointer());
+        DEBUG_DATA_DUMP(in_array.GetPointer(), in_array.GetSize(), "CreateRxEntry in_array");
         if (m_config->wlan_lcl.commands.disable_createrxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCreateRxEntry(m_forward_service.get(), in, in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerCreateRxEntry(m_forward_service.get(), in, out.GetPointer(), in_array.GetPointer(), in_array.GetSize());
         DEBUG_LOG("CreateRxEntry rc: %#x", rc);
+        DEBUG_LOG("CreateRxEntry out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::DeleteRxEntry(u32 in, const sf::InPointerBuffer &in_buffer)
+    Result WlanLclMitmService::DeleteRxEntry(u32 in)
     {
         DEBUG_LOG("DeleteRxEntry in value: %x", in);
-        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "DeleteRxEntry in_buffer");
         if (m_config->wlan_lcl.commands.disable_deleterxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerDeleteRxEntry(m_forward_service.get(), in, in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerDeleteRxEntry(m_forward_service.get(), in);
         DEBUG_LOG("DeleteRxEntry rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::AddEthertypeToRxEntry(const sf::InPointerBuffer &in_buffer, sf::OutMapAliasBuffer out_buffer)
+    Result WlanLclMitmService::AddEthertypeToRxEntry(u64 in)
     {
-        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "AddEthertypeToRxEntry in_buffer");
+        DEBUG_LOG("AddEthertypeToRxEntry in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_addethertypetorxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerAddEthertypeToRxEntry(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize(), out_buffer.GetPointer(), out_buffer.GetSize());
+        Result rc = wlanLocalManagerAddEthertypeToRxEntry(m_forward_service.get(), in);
         DEBUG_LOG("AddEthertypeToRxEntry rc: %#x", rc);
-        DEBUG_DATA_DUMP(out_buffer.GetPointer(), out_buffer.GetSize(), "AddEthertypeToRxEntry out_buffer");
         return rc;
     }
 
-    Result WlanLclMitmService::DeleteEthertypeFromRxEntry(DeleteEthertypeFromRxEntryData in, const sf::InMapAliasBuffer &in_array)
+    Result WlanLclMitmService::DeleteEthertypeFromRxEntry(u16 in, sf::Out<u32> out)
     {
-        DEBUG_DATA_DUMP(&in, sizeof(DeleteEthertypeFromRxEntryData), "DeleteEthertypeFromRxEntry DeleteEthertypeFromRxEntryData");
-        DEBUG_DATA_DUMP(in_array.GetPointer(), in_array.GetSize(), "DeleteEthertypeFromRxEntry in_array");
+        DEBUG_LOG("DeleteEthertypeFromRxEntry in value: %x out ptr: %p", in, out.GetPointer());
         if (m_config->wlan_lcl.commands.disable_deleteethertypefromrxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerDeleteEthertypeFromRxEntry(m_forward_service.get(), in, in_array.GetPointer(), in_array.GetSize());
+        Result rc = wlanLocalManagerDeleteEthertypeFromRxEntry(m_forward_service.get(), in, out.GetPointer());
         DEBUG_LOG("DeleteEthertypeFromRxEntry rc: %#x", rc);
+        DEBUG_LOG("DeleteEthertypeFromRxEntry out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::AddMatchingDataToRxEntry(const sf::InMapAliasBuffer &in_buffer)
+    Result WlanLclMitmService::AddMatchingDataToRxEntry(u32 in, const sf::InPointerBuffer &in_buffer)
     {
+        DEBUG_LOG("AddMatchingDataToRxEntry in value: %x", in);
         DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "AddMatchingDataToRxEntry in_buffer");
         if (m_config->wlan_lcl.commands.disable_addmatchingdatatorxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerAddMatchingDataToRxEntry(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerAddMatchingDataToRxEntry(m_forward_service.get(), in, in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("AddMatchingDataToRxEntry rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::RemoveMatchingDataFromRxEntry()
+    Result WlanLclMitmService::RemoveMatchingDataFromRxEntry(u32 in, const sf::InPointerBuffer &in_buffer)
     {
-        DEBUG_LOG("RemoveMatchingDataFromRxEntry");
+        DEBUG_LOG("RemoveMatchingDataFromRxEntry in value: %x", in);
+        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "RemoveMatchingDataFromRxEntry in_buffer");
         if (m_config->wlan_lcl.commands.disable_removematchingdatafromrxentry)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerRemoveMatchingDataFromRxEntry(m_forward_service.get());
+        Result rc = wlanLocalManagerRemoveMatchingDataFromRxEntry(m_forward_service.get(), in, in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("RemoveMatchingDataFromRxEntry rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::GetScanResult(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_buffer)
+    Result WlanLclMitmService::GetScanResult(const sf::InPointerBuffer &in_buffer, sf::OutMapAliasBuffer out_buffer)
     {
-        DEBUG_LOG("GetScanResult in value: %x out ptr: %p", in, out.GetPointer());
         DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "GetScanResult in_buffer");
         if (m_config->wlan_lcl.commands.disable_getscanresult)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetScanResult(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
+        Result rc = wlanLocalManagerGetScanResult(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize(), out_buffer.GetPointer(), out_buffer.GetSize());
         DEBUG_LOG("GetScanResult rc: %#x", rc);
-        DEBUG_LOG("GetScanResult out value: %x", out.GetValue());
+        DEBUG_DATA_DUMP(out_buffer.GetPointer(), out_buffer.GetSize(), "GetScanResult out_buffer");
         return rc;
     }
 
-    Result WlanLclMitmService::PutActionFrameOneShot(u32 in)
+    Result WlanLclMitmService::PutActionFrameOneShot(PutActionFrameOneShotData in, const sf::InMapAliasBuffer &in_array)
     {
-        DEBUG_LOG("PutActionFrameOneShot in value: %x", in);
+        DEBUG_DATA_DUMP(&in, sizeof(PutActionFrameOneShotData), "PutActionFrameOneShot PutActionFrameOneShotData");
+        DEBUG_DATA_DUMP(in_array.GetPointer(), in_array.GetSize(), "PutActionFrameOneShot in_array");
         if (m_config->wlan_lcl.commands.disable_putactionframeoneshot)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerPutActionFrameOneShot(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerPutActionFrameOneShot(m_forward_service.get(), in, in_array.GetPointer(), in_array.GetSize());
         DEBUG_LOG("PutActionFrameOneShot rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::SetActionFrameWithBeacon(u64 in)
+    Result WlanLclMitmService::SetActionFrameWithBeacon(const sf::InMapAliasBuffer &in_buffer)
     {
-        DEBUG_LOG("SetActionFrameWithBeacon in value: %ld", in);
+        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "SetActionFrameWithBeacon in_buffer");
         if (m_config->wlan_lcl.commands.disable_setactionframewithbeacon)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerSetActionFrameWithBeacon(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerSetActionFrameWithBeacon(m_forward_service.get(), in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("SetActionFrameWithBeacon rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::CancelActionFrameWithBeacon(u32 in, sf::Out<u32> out)
+    Result WlanLclMitmService::CancelActionFrameWithBeacon()
     {
-        DEBUG_LOG("CancelActionFrameWithBeacon in value: %x, out ptr: %p", in, out.GetPointer());
+        DEBUG_LOG("CancelActionFrameWithBeacon");
         if (m_config->wlan_lcl.commands.disable_cancelactionframewithbeacon)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCancelActionFrameWithBeacon(m_forward_service.get(), in, out.GetPointer());
-        DEBUG_LOG("CancelActionFrameWithBeacon out value: %x", out.GetValue());
+        Result rc = wlanLocalManagerCancelActionFrameWithBeacon(m_forward_service.get());
         DEBUG_LOG("CancelActionFrameWithBeacon rc: %#x", rc);
         return rc;
     }
 
-    Result WlanLclMitmService::CreateRxEntryForActionFrame(u32 in)
+    Result WlanLclMitmService::CreateRxEntryForActionFrame(u32 in, sf::Out<u32> out, const sf::InPointerBuffer &in_buffer)
     {
-        DEBUG_LOG("CreateRxEntryForActionFrame in value: %x", in);
+        DEBUG_LOG("CreateRxEntryForActionFrame in value: %x out ptr: %p", in, out.GetPointer());
+        DEBUG_DATA_DUMP(in_buffer.GetPointer(), in_buffer.GetSize(), "CreateRxEntryForActionFrame in_buffer");
         if (m_config->wlan_lcl.commands.disable_createrxentryforactionframe)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerCreateRxEntryForActionFrame(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerCreateRxEntryForActionFrame(m_forward_service.get(), in, out.GetPointer(), in_buffer.GetPointer(), in_buffer.GetSize());
         DEBUG_LOG("CreateRxEntryForActionFrame rc: %#x", rc);
+        DEBUG_LOG("CreateRxEntryForActionFrame out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::DeleteRxEntryForActionFrame(sf::Out<u32> out)
+    Result WlanLclMitmService::DeleteRxEntryForActionFrame(u32 in)
     {
-        DEBUG_LOG("DeleteRxEntryForActionFrame out ptr:", out.GetPointer());
+        DEBUG_LOG("DeleteRxEntryForActionFrame in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_deleterxentryforactionframe)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerDeleteRxEntryForActionFrame(m_forward_service.get(), out.GetPointer());
+        Result rc = wlanLocalManagerDeleteRxEntryForActionFrame(m_forward_service.get(), in);
         DEBUG_LOG("DeleteRxEntryForActionFrame rc: %#x", rc);
-        DEBUG_LOG("DeleteRxEntryForActionFrame out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::AddSubtypeToRxEntryForActionFrame(u32 in)
+    Result WlanLclMitmService::AddSubtypeToRxEntryForActionFrame(u64 in)
     {
-        DEBUG_LOG("AddSubtypeToRxEntryForActionFrame in value: %x", in);
+        DEBUG_LOG("AddSubtypeToRxEntryForActionFrame in value: %ld", in);
         if (m_config->wlan_lcl.commands.disable_addsubtypetorxentryforactionframe)
         {
             return sm::mitm::ResultShouldForwardToSession();
@@ -541,21 +491,20 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::DeleteSubtypeFromRxEntryForActionFrame(sf::Out<u32> out, sf::OutPointerBuffer out_buffer)
+    Result WlanLclMitmService::DeleteSubtypeFromRxEntryForActionFrame(u32 in, sf::Out<u32> out)
     {
-        DEBUG_LOG("DeleteSubtypeFromRxEntryForActionFrame out ptr: %p", out.GetPointer());
+        DEBUG_LOG("DeleteSubtypeFromRxEntryForActionFrame in value: %x, out ptr: %p", in, out.GetPointer());
         if (m_config->wlan_lcl.commands.disable_deletesubtypefromrxentryforactionframe)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerDeleteSubtypeFromRxEntryForActionFrame(m_forward_service.get(), out.GetPointer(), out_buffer.GetPointer(), out_buffer.GetSize());
+        Result rc = wlanLocalManagerDeleteSubtypeFromRxEntryForActionFrame(m_forward_service.get(), in, out.GetPointer());
+        DEBUG_LOG("DeleteSubtypeFromRxEntryForActionFrame out value: %x", out.GetValue());
         DEBUG_LOG("DeleteSubtypeFromRxEntryForActionFrame rc: %#x", rc);
-        DEBUG_LOG("DeleteSubtypeFromRxEntryForActionFrame out value: %x", out);
-        DEBUG_DATA_DUMP(out_buffer.GetPointer(), out_buffer.GetSize(), "DeleteSubtypeFromRxEntryForActionFrame out_buffer");
         return rc;
     }
 
-    Result WlanLclMitmService::CancelGetActionFrame(u8 in)
+    Result WlanLclMitmService::CancelGetActionFrame(u32 in)
     {
         DEBUG_LOG("CancelGetActionFrame in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_cancelgetactionframe)
@@ -567,27 +516,78 @@ namespace ams::mitm::wlan
         return rc;
     }
 
-    Result WlanLclMitmService::GetRssi(GetRssiData in)
+    Result WlanLclMitmService::GetRssi(sf::Out<u32> out)
     {
-        DEBUG_DATA_DUMP(&in, sizeof(GetRssiData), "GetRssi GetRssiData");
+        DEBUG_LOG("GetRssi out ptr:", out.GetPointer());
         if (m_config->wlan_lcl.commands.disable_getrssi)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
-        Result rc = wlanLocalManagerGetRssi(m_forward_service.get(), in);
+        Result rc = wlanLocalManagerGetRssi(m_forward_service.get(), out.GetPointer());
         DEBUG_LOG("GetRssi rc: %#x", rc);
+        DEBUG_LOG("GetRssi out value: %x", out.GetValue());
         return rc;
     }
 
-    Result WlanLclMitmService::SetMaxAssociationNumber(UnknownNetworkData in)
+    Result WlanLclMitmService::SetMaxAssociationNumber(u32 in)
     {
-        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "SetMaxAssociationNumber UnknownNetworkData");
+        DEBUG_LOG("SetMaxAssociationNumber in value: %x", in);
         if (m_config->wlan_lcl.commands.disable_setmaxassociationnumber)
         {
             return sm::mitm::ResultShouldForwardToSession();
         }
         Result rc = wlanLocalManagerSetMaxAssociationNumber(m_forward_service.get(), in);
         DEBUG_LOG("SetMaxAssociationNumber rc: %#x", rc);
+        return rc;
+    }
+
+    Result WlanLclMitmService::Cmd41(sf::Out<u32> out, sf::OutPointerBuffer out_buffer)
+    {
+        DEBUG_LOG("Cmd41 out ptr: %p", out.GetPointer());
+        if (m_config->wlan_lcl.commands.disable_cmd41)
+        {
+            return sm::mitm::ResultShouldForwardToSession();
+        }
+        Result rc = wlanLocalManagerCmd41(m_forward_service.get(), out.GetPointer(), out_buffer.GetPointer(), out_buffer.GetSize());
+        DEBUG_LOG("Cmd41 rc: %#x", rc);
+        DEBUG_LOG("Cmd41 out value: %x", out);
+        DEBUG_DATA_DUMP(out_buffer.GetPointer(), out_buffer.GetSize(), "Cmd41 out_buffer");
+        return rc;
+    }
+
+    Result WlanLclMitmService::Cmd42(u8 in)
+    {
+        DEBUG_LOG("Cmd42 in value: %x", in);
+        if (m_config->wlan_lcl.commands.disable_cmd42)
+        {
+            return sm::mitm::ResultShouldForwardToSession();
+        }
+        Result rc = wlanLocalManagerCmd42(m_forward_service.get(), in);
+        DEBUG_LOG("Cmd42 rc: %#x", rc);
+        return rc;
+    }
+
+    Result WlanLclMitmService::Cmd43(Cmd43Data in)
+    {
+        DEBUG_DATA_DUMP(&in, sizeof(Cmd43Data), "Cmd43 Cmd43Data");
+        if (m_config->wlan_lcl.commands.disable_cmd43)
+        {
+            return sm::mitm::ResultShouldForwardToSession();
+        }
+        Result rc = wlanLocalManagerCmd43(m_forward_service.get(), in);
+        DEBUG_LOG("Cmd43 rc: %#x", rc);
+        return rc;
+    }
+
+    Result WlanLclMitmService::Cmd44(UnknownNetworkData in)
+    {
+        DEBUG_DATA_DUMP(&in, sizeof(UnknownNetworkData), "Cmd44 UnknownNetworkData");
+        if (m_config->wlan_lcl.commands.disable_cmd44)
+        {
+            return sm::mitm::ResultShouldForwardToSession();
+        }
+        Result rc = wlanLocalManagerCmd44(m_forward_service.get(), in);
+        DEBUG_LOG("Cmd44 rc: %#x", rc);
         return rc;
     }
 

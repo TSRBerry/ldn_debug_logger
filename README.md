@@ -28,6 +28,7 @@ In particular I want to thank the following people:
 
 - [@ndeadly](https://github.com/ndeadly) for guiding me through the process of getting this module to work, letting me use a lot of his [MissionControl](https://github.com/ndeadly/MissionControl) code and explaining a lot of mitm stuff.
 - [@SciresM](https://github.com/SciresM) for helping with the countless issues I encounter and explaining everything I don't understand.
+- [@hexkyz](https://github.com/hexkyz) for adding most of the missing wlan commands for recent firmware versions to [WLAN services](https://switchbrew.org/wiki/WLAN_services).
 - [@misson20000](https://github.com/misson20000) for creating [twili](https://github.com/misson20000/twili) and [ilia](https://github.com/misson20000/ilia) which I used for debugging wlan.
 - [@yellows8](https://github.com/yellows8) for creating the [Nintendo System Update reports](https://yls8.mtheall.com/) website, which I used a lot during reverse engineering and creating this sysmodule.
 - [SwitchBrew](https://switchbrew.org/wiki/Main_Page) for documenting [LDN services](https://switchbrew.org/wiki/LDN_services) and [WLAN services](https://switchbrew.org/wiki/WLAN_services) which gave me an inital understanding of the services hosted by the sysmodules.

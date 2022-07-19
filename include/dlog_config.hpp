@@ -48,12 +48,8 @@ namespace ams::mitm
             bool enable_mitm;
             struct
             {
-                bool disable_openmastermode;
-                bool disable_closemastermode;
-                bool disable_openclientmode;
-                bool disable_closeclientmode;
-                bool disable_openspectatormode;
-                bool disable_closespectatormode;
+                bool disable_openmode;
+                bool disable_closemode;
                 bool disable_getmacaddress;
                 bool disable_createbss;
                 bool disable_destroybss;
@@ -93,6 +89,10 @@ namespace ams::mitm
                 bool disable_cancelgetactionframe;
                 bool disable_getrssi;
                 bool disable_setmaxassociationnumber;
+                bool disable_cmd41;
+                bool disable_cmd42;
+                bool disable_cmd43;
+                bool disable_cmd44;
                 bool disable_cmd45;
                 bool disable_cmd46;
                 bool disable_cmd47;
