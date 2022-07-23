@@ -102,6 +102,23 @@ namespace ams::mitm
                 bool disable_cmd51;
             } commands;
         } wlan_lcl;
+
+        struct
+        {
+            bool enable_mitm;
+            struct
+            {
+                bool disable_getframeraw;
+            } commands;
+        } wlan_lg;
+        struct
+        {
+            bool enable_mitm;
+            struct
+            {
+                bool disable_getactionframe;
+            } commands;
+        } wlan_lga;
     };
 
     Result ReadConfig();

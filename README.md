@@ -1,10 +1,10 @@
 # LDN Debug Logger
 
-A mitm sysmodule to log all IPC calls to `ldn:u` and `wlan:lcl`.
+A mitm sysmodule to log all IPC calls to `ldn:u`, `wlan:lcl`, `wlan:lg` and `wlan:lga`.
 
 ## References
 
-### wlan:lcl
+### wlan:lcl, wlan:lg, wlan:lga
 
 - [WLAN swipcgen_server_modern.info](https://yls8.mtheall.com/ninupdates/sysupdatedl/autodl_sysupdates/2021-09-15_00-05-06-hac/0100000000000016/ALL/v872415452/swipcgen_server_modern.info)
 - [WLAN services](https://switchbrew.org/wiki/WLAN_services)

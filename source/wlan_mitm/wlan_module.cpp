@@ -18,6 +18,8 @@
 
 #include "wlan_mitm/wlan_module.hpp"
 #include "wlan_mitm/wlan_lcl_service.hpp"
+#include "wlan_mitm/wlan_lg_service.hpp"
+#include "wlan_mitm/wlan_lga_service.hpp"
 
 namespace ams::mitm::wlan
 {
@@ -31,6 +33,15 @@ namespace ams::mitm::wlan
 
     namespace
     {
+        enum PortIndex
+        {
+            PortIndex_WlanLcl,
+            PortIndex_WlanLg,
+            PortIndex_WlanLga,
+
+            PortIndex_Count
+        };
+
         struct ServerOptions
         {
             static constexpr size_t PointerBufferSize = 0x1000;
@@ -42,7 +53,7 @@ namespace ams::mitm::wlan
 
         constexpr size_t MaxSessions = 61;
 
-        class ServerManager final : public sf::hipc::ServerManager<1, ServerOptions, MaxSessions>
+        class ServerManager final : public sf::hipc::ServerManager<PortIndex_Count, ServerOptions, MaxSessions>
         {
         private:
             virtual ams::Result OnNeedsToAccept(int port_index, Server *server) override;
@@ -57,7 +68,18 @@ namespace ams::mitm::wlan
             std::shared_ptr<::Service> fsrv;
             sm::MitmProcessInfo client_info;
             server->AcknowledgeMitmSession(std::addressof(fsrv), std::addressof(client_info));
-            return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitmInterface, mitm::wlan::WlanLclMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
+
+            switch (port_index)
+            {
+            case PortIndex_WlanLcl:
+                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLclMitmInterface, mitm::wlan::WlanLclMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
+            case PortIndex_WlanLg:
+                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLgMitmInterface, mitm::wlan::WlanLgMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
+            case PortIndex_WlanLga:
+                return this->AcceptMitmImpl(server, sf::CreateSharedObjectEmplaced<mitm::wlan::IWlanLgaMitmInterface, mitm::wlan::WlanLgaMitmService>(decltype(fsrv)(fsrv), client_info), fsrv);
+
+                AMS_UNREACHABLE_DEFAULT_CASE();
+            }
         }
 
         alignas(os::MemoryPageSize) u8 g_extra_thread_stacks[NumExtraThreads][ThreadStackSize];
@@ -77,7 +99,7 @@ namespace ams::mitm::wlan
                 for (size_t i = 0; i < NumExtraThreads; i++)
                 {
                     R_ABORT_UNLESS(os::CreateThread(g_extra_threads + i, LoopServerThread, nullptr, g_extra_thread_stacks[i], ThreadStackSize, priority));
-                    os::SetThreadNamePointer(g_extra_threads + i, "wlan::LclMitmThread");
+                    os::SetThreadNamePointer(g_extra_threads + i, "wlan::MitmThread");
                 }
             }
 
@@ -106,8 +128,12 @@ namespace ams::mitm::wlan
 
     Result Launch()
     {
-        constexpr sm::ServiceName MitmServiceName = sm::ServiceName::Encode("wlan:lcl");
-        R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(0, MitmServiceName)));
+        constexpr sm::ServiceName WlanLclServiceName = sm::ServiceName::Encode("wlan:lcl");
+        constexpr sm::ServiceName WlanLgServiceName = sm::ServiceName::Encode("wlan:lg");
+        constexpr sm::ServiceName WlanLgaServiceName = sm::ServiceName::Encode("wlan:lga");
+        R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::wlan::WlanLclMitmService>(PortIndex_WlanLcl, WlanLclServiceName)));
+        R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::wlan::WlanLgMitmService>(PortIndex_WlanLg, WlanLgServiceName)));
+        R_ABORT_UNLESS((g_server_manager.RegisterMitmServer<mitm::wlan::WlanLgaMitmService>(PortIndex_WlanLga, WlanLgaServiceName)));
         DEBUG_LOG("Registered mitm server");
 
         R_TRY(os::CreateThread(
@@ -118,7 +144,7 @@ namespace ams::mitm::wlan
             ThreadStackSize,
             ThreadPriority));
 
-        os::SetThreadNamePointer(&g_thread, "wlan::LclMitmMainThread");
+        os::SetThreadNamePointer(&g_thread, "wlan::MitmMainThread");
         os::StartThread(&g_thread);
 
         R_SUCCEED();

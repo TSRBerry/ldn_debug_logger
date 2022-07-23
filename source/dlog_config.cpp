@@ -6,7 +6,7 @@ namespace ams::mitm
     namespace
     {
         constexpr const char *config_path = "sdmc:/config/ldn_debug_logger/dlog.ini";
-        DLogConfig g_config = {.ldn_u = {.enable_mitm = true}, .wlan_lcl = {.enable_mitm = true}};
+        DLogConfig g_config = {.ldn_u = {.enable_mitm = true}, .wlan_lcl = {.enable_mitm = true}, .wlan_lg = {.enable_mitm = true}, .wlan_lga = {.enable_mitm = true}};
     }
 
     void LogDisabledCommand(const char *service, const char *cmd)
@@ -35,6 +35,38 @@ namespace ams::mitm
         constexpr const char *service = "wlan:lcl";
         constexpr const char *cmds[] = {"disable_openmode", "disable_closemode", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd41", "disable_cmd44foractionframe", "disable_cmd41foractionframe", "disable_cmd44", "disable_cmd41", "disable_cmd42", "disable_cmd43", "disable_cmd44", "disable_cmd45", "disable_cmd46", "disable_cmd47", "disable_cmd48", "disable_cmd49", "disable_cmd50", "disable_cmd51"};
         static_assert(sizeof(config->wlan_lcl.commands) == sizeof(cmds) / sizeof(char *));
+
+        for (int i = 0; i < (int)(sizeof(cmds) / sizeof(char *)); i++)
+        {
+            if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
+            {
+                LogDisabledCommand(service, cmds[i]);
+                *((bool *)(&config->wlan_lcl.commands) + i) = true;
+            }
+        }
+    }
+
+    void HandleWlanLgCmdsConfig(const char *cmd, const char *value, DLogConfig *config)
+    {
+        constexpr const char *service = "wlan:lg";
+        constexpr const char *cmds[] = {"disable_getframeraw"};
+        static_assert(sizeof(config->wlan_lg.commands) == sizeof(cmds) / sizeof(char *));
+
+        for (int i = 0; i < (int)(sizeof(cmds) / sizeof(char *)); i++)
+        {
+            if (strcasecmp(cmd, cmds[i]) == 0 && strcasecmp(value, "1") == 0)
+            {
+                LogDisabledCommand(service, cmds[i]);
+                *((bool *)(&config->wlan_lcl.commands) + i) = true;
+            }
+        }
+    }
+
+    void HandleWlanLgaCmdsConfig(const char *cmd, const char *value, DLogConfig *config)
+    {
+        constexpr const char *service = "wlan:lga";
+        constexpr const char *cmds[] = {"disable_getactionframe"};
+        static_assert(sizeof(config->wlan_lga.commands) == sizeof(cmds) / sizeof(char *));
 
         for (int i = 0; i < (int)(sizeof(cmds) / sizeof(char *)); i++)
         {
@@ -79,6 +111,36 @@ namespace ams::mitm
         else if (strcasecmp(section, "wlan_lcl.commands") == 0)
         {
             HandleWlanLclCmdsConfig(name, value, config);
+        }
+        else if (strcasecmp(section, "wlan_lg") == 0)
+        {
+            if (strcasecmp(name, "enable_mitm") == 0)
+            {
+                if (strcasecmp(value, "0") == 0)
+                {
+                    config->wlan_lg.enable_mitm = false;
+                    DEBUG_LOG("CONFIG> Disabled mitm for: 'wlan:lg'");
+                }
+            }
+        }
+        else if (strcasecmp(section, "wlan_lg.commands") == 0)
+        {
+            HandleWlanLgCmdsConfig(name, value, config);
+        }
+        else if (strcasecmp(section, "wlan_lga") == 0)
+        {
+            if (strcasecmp(name, "enable_mitm") == 0)
+            {
+                if (strcasecmp(value, "0") == 0)
+                {
+                    config->wlan_lga.enable_mitm = false;
+                    DEBUG_LOG("CONFIG> Disabled mitm for: 'wlan:lga'");
+                }
+            }
+        }
+        else if (strcasecmp(section, "wlan_lga.commands") == 0)
+        {
+            HandleWlanLgaCmdsConfig(name, value, config);
         }
         else
         {
