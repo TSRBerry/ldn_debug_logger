@@ -198,7 +198,7 @@ namespace ams::mitm::wlan
 
     Result WlanLclMitmService::GetConnectionStatus(sf::Out<ConnectionStatus> status)
     {
-        DEBUG_LOG("GetConnectionStatus connectionStatus ptr: %p", status.GetPointer());
+        DEBUG_LOG("GetConnectionStatus ConnectionStatus ptr: %p", status.GetPointer());
         DEBUG_DATA_DUMP(status.GetPointer(), sizeof(ConnectionStatus), "GetConnectionStatus ConnectionStatus");
         if (m_config->wlan_lcl.commands.disable_getconnectionstatus)
         {
