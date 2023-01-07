@@ -35,12 +35,15 @@ namespace ams::mitm::ldn
         struct ServerOptions
         {
             static constexpr size_t PointerBufferSize = 0x1000;
-            static constexpr size_t MaxDomains = 0x10;
-            static constexpr size_t MaxDomainObjects = 0x100;
+            static constexpr size_t MaxDomains = 0;
+            static constexpr size_t MaxDomainObjects = 0;
             static constexpr bool CanDeferInvokeRequest = false;
             static constexpr bool CanManageMitmServers = true;
         };
 
+        // ldn:u -> 3
+        // ldn:s -> 5
+        // ldn:m -> 5
         constexpr size_t MaxSessions = 3;
 
         class ServerManager final : public sf::hipc::ServerManager<1, ServerOptions, MaxSessions>
